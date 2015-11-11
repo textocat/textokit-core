@@ -4,17 +4,17 @@
 	<primitive>false</primitive>
 	<delegateAnalysisEngineSpecifiers>
 		<delegateAnalysisEngine key="initialTokenizer">
-			<import name="ru.kfu.itis.issst.uima.tokenizer.InitialTokenizer" />
+			<import name="com.textocat.textokit.tokenizer.simple.InitialTokenizer" />
 		</delegateAnalysisEngine>
 		<delegateAnalysisEngine key="postTokenizer">
-			<import name="ru.kfu.itis.issst.uima.tokenizer.PostTokenizer" />
+			<import name="com.textocat.textokit.tokenizer.simple.PostTokenizer" />
 		</delegateAnalysisEngine>
 	</delegateAnalysisEngineSpecifiers>
 	<analysisEngineMetaData>
 		<name>InitialTokenizer+PostTokenizer</name>
 		<description>Unicode-classes-based tokenizer with additional heuristic post-processing</description>
 		<version>1.0</version>
-		<vendor>ISSST Lab at Kazan Federal University</vendor>
+		<vendor>Textocat</vendor>
 		<configurationParameters>
 			<configurationParameter>
 				<name>spanType</name>

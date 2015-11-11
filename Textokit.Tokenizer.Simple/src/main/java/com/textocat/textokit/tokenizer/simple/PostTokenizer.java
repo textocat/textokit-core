@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ru.kfu.itis.issst.uima.tokenizer;
+package com.textocat.textokit.tokenizer.simple;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -21,13 +21,13 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
-import ru.kfu.cll.uima.tokenizer.fstype.NUM;
-import ru.kfu.cll.uima.tokenizer.fstype.PM;
-import ru.kfu.cll.uima.tokenizer.fstype.SPECIAL;
-import ru.kfu.cll.uima.tokenizer.fstype.Token;
-import ru.kfu.cll.uima.tokenizer.fstype.TokenBase;
-import ru.kfu.cll.uima.tokenizer.fstype.W;
-import ru.kfu.cll.uima.tokenizer.fstype.WhiteSpace;
+import com.textocat.textokit.tokenizer.fstype.NUM;
+import com.textocat.textokit.tokenizer.fstype.PM;
+import com.textocat.textokit.tokenizer.fstype.SPECIAL;
+import com.textocat.textokit.tokenizer.fstype.Token;
+import com.textocat.textokit.tokenizer.fstype.TokenBase;
+import com.textocat.textokit.tokenizer.fstype.W;
+import com.textocat.textokit.tokenizer.fstype.WhiteSpace;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;

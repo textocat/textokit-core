@@ -1,4 +1,4 @@
-package ru.kfu.itis.issst.uima.tokenizer;
+package com.textocat.textokit.tokenizer.simple;
 
 /**
  * @author Rinat Gareev

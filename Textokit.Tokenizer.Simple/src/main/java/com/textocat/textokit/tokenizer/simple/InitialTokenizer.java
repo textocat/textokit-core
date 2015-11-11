@@ -1,7 +1,7 @@
 /**
  *
  */
-package ru.kfu.itis.issst.uima.tokenizer;
+package com.textocat.textokit.tokenizer.simple;
 
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.ArrayUtils;
@@ -15,15 +15,15 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import ru.kfu.cll.uima.tokenizer.fstype.*;
+import com.textocat.textokit.tokenizer.fstype.*;
 
 import java.util.BitSet;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.apache.uima.fit.factory.TypeSystemDescriptionFactory.createTypeSystemDescription;
-import static ru.kfu.itis.cll.uima.util.AnnotatorUtils.annotationTypeExist;
-import static ru.kfu.itis.issst.uima.tokenizer.TokenUtils.PUNCTUATION_CHARACTER_CATEGORIES;
-import static ru.kfu.itis.issst.uima.tokenizer.TokenizerAPI.*;
+import static com.textocat.textokit.commons.util.AnnotatorUtils.annotationTypeExist;
+import static com.textocat.textokit.tokenizer.TokenUtils.PUNCTUATION_CHARACTER_CATEGORIES;
+import static com.textocat.textokit.tokenizer.TokenizerAPI.*;
 
 /**
  * @author Rinat Gareev
