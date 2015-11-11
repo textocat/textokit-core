@@ -122,6 +122,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- submodules -->
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- third-party -->
             <dependency>
                 <groupId>org.cleartk</groupId>
                 <artifactId>cleartk-ml</artifactId>

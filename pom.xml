@@ -16,5 +16,6 @@
     <modules>
         <module>Textokit.Parent</module>
         <module>Textokit.Commons</module>
+        <module>Textokit.Tokenizer.API</module>
     </modules>
 </project>
