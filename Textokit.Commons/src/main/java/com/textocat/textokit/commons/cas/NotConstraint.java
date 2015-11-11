@@ -1,0 +1,32 @@
+/**
+ *
+ */
+package com.textocat.textokit.commons.cas;
+
+import org.apache.uima.cas.FSMatchConstraint;
+import org.apache.uima.cas.FeatureStructure;
+
+/**
+ * @author Rinat Gareev
+ */
+class NotConstraint implements FSMatchConstraint {
+
+    private static final long serialVersionUID = -2673253566146696649L;
+    private FSMatchConstraint argConstraint;
+
+    private NotConstraint(FSMatchConstraint argConstraint) {
+        this.argConstraint = argConstraint;
+    }
+
+    public static NotConstraint of(FSMatchConstraint argConstraint) {
+        return new NotConstraint(argConstraint);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean match(FeatureStructure fs) {
+        return !argConstraint.match(fs);
+    }
+}
