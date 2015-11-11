@@ -37,7 +37,8 @@ public class ListWhitespaceChars {
             case Character.LINE_SEPARATOR:
             case Character.PARAGRAPH_SEPARATOR:
                 return true;
-            default: return false;
+            default:
+                return false;
         }
     }
 
