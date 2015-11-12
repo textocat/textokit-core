@@ -18,5 +18,7 @@
         <module>Textokit.Commons</module>
         <module>Textokit.Tokenizer.API</module>
         <module>Textokit.Tokenizer.Simple</module>
+        <module>Textokit.SentenceSplitter.API</module>
+        <module>Textokit.SentenceSplitter.Heuristic</module>
     </modules>
 </project>
