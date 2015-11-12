@@ -2,6 +2,10 @@ package com.textocat.textokit.segmentation.heur;
 
 import com.google.common.collect.Lists;
 import com.textocat.textokit.segmentation.SentenceSplitterAPI;
+import com.textocat.textokit.segmentation.fstype.Sentence;
+import com.textocat.textokit.tokenizer.fstype.BREAK;
+import com.textocat.textokit.tokenizer.fstype.Token;
+import com.textocat.textokit.tokenizer.fstype.TokenBase;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
@@ -10,10 +14,6 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import com.textocat.textokit.segmentation.fstype.Sentence;
-import com.textocat.textokit.tokenizer.fstype.BREAK;
-import com.textocat.textokit.tokenizer.fstype.Token;
-import com.textocat.textokit.tokenizer.fstype.TokenBase;
 
 import java.util.Deque;
 
