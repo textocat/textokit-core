@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.textocat.textokit.postagger.opennlp;
 
@@ -7,50 +7,49 @@ import java.util.Collection;
 
 /**
  * @author Rinat Gareev
- * 
  */
 public class ContextGeneratorUtils {
 
-	private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-	public static void addPreviousTags(int index, String[] prevTags, int prevTagsToAdd,
-			Collection<String> targetCol) {
-		if (prevTags == null) {
-			prevTags = EMPTY_STRING_ARRAY;
-		}
-		// sanity check - prev tags must be defined at least till index-1
-		if (index - 1 >= prevTags.length) {
-			throw new IllegalStateException();
-		}
-		for (int pt = 1; pt <= prevTagsToAdd; pt++) {
-			int t = index - pt;
-			if (t < 0) {
-				break;
-			}
-			String val = new StringBuilder("pt").append(pt)
-					.append('=')
-					.append(prevTags[t])
-					.toString();
-			targetCol.add(val);
-		}
-	}
+    public static void addPreviousTags(int index, String[] prevTags, int prevTagsToAdd,
+                                       Collection<String> targetCol) {
+        if (prevTags == null) {
+            prevTags = EMPTY_STRING_ARRAY;
+        }
+        // sanity check - prev tags must be defined at least till index-1
+        if (index - 1 >= prevTags.length) {
+            throw new IllegalStateException();
+        }
+        for (int pt = 1; pt <= prevTagsToAdd; pt++) {
+            int t = index - pt;
+            if (t < 0) {
+                break;
+            }
+            String val = new StringBuilder("pt").append(pt)
+                    .append('=')
+                    .append(prevTags[t])
+                    .toString();
+            targetCol.add(val);
+        }
+    }
 
-	public static String getPreviousTag(int index, String[] prevTags) {
-		if (prevTags == null) {
-			return null;
-		}
-		// sanity check - prev tags must be defined at least till index-1
-		if (index - 1 >= prevTags.length) {
-			throw new IllegalStateException();
-		}
-		int prevTagIndex = index - 1;
-		if (prevTagIndex >= 0) {
-			return prevTags[prevTagIndex];
-		} else {
-			return null;
-		}
-	}
+    public static String getPreviousTag(int index, String[] prevTags) {
+        if (prevTags == null) {
+            return null;
+        }
+        // sanity check - prev tags must be defined at least till index-1
+        if (index - 1 >= prevTags.length) {
+            throw new IllegalStateException();
+        }
+        int prevTagIndex = index - 1;
+        if (prevTagIndex >= 0) {
+            return prevTags[prevTagIndex];
+        } else {
+            return null;
+        }
+    }
 
-	private ContextGeneratorUtils() {
-	}
+    private ContextGeneratorUtils() {
+    }
 }

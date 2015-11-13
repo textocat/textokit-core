@@ -1,17 +1,17 @@
 /**
- * 
+ *
  */
 package com.textocat.textokit.postagger.opennlp;
 
+import com.textocat.textokit.commons.util.CachedResourceTuple;
+import com.textocat.textokit.commons.util.ConfigPropertiesUtils;
+import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
+import com.textocat.textokit.tokenizer.fstype.Token;
 import opennlp.tools.util.BaseToolFactory;
 import opennlp.tools.util.BeamSearchContextGenerator;
 import opennlp.tools.util.InvalidFormatException;
 import opennlp.tools.util.model.ArtifactProvider;
 import opennlp.tools.util.model.ArtifactSerializer;
-import com.textocat.textokit.tokenizer.fstype.Token;
-import com.textocat.textokit.commons.util.CachedResourceTuple;
-import com.textocat.textokit.commons.util.ConfigPropertiesUtils;
-import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +23,7 @@ import static com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory.g
 
 /**
  * Custom implementation of {@link BaseToolFactory} for PoS-tagger.
- * <p>
+ * <p/>
  * Description of the {@link MorphDictionary} injection:
  * <ul>
  * <li>training: passed as a part of contextGenerator, during the serialization
@@ -32,74 +32,73 @@ import static com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory.g
  * that is {@link ArtifactProvider}, it will be injected back to a
  * contextGenerator.
  * </ul>
- * 
+ *
  * @author Rinat Gareev
- * 
  */
 public class POSTaggerFactory extends BaseToolFactory {
 
-	private static final String FEATURE_EXTRACTORS_ENTRY_NAME = "feature.extractors";
+    private static final String FEATURE_EXTRACTORS_ENTRY_NAME = "feature.extractors";
 
-	private FeatureExtractorsBasedContextGenerator contextGenerator;
+    private FeatureExtractorsBasedContextGenerator contextGenerator;
 
-	/**
-	 * This constructor is required for OpenNLP model deserialization
-	 */
-	public POSTaggerFactory() {
-	}
+    /**
+     * This constructor is required for OpenNLP model deserialization
+     */
+    public POSTaggerFactory() {
+    }
 
-	public POSTaggerFactory(FeatureExtractorsBasedContextGenerator contextGenerator) {
-		this.contextGenerator = contextGenerator;
-	}
+    public POSTaggerFactory(FeatureExtractorsBasedContextGenerator contextGenerator) {
+        this.contextGenerator = contextGenerator;
+    }
 
-	@Override
-	protected void init(ArtifactProvider artifactProvider) {
-		super.init(artifactProvider);
-	}
+    @Override
+    protected void init(ArtifactProvider artifactProvider) {
+        super.init(artifactProvider);
+    }
 
-	public BeamSearchContextGenerator<Token> getContextGenerator() {
-		if (contextGenerator == null && artifactProvider != null) {
-			contextGenerator = artifactProvider.getArtifact(FEATURE_EXTRACTORS_ENTRY_NAME);
-		}
-		return contextGenerator;
-	}
+    public BeamSearchContextGenerator<Token> getContextGenerator() {
+        if (contextGenerator == null && artifactProvider != null) {
+            contextGenerator = artifactProvider.getArtifact(FEATURE_EXTRACTORS_ENTRY_NAME);
+        }
+        return contextGenerator;
+    }
 
-	@Override
-	public Map<String, Object> createArtifactMap() {
-		Map<String, Object> artMap = super.createArtifactMap();
-		artMap.put(FEATURE_EXTRACTORS_ENTRY_NAME, contextGenerator);
-		return artMap;
-	}
+    @Override
+    public Map<String, Object> createArtifactMap() {
+        Map<String, Object> artMap = super.createArtifactMap();
+        artMap.put(FEATURE_EXTRACTORS_ENTRY_NAME, contextGenerator);
+        return artMap;
+    }
 
-	@Override
-	public Map<String, String> createManifestEntries() {
-		return super.createManifestEntries();
-	}
+    @Override
+    public Map<String, String> createManifestEntries() {
+        return super.createManifestEntries();
+    }
 
-	@Override
-	public void validateArtifactMap() throws InvalidFormatException {
-		Object featExtractorsEntry = artifactProvider.getArtifact(FEATURE_EXTRACTORS_ENTRY_NAME);
-		if (featExtractorsEntry == null) {
-			throw new InvalidFormatException("No featureExtractors in artifacts map");
-		}
-		if (!(featExtractorsEntry instanceof FeatureExtractorsBasedContextGenerator)) {
-			throw new InvalidFormatException(String.format(
-					"Unknown type of feature extractors aggregate: %s",
-					featExtractorsEntry.getClass()));
-		}
-	}
+    @Override
+    public void validateArtifactMap() throws InvalidFormatException {
+        Object featExtractorsEntry = artifactProvider.getArtifact(FEATURE_EXTRACTORS_ENTRY_NAME);
+        if (featExtractorsEntry == null) {
+            throw new InvalidFormatException("No featureExtractors in artifacts map");
+        }
+        if (!(featExtractorsEntry instanceof FeatureExtractorsBasedContextGenerator)) {
+            throw new InvalidFormatException(String.format(
+                    "Unknown type of feature extractors aggregate: %s",
+                    featExtractorsEntry.getClass()));
+        }
+    }
 
-	@Override
-	@SuppressWarnings("rawtypes")
-	public Map<String, ArtifactSerializer> createArtifactSerializersMap() {
-		Map<String, ArtifactSerializer> artSerMap = super.createArtifactSerializersMap();
-		artSerMap.put("extractors", new FeatureExtractorsSerializer());
-		// artSerMap.put("dict", new MorphologyDictionarySerializer());
-		return artSerMap;
-	}
+    @Override
+    @SuppressWarnings("rawtypes")
+    public Map<String, ArtifactSerializer> createArtifactSerializersMap() {
+        Map<String, ArtifactSerializer> artSerMap = super.createArtifactSerializersMap();
+        artSerMap.put("extractors", new FeatureExtractorsSerializer());
+        // artSerMap.put("dict", new MorphologyDictionarySerializer());
+        return artSerMap;
+    }
 
 	/*
-	static class MorphologyDictionarySerializer implements ArtifactSerializer<MorphDictionary> {
+    static class MorphologyDictionarySerializer implements ArtifactSerializer<MorphDictionary> {
 		@Override
 		public MorphDictionary create(InputStream in) throws IOException, InvalidFormatException {
 			// MUST never be called
@@ -115,48 +114,48 @@ public class POSTaggerFactory extends BaseToolFactory {
 	}
 	*/
 
-	class FeatureExtractorsSerializer implements
-			ArtifactSerializer<FeatureExtractorsBasedContextGenerator> {
+    class FeatureExtractorsSerializer implements
+            ArtifactSerializer<FeatureExtractorsBasedContextGenerator> {
 
-		// A serializer instance is hold in a BaseModel instance,
-		// so this key will have the same life-time as this BaseModel
-		private Object dictCacheKey;
+        // A serializer instance is hold in a BaseModel instance,
+        // so this key will have the same life-time as this BaseModel
+        private Object dictCacheKey;
 
-		@Override
-		public FeatureExtractorsBasedContextGenerator create(InputStream in) throws IOException {
-			if (dictCacheKey != null) {
-				throw new UnsupportedOperationException();
-			}
-			Properties props = new Properties();
-			props.load(in);
-			MorphDictionary dict = null;
-			if (ConfigPropertiesUtils.getStringProperty(props,
-					DefaultFeatureExtractors.PROP_DICTIONARY_VERSION, false) != null) {
-				// load dictionary
-				CachedResourceTuple<MorphDictionary> dictTuple;
-				try {
-					dictTuple = getMorphDictionaryAPI()
-							.getCachedInstance();
-				} catch (Exception e) {
-					throw new IllegalStateException(e);
-				}
-				dict = dictTuple.getResource();
-				dictCacheKey = dictTuple.getCacheKey();
-			}
+        @Override
+        public FeatureExtractorsBasedContextGenerator create(InputStream in) throws IOException {
+            if (dictCacheKey != null) {
+                throw new UnsupportedOperationException();
+            }
+            Properties props = new Properties();
+            props.load(in);
+            MorphDictionary dict = null;
+            if (ConfigPropertiesUtils.getStringProperty(props,
+                    DefaultFeatureExtractors.PROP_DICTIONARY_VERSION, false) != null) {
+                // load dictionary
+                CachedResourceTuple<MorphDictionary> dictTuple;
+                try {
+                    dictTuple = getMorphDictionaryAPI()
+                            .getCachedInstance();
+                } catch (Exception e) {
+                    throw new IllegalStateException(e);
+                }
+                dict = dictTuple.getResource();
+                dictCacheKey = dictTuple.getCacheKey();
+            }
 
-			return DefaultFeatureExtractors.from(props, dict);
-		}
+            return DefaultFeatureExtractors.from(props, dict);
+        }
 
-		@Override
-		public void serialize(FeatureExtractorsBasedContextGenerator artifact, OutputStream out)
-				throws IOException {
-			if (!(artifact instanceof DefaultFeatureExtractors)) {
-				throw new UnsupportedOperationException();
-			}
-			Properties props = new Properties();
-			DefaultFeatureExtractors.to((DefaultFeatureExtractors) artifact, props);
-			props.store(out, "");
-		}
+        @Override
+        public void serialize(FeatureExtractorsBasedContextGenerator artifact, OutputStream out)
+                throws IOException {
+            if (!(artifact instanceof DefaultFeatureExtractors)) {
+                throw new UnsupportedOperationException();
+            }
+            Properties props = new Properties();
+            DefaultFeatureExtractors.to((DefaultFeatureExtractors) artifact, props);
+            props.store(out, "");
+        }
 
-	}
+    }
 }

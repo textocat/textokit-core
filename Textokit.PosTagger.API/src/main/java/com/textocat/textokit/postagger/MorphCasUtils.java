@@ -3,36 +3,36 @@
  */
 package com.textocat.textokit.postagger;
 
-import static com.textocat.textokit.commons.cas.AnnotationUtils.toPrettyString;
-import static com.textocat.textokit.commons.util.DocumentUtils.getDocumentUri;
-
-import java.util.*;
-
-import com.google.common.base.Splitter;
-import com.textocat.textokit.morph.fs.SimplyWord;
-import org.apache.uima.cas.CASException;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.jcas.tcas.Annotation;
-import com.textocat.textokit.morph.fs.Word;
-import com.textocat.textokit.morph.fs.Wordform;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.uima.fit.util.JCasUtil;
-
 import com.google.common.base.Function;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
-import com.textocat.textokit.tokenizer.fstype.Token;
 import com.textocat.textokit.commons.cas.AnnotationUtils;
 import com.textocat.textokit.commons.cas.FSUtils;
 import com.textocat.textokit.commons.util.DocumentUtils;
 import com.textocat.textokit.morph.dictionary.resource.GramModel;
 import com.textocat.textokit.morph.dictionary.resource.MorphDictionaryUtils;
+import com.textocat.textokit.morph.fs.SimplyWord;
+import com.textocat.textokit.morph.fs.Word;
+import com.textocat.textokit.morph.fs.Wordform;
 import com.textocat.textokit.tokenizer.TokenUtils;
+import com.textocat.textokit.tokenizer.fstype.Token;
+import org.apache.uima.cas.CASException;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.BitSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
+import static com.textocat.textokit.commons.cas.AnnotationUtils.toPrettyString;
+import static com.textocat.textokit.commons.util.DocumentUtils.getDocumentUri;
 
 /**
  * @author Rinat Gareev

@@ -1,64 +1,63 @@
 /**
- * 
+ *
  */
 package com.textocat.textokit.morph.ruscorpora;
 
-import java.util.Set;
-
 import com.google.common.collect.Sets;
+
+import java.util.Set;
 
 /**
  * @author Rinat Gareev
- * 
  */
 class RusCorporaWordform extends RusCorporaAnnotation {
 
-	private String lex;
-	private String pos;
-	private Set<String> lexGrammems;
-	private Set<String> wordformGrammems;
+    private String lex;
+    private String pos;
+    private Set<String> lexGrammems;
+    private Set<String> wordformGrammems;
 
-	public RusCorporaWordform(int begin) {
-		super(begin);
-	}
+    public RusCorporaWordform(int begin) {
+        super(begin);
+    }
 
-	public RusCorporaWordform(int begin, int end) {
-		super(begin, end);
-	}
+    public RusCorporaWordform(int begin, int end) {
+        super(begin, end);
+    }
 
-	public String getLex() {
-		return lex;
-	}
+    public String getLex() {
+        return lex;
+    }
 
-	public void setLex(String lex) {
-		this.lex = lex;
-	}
+    public void setLex(String lex) {
+        this.lex = lex;
+    }
 
-	public String getPos() {
-		return pos;
-	}
+    public String getPos() {
+        return pos;
+    }
 
-	public void setPos(String pos) {
-		this.pos = pos;
-	}
+    public void setPos(String pos) {
+        this.pos = pos;
+    }
 
-	public Set<String> getLexGrammems() {
-		return lexGrammems;
-	}
+    public Set<String> getLexGrammems() {
+        return lexGrammems;
+    }
 
-	public void setLexGrammems(Set<String> lexGrammems) {
-		this.lexGrammems = lexGrammems;
-	}
+    public void setLexGrammems(Set<String> lexGrammems) {
+        this.lexGrammems = lexGrammems;
+    }
 
-	public Set<String> getWordformGrammems() {
-		return wordformGrammems;
-	}
+    public Set<String> getWordformGrammems() {
+        return wordformGrammems;
+    }
 
-	public void setWordformGrammems(Set<String> wordformGrammems) {
-		this.wordformGrammems = wordformGrammems;
-	}
+    public void setWordformGrammems(Set<String> wordformGrammems) {
+        this.wordformGrammems = wordformGrammems;
+    }
 
-	public Set<String> getAllGrammems() {
-		return Sets.union(lexGrammems, wordformGrammems);
-	}
+    public Set<String> getAllGrammems() {
+        return Sets.union(lexGrammems, wordformGrammems);
+    }
 }

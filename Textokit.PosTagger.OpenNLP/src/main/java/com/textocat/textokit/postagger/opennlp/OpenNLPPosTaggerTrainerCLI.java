@@ -5,9 +5,17 @@ package com.textocat.textokit.postagger.opennlp;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.textocat.textokit.commons.cpe.AnnotationIteratorOverCollection;
+import com.textocat.textokit.commons.cpe.XmiCollectionReader;
+import com.textocat.textokit.commons.util.Slf4jLoggerImpl;
+import com.textocat.textokit.morph.commons.GramModelBasedTagMapper;
 import com.textocat.textokit.morph.commons.TagAssembler;
+import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
 import com.textocat.textokit.postagger.PosTaggerAPI;
 import com.textocat.textokit.postagger.PosTrimmingAnnotator;
+import com.textocat.textokit.segmentation.SentenceSplitterAPI;
+import com.textocat.textokit.segmentation.fstype.Sentence;
+import com.textocat.textokit.tokenizer.TokenizerAPI;
 import opennlp.tools.util.TrainingParameters;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -16,14 +24,6 @@ import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.resource.ExternalResourceDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import com.textocat.textokit.segmentation.fstype.Sentence;
-import com.textocat.textokit.commons.cpe.AnnotationIteratorOverCollection;
-import com.textocat.textokit.commons.cpe.XmiCollectionReader;
-import com.textocat.textokit.commons.util.Slf4jLoggerImpl;
-import com.textocat.textokit.morph.commons.GramModelBasedTagMapper;
-import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
-import com.textocat.textokit.segmentation.SentenceSplitterAPI;
-import com.textocat.textokit.tokenizer.TokenizerAPI;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,10 +31,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import static com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory.getMorphDictionaryAPI;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.apache.uima.fit.factory.ExternalResourceFactory.bindExternalResource;
 import static org.apache.uima.fit.factory.TypeSystemDescriptionFactory.createTypeSystemDescription;
-import static com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory.getMorphDictionaryAPI;
 
 /**
  * @author Rinat Gareev

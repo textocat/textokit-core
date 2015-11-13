@@ -3,6 +3,14 @@
  */
 package com.textocat.textokit.postagger.opennlp;
 
+import com.textocat.textokit.commons.cas.FSUtils;
+import com.textocat.textokit.morph.fs.Word;
+import com.textocat.textokit.morph.fs.Wordform;
+import com.textocat.textokit.postagger.PosTaggerAPI;
+import com.textocat.textokit.segmentation.fstype.Sentence;
+import com.textocat.textokit.tokenizer.fstype.NUM;
+import com.textocat.textokit.tokenizer.fstype.Token;
+import com.textocat.textokit.tokenizer.fstype.W;
 import opennlp.model.AbstractModel;
 import opennlp.tools.util.BeamSearch;
 import opennlp.tools.util.BeamSearchContextGenerator;
@@ -20,14 +28,6 @@ import org.apache.uima.fit.factory.initializable.InitializableFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import com.textocat.textokit.morph.fs.Word;
-import com.textocat.textokit.morph.fs.Wordform;
-import com.textocat.textokit.segmentation.fstype.Sentence;
-import com.textocat.textokit.tokenizer.fstype.NUM;
-import com.textocat.textokit.tokenizer.fstype.Token;
-import com.textocat.textokit.tokenizer.fstype.W;
-import com.textocat.textokit.commons.cas.FSUtils;
-import com.textocat.textokit.postagger.PosTaggerAPI;
 
 import java.util.Collection;
 import java.util.Iterator;
