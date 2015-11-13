@@ -1,7 +1,6 @@
 package com.textocat.textokit.morph.opencorpora.resource;
 
 import com.google.common.collect.AbstractIterator;
-
 import com.textocat.textokit.morph.model.Wordform;
 
 import java.io.Serializable;
@@ -11,9 +10,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class WordformTST implements Serializable {
-	private static final long serialVersionUID = 6643426248422366315L;
-	
-	private Node rootNode;
+    private static final long serialVersionUID = 6643426248422366315L;
+
+    private Node rootNode;
 
     private static int compareChars(char first, char second) {
         return first - second;
@@ -91,25 +90,26 @@ public class WordformTST implements Serializable {
             return null;
         // if match exact return iterator over wordforms in just result node
         int matchLength = nodeLongestPrefixMatchResult.getMatchLength();
-		if (matchLength == key.length() &&
-                    nodeLongestPrefixMatchResult.getResultNode().iterator().hasNext())
+        if (matchLength == key.length() &&
+                nodeLongestPrefixMatchResult.getResultNode().iterator().hasNext())
             return new WordformTSTSearchResult(true, nodeLongestPrefixMatchResult.getResultNode());
-        // otherwise, iterate over wordforms in subtree with root in result node
+            // otherwise, iterate over wordforms in subtree with root in result node
         else {
             return new WordformTSTSearchResult(false, nodeLongestPrefixMatchResult.getResultNode());
         }
     }
 
     public static class Node implements Serializable, Iterable<Wordform> {
-		private static final long serialVersionUID = 4788009136446395268L;
+        private static final long serialVersionUID = 4788009136446395268L;
 
-		private char splitchar;
+        private char splitchar;
 
         private Wordform[] data;
 
         private Node LoKid;
         private Node EqKid;
         private Node HiKid;
+
         private Node(char splitchar) {
             this.splitchar = splitchar;
         }
@@ -143,7 +143,7 @@ public class WordformTST implements Serializable {
                 @Override
                 public void remove() {
                     Wordform[] n = new Wordform[data.length - 1];
-                    System.arraycopy(data, 0, n, 0, i );
+                    System.arraycopy(data, 0, n, 0, i);
                     System.arraycopy(data, i + 1, n, i, data.length - i - 1);
                     data = n;
                 }

@@ -2,7 +2,6 @@ package com.textocat.textokit.morph.opencorpora.resource;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
 import com.textocat.textokit.morph.model.Lemma;
 import com.textocat.textokit.morph.model.Wordform;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class DummyWordformPredictor implements WordformPredictor{
+public class DummyWordformPredictor implements WordformPredictor {
     private MorphDictionary dict;
     private int pseudoLemmaIdCounter = -1;
     private Map<Lemma, Lemma> uniqPseudoLemmaMap = Maps.newHashMap();

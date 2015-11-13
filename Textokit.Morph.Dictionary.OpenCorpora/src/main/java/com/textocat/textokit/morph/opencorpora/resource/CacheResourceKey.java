@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.textocat.textokit.morph.opencorpora.resource;
 
@@ -9,16 +9,15 @@ import java.net.URL;
 
 /**
  * @author Rinat Gareev
- * 
  */
 class CacheResourceKey implements CacheKey {
-	private URL url;
+    private URL url;
 
-	public CacheResourceKey(URL url) {
-		this.url = url;
-	}
+    public CacheResourceKey(URL url) {
+        this.url = url;
+    }
 
-	public URL getUrl() {
-		return url;
-	}
+    public URL getUrl() {
+        return url;
+    }
 }
