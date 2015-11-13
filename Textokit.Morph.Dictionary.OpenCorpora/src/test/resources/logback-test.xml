@@ -7,8 +7,7 @@
 	<logger name="org" level="INFO" />
 	<logger name="org.apache" level="INFO" />
 	<logger name="com" level="INFO" />
-	<logger name="ru.ksu" level="TRACE" />
-	<logger name="ru.kfu" level="TRACE" />
+	<logger name="com.textocat" level="TRACE" />
 	<logger name="net" level="INFO" />
 	<logger name="java" level="INFO" />
 	<logger name="javax" level="INFO" />
