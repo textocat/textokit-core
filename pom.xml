@@ -20,5 +20,7 @@
         <module>Textokit.Tokenizer.Simple</module>
         <module>Textokit.SentenceSplitter.API</module>
         <module>Textokit.SentenceSplitter.Heuristic</module>
+        <module>Textokit.Morph.Dictionary.API</module>
+        <module>Textokit.Morph.Dictionary.OpenCorpora</module>
     </modules>
 </project>

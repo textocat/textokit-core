@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
-    <name>UIMA.Ext.Tokenizer type system</name>
+    <name>Textokit Tokenizer Type System</name>
     <description/>
     <version>1.1</version>
-    <vendor>Kazan Federal University - Intelligent Search Systems and Semantic Technologies Lab</vendor>
+    <vendor>Textocat</vendor>
     <imports>
         <import name="com.textocat.textokit.tokenizer.tokenizer-TypeSystem"/>
     </imports>

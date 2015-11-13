@@ -148,6 +148,16 @@
                 <artifactId>textokit-sentence-splitter-heuristic</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-morph-dictionary-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-morph-dictionary-opencorpora</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- third-party -->
             <dependency>
                 <groupId>org.cleartk</groupId>
