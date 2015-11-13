@@ -87,4 +87,47 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>make-jcas</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.uima</groupId>
+					<artifactId>uimaj-tools</artifactId>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>generate-jcas-sources</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<executable>java</executable>
+									<classpathScope>test</classpathScope>
+									<arguments>
+										<argument>-classpath</argument>
+										<classpath />
+										<argument>org.apache.uima.tools.jcasgen.Jg</argument>
+										<argument>-jcasgeninput</argument>
+										<argument>src/main/resources/com/textocat/textokit/morph/util/ts-util.xml</argument>
+										<argument>-jcasgenoutput</argument>
+										<argument>src/main/jcas</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

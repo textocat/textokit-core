@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+	<name>Textokit Morphology Type System</name>
+	<description />
+	<version>1.1</version>
+	<vendor>Textocat and CLLKazan</vendor>
+	<imports>
+		<import name="com.textocat.textokit.tokenizer.tokenizer-TypeSystem"/>
+	</imports>
+	<types>
+		<typeDescription>
+			<name>com.textocat.textokit.morph.fs.Wordform</name>
+			<description />
+			<supertypeName>uima.cas.TOP</supertypeName>
+			<features>
+				<featureDescription>
+					<name>pos</name>
+					<description />
+					<rangeTypeName>uima.cas.String</rangeTypeName>
+				</featureDescription>
+				<featureDescription>
+					<name>posBits</name>
+					<description />
+					<rangeTypeName>uima.cas.LongArray</rangeTypeName>
+				</featureDescription>
+				<featureDescription>
+					<name>lemma</name>
+					<description />
+					<rangeTypeName>uima.cas.String</rangeTypeName>
+				</featureDescription>
+				<featureDescription>
+					<name>lemmaId</name>
+					<description />
+					<rangeTypeName>uima.cas.Integer</rangeTypeName>
+				</featureDescription>
+				<featureDescription>
+					<name>grammems</name>
+					<description />
+					<rangeTypeName>uima.cas.StringArray</rangeTypeName>
+                    <multipleReferencesAllowed>true</multipleReferencesAllowed>
+				</featureDescription>
+				<featureDescription>
+					<name>word</name>
+					<description>Reference to hosting word</description>
+					<rangeTypeName>com.textocat.textokit.morph.fs.Word</rangeTypeName>
+				</featureDescription>
+			</features>
+		</typeDescription>
+		<typeDescription>
+			<name>com.textocat.textokit.morph.fs.Word</name>
+			<description />
+			<supertypeName>uima.tcas.Annotation</supertypeName>
+			<features>
+				<featureDescription>
+					<name>wordforms</name>
+					<description />
+					<rangeTypeName>uima.cas.FSArray</rangeTypeName>
+					<elementType>com.textocat.textokit.morph.fs.Wordform</elementType>
+				</featureDescription>
+				<featureDescription>
+					<name>token</name>
+					<description />
+					<rangeTypeName>com.textocat.textokit.tokenizer.fstype.Token</rangeTypeName>
+				</featureDescription>
+			</features>
+		</typeDescription>
+        <typeDescription>
+            <name>com.textocat.textokit.morph.fs.SimplyWord</name>
+            <description />
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+            <features>
+                <featureDescription>
+                    <name>posTag</name>
+                    <description />
+                    <rangeTypeName>uima.cas.String</rangeTypeName>
+                </featureDescription>
+                <featureDescription>
+                    <name>grammems</name>
+                    <description />
+                    <rangeTypeName>uima.cas.StringArray</rangeTypeName>
+                    <multipleReferencesAllowed>true</multipleReferencesAllowed>
+                </featureDescription>
+                <featureDescription>
+                    <name>lemma</name>
+                    <description />
+                    <rangeTypeName>uima.cas.String</rangeTypeName>
+                </featureDescription>
+                <featureDescription>
+                    <name>lemmaId</name>
+                    <description />
+                    <rangeTypeName>uima.cas.Integer</rangeTypeName>
+                </featureDescription>
+                <featureDescription>
+                    <name>token</name>
+                    <description />
+                    <rangeTypeName>com.textocat.textokit.tokenizer.fstype.Token</rangeTypeName>
+                </featureDescription>
+            </features>
+        </typeDescription>
+	</types>
+</typeSystemDescription>
