@@ -158,6 +158,11 @@
                 <artifactId>textokit-morph-dictionary-opencorpora</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-postagger-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- third-party -->
             <dependency>
                 <groupId>org.cleartk</groupId>

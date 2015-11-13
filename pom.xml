@@ -22,5 +22,8 @@
         <module>Textokit.SentenceSplitter.Heuristic</module>
         <module>Textokit.Morph.Dictionary.API</module>
         <module>Textokit.Morph.Dictionary.OpenCorpora</module>
+        <module>Textokit.PosTagger.API</module>
+        <module>Textokit.PosTagger.OpenNLP</module>
+        <module>Textokit.PosTagger.Util.RNC</module>
     </modules>
 </project>
