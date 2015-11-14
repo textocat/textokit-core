@@ -63,7 +63,7 @@ public class PosTaggerAPI {
      * A name of type-system description that define types produced by
      * pos-tagger implementations.
      */
-    public static final String TYPESYSTEM_POSTAGGER = "org.opencorpora.morphology-ts";
+    public static final String TYPESYSTEM_POSTAGGER = "com.textocat.textokit.morph.morphology-ts";
 
     /**
      * A name of analysis engine description that can be imported. An
