@@ -44,7 +44,7 @@ public class ManifestUtils {
                 try (InputStream is = url.openStream()) {
                     Manifest manifest = new Manifest(is);
                     Attributes mainAttribs = manifest.getMainAttributes();
-                    if (mainAttribs.containsKey(key)) {
+                    if (mainAttribs.getValue(key) != null) {
                         resultList.add(manifest);
                     }
                 }

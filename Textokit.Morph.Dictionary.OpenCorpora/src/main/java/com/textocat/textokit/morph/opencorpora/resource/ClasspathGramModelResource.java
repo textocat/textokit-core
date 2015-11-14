@@ -18,50 +18,31 @@ package com.textocat.textokit.morph.opencorpora.resource;
 
 import com.textocat.textokit.morph.dictionary.resource.GramModel;
 import com.textocat.textokit.morph.dictionary.resource.GramModelHolder;
-import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
-import com.textocat.textokit.morph.dictionary.resource.MorphDictionaryHolder;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
-import java.io.InputStream;
 import java.util.Map;
 
 /**
  * @author Rinat Gareev
  */
-public class ClasspathMorphDictionaryResource extends ClasspathResourceBase
-        implements MorphDictionaryHolder, GramModelHolder {
-
-    // state fields
-    @SuppressWarnings({"FieldCanBeLocal", "unused"})
-    private CacheResourceKey cacheKey;
-    private MorphDictionary dict;
+public class ClasspathGramModelResource extends ClasspathResourceBase implements GramModelHolder {
+    private GramModel gm;
 
     @Override
-    public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)
-            throws ResourceInitializationException {
+    public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams) throws ResourceInitializationException {
         if (!super.initialize(aSpecifier, aAdditionalParams))
             return false;
         try {
-            try (InputStream resourceIS = resource.getInputStream()) {
-                CachedDictionaryDeserializer.GetDictionaryResult getDictResult =
-                        CachedDictionaryDeserializer.getInstance().getDictionary(resource.getURL(), resourceIS);
-                this.cacheKey = getDictResult.cacheKey;
-                this.dict = getDictResult.dictionary;
-            }
+            gm = GramModelDeserializer.from(resource.getInputStream(), resource.getURL().toString());
         } catch (Exception e) {
             throw new ResourceInitializationException(e);
         }
-        return true;
-    }
-
-    @Override
-    public MorphDictionary getDictionary() {
-        return dict;
+        return false;
     }
 
     @Override
     public GramModel getGramModel() {
-        return dict.getGramModel();
+        return gm;
     }
 }

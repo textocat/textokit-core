@@ -16,13 +16,13 @@
 
 package com.textocat.textokit.morph.commons;
 
-import org.junit.BeforeClass;
+import com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory;
+import com.textocat.textokit.morph.dictionary.resource.GramModel;
 import org.junit.Test;
 
 import java.util.BitSet;
 
 import static com.textocat.textokit.morph.commons.GramModelBasedTagMapper.parseTag;
-import static com.textocat.textokit.morph.commons.GramModelLoader4Tests.gm;
 import static com.textocat.textokit.morph.dictionary.resource.MorphDictionaryUtils.toGramBits;
 import static org.junit.Assert.assertEquals;
 
@@ -31,9 +31,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class AgreementPredicateTest {
 
-    @BeforeClass
-    public static void loadGramModel() throws Exception {
-        GramModelLoader4Tests.init();
+    private GramModel gm;
+
+    public AgreementPredicateTest() throws Exception {
+        gm = MorphDictionaryAPIFactory.getMorphDictionaryAPI().getGramModel();
     }
 
     @Test

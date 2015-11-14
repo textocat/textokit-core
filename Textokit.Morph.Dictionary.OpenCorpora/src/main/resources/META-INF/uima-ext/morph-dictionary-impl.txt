@@ -1,1 +1,1 @@
-OpencorporaMorphDictionaryAPI
+com.textocat.textokit.morph.opencorpora.OpencorporaMorphDictionaryAPI

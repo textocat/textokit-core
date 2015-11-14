@@ -17,28 +17,26 @@
 package com.textocat.textokit.morph.opencorpora;
 
 import com.textocat.textokit.commons.util.CachedResourceTuple;
+import com.textocat.textokit.commons.util.ManifestUtils;
 import com.textocat.textokit.morph.dictionary.MorphDictionaryAPI;
 import com.textocat.textokit.morph.dictionary.resource.GramModel;
 import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
 import com.textocat.textokit.morph.opencorpora.resource.CachedDictionaryDeserializer;
+import com.textocat.textokit.morph.opencorpora.resource.ClasspathGramModelResource;
 import com.textocat.textokit.morph.opencorpora.resource.ClasspathMorphDictionaryResource;
 import com.textocat.textokit.morph.opencorpora.resource.GramModelDeserializer;
-import com.textocat.textokit.morph.opencorpora.resource.GramModelResource;
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.fit.factory.ExternalResourceFactory;
 import org.apache.uima.resource.ExternalResourceDescription;
+import org.springframework.core.io.ClassPathResource;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.List;
+import java.util.jar.Manifest;
 
 /**
  * @author Rinat Gareev
  */
 public class OpencorporaMorphDictionaryAPI implements MorphDictionaryAPI {
-tatu
-    public static final String DEFAULT_SERIALIZED_DICT_RELATIVE_PATH = "dict.opcorpora.ser";
-    public static final String DEFAULT_SERIALIZED_DICT_RELATIVE_URL =
-            "file:" + DEFAULT_SERIALIZED_DICT_RELATIVE_PATH;
+
     // ME ~ Manifest Entry
     public static final String ME_OPENCORPORA_DICTIONARY_VERSION = "Opencorpora-Dictionary-Version";
     public static final String ME_OPENCORPORA_DICTIONARY_REVISION = "Opencorpora-Dictionary-Revision";
@@ -57,38 +55,38 @@ tatu
 
     @Override
     public ExternalResourceDescription getGramModelDescription() {
-        return ExternalResourceFactory.createExternalResourceDescription(
-                GramModelResource.class,
-                DEFAULT_SERIALIZED_DICT_RELATIVE_URL);
+        return ExternalResourceFactory.createExternalResourceDescription(ClasspathGramModelResource.class);
     }
 
     @Override
     public CachedResourceTuple<MorphDictionary> getCachedInstance() throws Exception {
-        URL serDictUrl = getSerializedDictionaryURL();
+        ClassPathResource cpRes = locateDictionaryClasspathResource();
         CachedDictionaryDeserializer.GetDictionaryResult gdr = CachedDictionaryDeserializer.getInstance().getDictionary(
-                serDictUrl, serDictUrl.openStream());
-        return new CachedResourceTuple<MorphDictionary>(gdr.cacheKey, gdr.dictionary);
+                cpRes.getURL(), cpRes.getInputStream());
+        return new CachedResourceTuple<>(gdr.cacheKey, gdr.dictionary);
     }
 
     @Override
     public GramModel getGramModel() throws Exception {
-        URL serDictUrl = getSerializedDictionaryURL();
-        return GramModelDeserializer.from(serDictUrl.openStream(), serDictUrl.toString());
+        ClassPathResource cpRes = locateDictionaryClasspathResource();
+        return GramModelDeserializer.from(cpRes.getInputStream(), cpRes.getURL().toString());
     }
 
-    private URL getSerializedDictionaryURL() {
-        URL serDictUrl;
-        try {
-            serDictUrl = UIMAFramework.newDefaultResourceManager()
-                    .resolveRelativePath(DEFAULT_SERIALIZED_DICT_RELATIVE_PATH);
-        } catch (MalformedURLException e) {
-            // should never happen as the URL is hard-coded here
-            throw new IllegalStateException(e);
-        }
-        if (serDictUrl == null) {
-            throw new IllegalStateException(String.format("Can't find %s in UIMA datapath",
-                    DEFAULT_SERIALIZED_DICT_RELATIVE_PATH));
-        }
-        return serDictUrl;
+    private static ClassPathResource locateDictionaryClasspathResource() {
+        return new ClassPathResource(locateDictionaryClassPath());
+    }
+
+    public static String locateDictionaryClassPath() {
+        List<Manifest> jarManifests = ManifestUtils.searchByAttributeKey(ME_OPENCORPORA_DICTIONARY_VERSION);
+        if (jarManifests.isEmpty())
+            throw new IllegalStateException("Can't find an OpenCorpora dictionary in classpath");
+        if (jarManifests.size() > 1)
+            throw new UnsupportedOperationException("Found several OpenCorpora dictionaries in classpath");
+        Manifest ocJarManifest = jarManifests.get(0);
+        String version = ocJarManifest.getMainAttributes().getValue(ME_OPENCORPORA_DICTIONARY_VERSION);
+        String revision = ocJarManifest.getMainAttributes().getValue(ME_OPENCORPORA_DICTIONARY_REVISION);
+        String variant = ocJarManifest.getMainAttributes().getValue(ME_OPENCORPORA_DICTIONARY_VARIANT);
+        return String.format(OpencorporaMorphDictionaryAPI.FILENAME_PATTERN_OPENCORPORA_SERIALIZED_DICT,
+                version, revision, variant);
     }
 }

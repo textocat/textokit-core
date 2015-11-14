@@ -17,7 +17,6 @@
 package com.textocat.textokit.postagger.opennlp;
 
 import com.google.common.collect.ImmutableList;
-import com.textocat.textokit.morph.commons.DictionaryLoader4Tests;
 import com.textocat.textokit.postagger.PosTaggerAPI;
 import com.textocat.textokit.tokenizer.TokenizerAPI;
 import com.textocat.textokit.tokenizer.fstype.CW;
