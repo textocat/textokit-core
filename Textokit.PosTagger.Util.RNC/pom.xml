@@ -64,6 +64,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>com.textocat.textokit.core</groupId>
+            <artifactId>textokit-dictionary-opencorpora-resource</artifactId>
+            <classifier>rnc</classifier>
+        </dependency>
+        <dependency>
             <groupId>org.apache.uima</groupId>
             <artifactId>uimaj-core</artifactId>
         </dependency>

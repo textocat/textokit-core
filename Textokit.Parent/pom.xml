@@ -170,6 +170,12 @@
                 <classifier>original</classifier>
                 <version>0.1-20131209-1</version>
             </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-dictionary-opencorpora-resource</artifactId>
+                <classifier>rnc</classifier>
+                <version>0.1-20140407-1</version>
+            </dependency>
             <!-- third-party -->
             <dependency>
                 <groupId>org.cleartk</groupId>
