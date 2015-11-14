@@ -41,7 +41,7 @@ import static com.google.common.collect.Tables.unmodifiableTable;
  */
 public class MorphDictionaryImpl implements Serializable, MorphDictionary {
 
-    private static final long serialVersionUID = -5575575933753079145L;
+    private static final long serialVersionUID = -5575575933753079146L;
     private static final Logger log = LoggerFactory.getLogger(MorphDictionaryImpl.class);
 
     // meta fields
