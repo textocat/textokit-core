@@ -17,6 +17,8 @@
 package com.textocat.textokit.postagger.opennlp;
 
 import com.google.common.collect.ImmutableList;
+import com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory;
+import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
 import com.textocat.textokit.postagger.PosTaggerAPI;
 import com.textocat.textokit.tokenizer.TokenizerAPI;
 import com.textocat.textokit.tokenizer.fstype.CW;
@@ -36,7 +38,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static com.textocat.textokit.morph.commons.DictionaryLoader4Tests.dict;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -46,9 +47,11 @@ import static org.junit.Assert.assertThat;
  */
 public class DictionaryBasedContextGeneratorTest {
 
+    private static MorphDictionary dict;
+
     @BeforeClass
-    public static void loadDictionary() {
-        DictionaryLoader4Tests.init();
+    public static void loadDictionary() throws Exception {
+        dict = MorphDictionaryAPIFactory.getMorphDictionaryAPI().getCachedInstance().getResource();
     }
 
     final DictionaryBasedContextGenerator gen;
