@@ -131,8 +131,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.uima</groupId>
-            <artifactId>uimaj-tools</artifactId>
+            <groupId>com.textocat.textokit.core</groupId>
+            <artifactId>textokit-dictionary-opencorpora-resource</artifactId>
+            <classifier>original</classifier>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -140,6 +141,13 @@
     <profiles>
         <profile>
             <id>make-jcas</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.uima</groupId>
+                    <artifactId>uimaj-tools</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>

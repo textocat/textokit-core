@@ -20,6 +20,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.textocat.textokit.commons.cli.ClassConverter;
 import com.textocat.textokit.commons.cli.FileValueValidator;
+import com.textocat.textokit.morph.opencorpora.OpencorporaMorphDictionaryAPI;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -70,10 +71,10 @@ public class XmlDictionaryPSP {
                 8192 * 8);
         Manifest manifest = new Manifest();
         manifest.getMainAttributes().putValue(Attributes.Name.MANIFEST_VERSION.toString(), "1.0");
-        manifest.getMainAttributes().putValue("Opencorpora-Dictionary-Version", dict.getVersion());
-        manifest.getMainAttributes().putValue("Opencorpora-Dictionary-Revision", dict.getRevision());
-        manifest.getMainAttributes().putValue("Opencorpora-Dictionary-Variant", cfg.variant);
-        String dictEntryName = String.format("opencorpora-%s-%s-%s.dict.ser",
+        manifest.getMainAttributes().putValue(OpencorporaMorphDictionaryAPI.ME_OPENCORPORA_DICTIONARY_VERSION, dict.getVersion());
+        manifest.getMainAttributes().putValue(OpencorporaMorphDictionaryAPI.ME_OPENCORPORA_DICTIONARY_REVISION, dict.getRevision());
+        manifest.getMainAttributes().putValue(OpencorporaMorphDictionaryAPI.ME_OPENCORPORA_DICTIONARY_VARIANT, cfg.variant);
+        String dictEntryName = String.format(OpencorporaMorphDictionaryAPI.FILENAME_PATTERN_OPENCORPORA_SERIALIZED_DICT,
                 dict.getVersion(), dict.getRevision(), cfg.variant);
         JarOutputStream jarOut = new JarOutputStream(fout, manifest);
         jarOut.putNextEntry(new ZipEntry(dictEntryName));

@@ -20,7 +20,10 @@ import com.textocat.textokit.commons.util.CachedResourceTuple;
 import com.textocat.textokit.morph.dictionary.MorphDictionaryAPI;
 import com.textocat.textokit.morph.dictionary.resource.GramModel;
 import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
-import com.textocat.textokit.morph.opencorpora.resource.*;
+import com.textocat.textokit.morph.opencorpora.resource.CachedDictionaryDeserializer;
+import com.textocat.textokit.morph.opencorpora.resource.ClasspathMorphDictionaryResource;
+import com.textocat.textokit.morph.opencorpora.resource.GramModelDeserializer;
+import com.textocat.textokit.morph.opencorpora.resource.GramModelResource;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.fit.factory.ExternalResourceFactory;
 import org.apache.uima.resource.ExternalResourceDescription;
@@ -32,25 +35,24 @@ import java.net.URL;
  * @author Rinat Gareev
  */
 public class OpencorporaMorphDictionaryAPI implements MorphDictionaryAPI {
-
+tatu
     public static final String DEFAULT_SERIALIZED_DICT_RELATIVE_PATH = "dict.opcorpora.ser";
     public static final String DEFAULT_SERIALIZED_DICT_RELATIVE_URL =
             "file:" + DEFAULT_SERIALIZED_DICT_RELATIVE_PATH;
+    // ME ~ Manifest Entry
+    public static final String ME_OPENCORPORA_DICTIONARY_VERSION = "Opencorpora-Dictionary-Version";
+    public static final String ME_OPENCORPORA_DICTIONARY_REVISION = "Opencorpora-Dictionary-Revision";
+    public static final String ME_OPENCORPORA_DICTIONARY_VARIANT = "Opencorpora-Dictionary-Variant";
+    public static final String FILENAME_PATTERN_OPENCORPORA_SERIALIZED_DICT = "opencorpora-%s-%s-%s.dict.ser";
 
     @Override
     public ExternalResourceDescription getResourceDescriptionForCachedInstance() {
-        return ExternalResourceFactory.createExternalResourceDescription(
-                CachedSerializedDictionaryResource.class,
-                DEFAULT_SERIALIZED_DICT_RELATIVE_URL);
+        return ExternalResourceFactory.createExternalResourceDescription(ClasspathMorphDictionaryResource.class);
     }
 
     @Override
     public ExternalResourceDescription getResourceDescriptionWithPredictorEnabled() {
-        return ExternalResourceFactory.createExternalResourceDescription(
-                ConfigurableSerializedDictionaryResource.class,
-                DEFAULT_SERIALIZED_DICT_RELATIVE_URL,
-                ConfigurableSerializedDictionaryResource.PARAM_PREDICTOR_CLASS_NAME,
-                DummyWordformPredictor.class.getName());
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
