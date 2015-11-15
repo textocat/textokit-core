@@ -24,7 +24,7 @@ import com.textocat.textokit.segmentation.fstype.Sentence;
 import com.textocat.textokit.tokenizer.fstype.NUM;
 import com.textocat.textokit.tokenizer.fstype.Token;
 import com.textocat.textokit.tokenizer.fstype.W;
-import opennlp.model.AbstractModel;
+import opennlp.tools.ml.model.MaxentModel;
 import opennlp.tools.util.BeamSearch;
 import opennlp.tools.util.BeamSearchContextGenerator;
 import opennlp.tools.util.Sequence;
@@ -109,9 +109,9 @@ public class OpenNLPPosTagger extends JCasAnnotator_ImplBase {
         }
         //
         POSTaggerFactory factory = modelAggregate.getFactory();
-        AbstractModel posModel = modelAggregate.getPosModel();
+        MaxentModel posModel = modelAggregate.getPosModel();
         BeamSearchContextGenerator<Token> contextGen = factory.getContextGenerator();
-        beam = new BeamSearch<Token>(beamSize, contextGen, posModel, sequenceValidator, 0);
+        beam = new BeamSearch<>(beamSize, contextGen, posModel, sequenceValidator, 0);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class OpenNLPPosTagger extends JCasAnnotator_ImplBase {
         }
         List<String> out = bestOutSeq.getOutcomes();
         if (out.size() != tokens.size()) {
-            throw new IllegalStateException(String.format("InputSeq.size != OutputSeq.size"));
+            throw new IllegalStateException("InputSeq.size != OutputSeq.size");
         }
         Iterator<Token> tokenIter = tokens.iterator();
         Iterator<String> outIter = out.iterator();

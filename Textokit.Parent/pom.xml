@@ -163,6 +163,11 @@
                 <artifactId>textokit-postagger-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-pos-tagger-opennlp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- component resources (dictionaries, models, etc.) -->
             <dependency>
                 <groupId>com.textocat.textokit.core</groupId>
@@ -380,6 +385,19 @@
                 <dependency>
                     <groupId>ch.qos.logback</groupId>
                     <artifactId>logback-classic</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>with-opencorpora-impl</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.textocat.textokit.core</groupId>
+                    <artifactId>textokit-dictionary-opencorpora-resource</artifactId>
+                    <classifier>rnc</classifier>
                 </dependency>
             </dependencies>
         </profile>

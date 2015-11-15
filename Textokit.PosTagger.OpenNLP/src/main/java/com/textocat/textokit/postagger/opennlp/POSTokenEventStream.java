@@ -24,7 +24,7 @@ import com.textocat.textokit.postagger.MorphCasUtils;
 import com.textocat.textokit.tokenizer.fstype.NUM;
 import com.textocat.textokit.tokenizer.fstype.Token;
 import com.textocat.textokit.tokenizer.fstype.W;
-import opennlp.model.Event;
+import opennlp.tools.ml.model.Event;
 import opennlp.tools.util.AbstractEventStream;
 import opennlp.tools.util.BeamSearchContextGenerator;
 import opennlp.tools.util.ObjectStream;
@@ -68,7 +68,7 @@ public class POSTokenEventStream<ST extends Annotation> extends AbstractEventStr
         } catch (CASException e) {
             throw new IllegalStateException(e);
         }
-        List<Token> tokens = new ArrayList<Token>(JCasUtil.selectCovered(
+        List<Token> tokens = new ArrayList<>(JCasUtil.selectCovered(
                 jCas, Token.class, spanAnno));
         Map<Token, Word> token2WordIndex = MorphCasUtils.getToken2WordIndex(jCas, spanAnno);
         List<String> tags = Lists.newArrayListWithExpectedSize(tokens.size());

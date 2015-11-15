@@ -16,7 +16,7 @@
 
 package com.textocat.textokit.postagger.opennlp;
 
-import opennlp.model.AbstractModel;
+import opennlp.tools.ml.model.MaxentModel;
 import opennlp.tools.util.BaseToolFactory;
 import opennlp.tools.util.InvalidFormatException;
 import opennlp.tools.util.model.BaseModel;
@@ -30,12 +30,11 @@ import java.util.Map;
  */
 public class POSModel extends BaseModel {
 
-    private static final String COMPONENT_NAME = "UIMA.Ext.PoSTagger.ME";
+    private static final String COMPONENT_NAME = "Textokit.PoSTagger.ME";
 
     public static final String POS_MODEL_ENTRY_NAME = "pos.model";
-    public static final String MORPH_DICT_ENTRY_NAME = "morph.dict";
 
-    public POSModel(String languageCode, AbstractModel posModel,
+    public POSModel(String languageCode, MaxentModel posModel,
                     Map<String, String> manifestInfoEntries, POSTaggerFactory posFactory) {
 
         super(COMPONENT_NAME, languageCode, manifestInfoEntries, posFactory);
@@ -61,13 +60,13 @@ public class POSModel extends BaseModel {
     protected void validateArtifactMap() throws InvalidFormatException {
         super.validateArtifactMap();
 
-        if (!(artifactMap.get(POS_MODEL_ENTRY_NAME) instanceof AbstractModel)) {
+        if (!(artifactMap.get(POS_MODEL_ENTRY_NAME) instanceof MaxentModel)) {
             throw new InvalidFormatException("POS model is incomplete!");
         }
     }
 
-    public AbstractModel getPosModel() {
-        return (AbstractModel) artifactMap.get(POS_MODEL_ENTRY_NAME);
+    public MaxentModel getPosModel() {
+        return (MaxentModel) artifactMap.get(POS_MODEL_ENTRY_NAME);
     }
 
     public POSTaggerFactory getFactory() {

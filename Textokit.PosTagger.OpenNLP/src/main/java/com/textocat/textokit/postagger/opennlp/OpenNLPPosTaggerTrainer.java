@@ -18,10 +18,11 @@ package com.textocat.textokit.postagger.opennlp;
 
 import com.textocat.textokit.segmentation.fstype.Sentence;
 import com.textocat.textokit.tokenizer.fstype.Token;
-import opennlp.model.AbstractModel;
-import opennlp.model.EventStream;
-import opennlp.model.TrainUtil;
 import opennlp.tools.cmdline.CmdLineUtil;
+import opennlp.tools.ml.EventTrainer;
+import opennlp.tools.ml.TrainerFactory;
+import opennlp.tools.ml.model.Event;
+import opennlp.tools.ml.model.MaxentModel;
 import opennlp.tools.util.BeamSearchContextGenerator;
 import opennlp.tools.util.ObjectStream;
 import opennlp.tools.util.TrainingParameters;
@@ -100,16 +101,17 @@ public class OpenNLPPosTaggerTrainer {
         if (taggerFactory == null) {
             throw new IllegalStateException("tagger factory is not configured");
         }
-        Map<String, String> manifestInfoEntries = new HashMap<String, String>();
+        Map<String, String> manifestInfoEntries = new HashMap<>();
         BeamSearchContextGenerator<Token> contextGenerator = taggerFactory.getContextGenerator();
 
-        AbstractModel posModel;
+        MaxentModel posModel;
         try {
-            if (!TrainUtil.isSequenceTraining(trainParams.getSettings())) {
+            if (TrainerFactory.TrainerType.EVENT_MODEL_TRAINER.equals(
+                    TrainerFactory.getTrainerType(trainParams.getSettings()))) {
 
-                EventStream es = new POSTokenEventStream<Sentence>(sentenceStream, contextGenerator);
-
-                posModel = TrainUtil.train(es, trainParams.getSettings(), manifestInfoEntries);
+                ObjectStream<Event> es = new POSTokenEventStream<>(sentenceStream, contextGenerator);
+                EventTrainer trainer = TrainerFactory.getEventTrainer(trainParams.getSettings(), manifestInfoEntries);
+                posModel = trainer.train(es);
             } else {
                 throw new UnsupportedOperationException("Sequence training");
                 //POSSampleSequenceStream ss = new POSSampleSequenceStream(samples, contextGenerator);
