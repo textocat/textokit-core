@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.textocat.textokit.core</groupId>
+        <artifactId>textokit-parent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <relativePath>../Textokit.Parent/pom.xml</relativePath>
+    </parent>
+    <artifactId>textokit-lemmatizer-api</artifactId>
+    <name>Textokit.Lemmatizer.API</name>
+    <description>Textokit Lemmatizer API</description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.textocat.textokit.core</groupId>
+            <artifactId>textokit-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.textocat.textokit.core</groupId>
+            <artifactId>textokit-tokenizer-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.textocat.textokit.core</groupId>
+            <artifactId>textokit-morph-dictionary-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.textocat.textokit.core</groupId>
+            <artifactId>textokit-postagger-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.uima</groupId>
+            <artifactId>uimafit-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
+</project>

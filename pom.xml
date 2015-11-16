@@ -27,5 +27,7 @@
         <module>Textokit.PosTagger.Util.RNC</module>
         <module>Textokit.PosTagger.Lab</module>
         <module>Textokit.Demo.PipelineExample</module>
+        <module>Textokit.Lemmatizer.API</module>
+        <module>Textokit.Lemmatizer.DictionarySim</module>
     </modules>
 </project>
