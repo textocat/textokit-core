@@ -1,16 +1,14 @@
 package com.textocat.textokit.phrrecog.util
 
-import scala.util.parsing.combinator.RegexParsers
+import com.textocat.textokit.commons.cas.FSUtils
+import com.textocat.textokit.morph.fs.{Word, Wordform}
 import com.textocat.textokit.phrrecog.cas.Phrase
-import com.textocat.textokit.morph.fs.Word
 import org.apache.uima.cas.text.AnnotationFS
 import org.apache.uima.jcas.JCas
-import scala.collection.mutable
+
+import scala.collection.{Map, Seq, mutable}
 import scala.collection.mutable.ListBuffer
-import scala.collection.Map
-import scala.collection.Seq
-import com.textocat.textokit.morph.fs.Wordform
-import com.textocat.textokit.commons.cas.FSUtils
+import scala.util.parsing.combinator.RegexParsers
 
 private[util] trait PhraseStringParsers extends RegexParsers {
 
@@ -41,16 +39,16 @@ private[util] trait PhraseStringParsers extends RegexParsers {
   }
 
   protected def createAnnotation(
-    prefixedWordformsMap: Map[String, Seq[Wordform]],
-    depPhrases: Seq[Phrase]): Phrase
+                                  prefixedWordformsMap: Map[String, Seq[Wordform]],
+                                  depPhrases: Seq[Phrase]): Phrase
 
   private def phraseElem = "{" ~> phraseString <~ "}" | prefixedWord
 
-  private def prefixedWord: Parser[(Option[String], Wordform)] = opt("""[\p{Alnum}_]+""".r <~ "=") ~ wordOccurrence ^^ {
+  private def prefixedWord: Parser[(Option[String], Wordform)] = opt( """[\p{Alnum}_]+""".r <~ "=") ~ wordOccurrence ^^ {
     case prefixOpt ~ wf => (prefixOpt, wf)
   }
 
-  private def wordOccurrence: Parser[Wordform] = opt("""\d+""".r <~ ":") ~ """[^\s{}]+""".r ^^ {
+  private def wordOccurrence: Parser[Wordform] = opt( """\d+""".r <~ ":") ~ """[^\s{}]+""".r ^^ {
     case Some(occNumStr) ~ wordStr => getWordformAnno(wordStr, Some(occNumStr.toInt))
     case None ~ wordStr => getWordformAnno(wordStr, None)
   }

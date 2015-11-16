@@ -1,13 +1,12 @@
 package com.textocat.textokit.phrrecog.util
 
-import com.textocat.textokit.morph.fs.Word
+import com.textocat.textokit.morph.fs.Wordform
+import com.textocat.textokit.phrrecog.cas.{Phrase, VerbPhrase}
+import org.apache.uima.cas.text.AnnotationFS
 import org.apache.uima.jcas.JCas
 import org.apache.uima.jcas.cas.FSArray
-import com.textocat.textokit.phrrecog.cas.VerbPhrase
+
 import scala.collection.Map
-import com.textocat.textokit.phrrecog.cas.Phrase
-import org.apache.uima.cas.text.AnnotationFS
-import com.textocat.textokit.morph.fs.Wordform
 
 class VPAnnotationStringParserFactory extends PhraseStringParsersFactory {
   override def createParser(jCas: JCas, tokens: Array[AnnotationFS]) =
@@ -15,13 +14,13 @@ class VPAnnotationStringParserFactory extends PhraseStringParsersFactory {
 }
 
 class VPAnnotationStringParser(
-  protected val jCas: JCas,
-  protected val tokens: Array[AnnotationFS])
+                                protected val jCas: JCas,
+                                protected val tokens: Array[AnnotationFS])
   extends PhraseStringParsers {
 
   protected override def createAnnotation(
-    prefixedWordformsMap: Map[String, Seq[Wordform]],
-    depPhrases: Seq[Phrase]): VerbPhrase = {
+                                           prefixedWordformsMap: Map[String, Seq[Wordform]],
+                                           depPhrases: Seq[Phrase]): VerbPhrase = {
     val unprefixedWfs = prefixedWordformsMap.get(null) match {
       case Some(list) => list
       case None => throw new IllegalStateException(

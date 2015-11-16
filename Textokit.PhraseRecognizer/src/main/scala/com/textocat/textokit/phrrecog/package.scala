@@ -8,15 +8,14 @@ package com.textocat.textokit
  *
  */
 
-import com.textocat.textokit.morph.fs.Word
+import com.textocat.textokit.commons.cas.AnnotationOffsetComparator
+import com.textocat.textokit.morph.fs.{Word, Wordform}
 import com.textocat.textokit.phrrecog.cas.NounPhrase
+import org.apache.uima.cas.{ArrayFS, FeatureStructure}
+
 import scala.collection.immutable.SortedSet
 import scala.math.Ordering
-import com.textocat.textokit.commons.cas.AnnotationOffsetComparator
-import org.apache.uima.cas.ArrayFS
-import org.apache.uima.cas.FeatureStructure
 import scala.util.control.Breaks
-import com.textocat.textokit.morph.fs.Wordform
 
 package object phrrecog {
 
@@ -66,7 +65,7 @@ package object phrrecog {
 
   // TODO low priority: move to scala-uima-common utility package
   def fsArrayToTraversable[FST <: FeatureStructure](
-    fsArr: ArrayFS, fstClass: Class[FST]): Traversable[FST] = new Traversable[FST] {
+                                                     fsArr: ArrayFS, fstClass: Class[FST]): Traversable[FST] = new Traversable[FST] {
     override def foreach[U](f: FST => U): Unit =
       if (fsArr != null)
         for (i <- 0 until fsArr.size)
@@ -94,7 +93,7 @@ package object phrrecog {
 
   /**
    * @return None if tree of given np does not contain given word.
-   * Else return list where head is a sub-np containing given word and tail is ancestor NPs chain.
+   *         Else return list where head is a sub-np containing given word and tail is ancestor NPs chain.
    */
   def getDependencyChain(np: NounPhrase, w: Word): Option[List[NounPhrase]] = {
     require(w != null, "w is NULL")
@@ -102,7 +101,7 @@ package object phrrecog {
       if (toTraverseableLocal(np).exists(_.getWord == w)) Some(np :: ancestorChain)
       else {
         val breaks = new Breaks
-        import breaks.{ break, breakable }
+        import breaks.{break, breakable}
         var result: Option[List[NounPhrase]] = None
         breakable {
           for (subNP <- traversableNPArray(np.getDependentPhrases)) {

@@ -3,29 +3,25 @@
  */
 package com.textocat.textokit.phrrecog.util
 
-import org.apache.uima.fit.component.JCasAnnotator_ImplBase
-import org.apache.uima.fit.util.{JCasUtil, CasUtil}
-import org.apache.uima.jcas.JCas
 import java.io.File
-import com.textocat.textokit.commons.cas.AnnotationUtils
-import com.textocat.textokit.commons.DocumentMetadata
 import java.net.URI
-import org.apache.commons.io.FilenameUtils
-import scala.io.Source
-import scala.collection.JavaConversions._
-import com.textocat.textokit.segmentation.fstype.Paragraph
-import org.apache.uima.cas.text.AnnotationFS
-import scala.collection.mutable.ListBuffer
-import StandoffAnnotationsProcessor._
-import com.textocat.textokit.morph.fs.Word
-import org.apache.uima.jcas.cas.FSArray
-import java.util.regex.Pattern
-import com.textocat.textokit.tokenizer.fstype.Token
-import org.apache.uima.cas.Type
-import com.textocat.textokit.phrrecog.cas.Phrase
-import org.apache.uima.UimaContext
+
+import com.textocat.textokit.commons.DocumentMetadata
+import com.textocat.textokit.commons.cas.AnnotationUtils
 import com.textocat.textokit.commons.util.AnnotatorUtils._
-import scala.collection.mutable.HashMap
+import com.textocat.textokit.phrrecog.util.StandoffAnnotationsProcessor._
+import com.textocat.textokit.segmentation.fstype.Paragraph
+import com.textocat.textokit.tokenizer.fstype.Token
+import org.apache.commons.io.FilenameUtils
+import org.apache.uima.UimaContext
+import org.apache.uima.cas.Type
+import org.apache.uima.cas.text.AnnotationFS
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase
+import org.apache.uima.fit.util.{CasUtil, JCasUtil}
+import org.apache.uima.jcas.JCas
+
+import scala.collection.JavaConversions._
+import scala.io.Source
 
 /**
  * @author Rinat Gareev

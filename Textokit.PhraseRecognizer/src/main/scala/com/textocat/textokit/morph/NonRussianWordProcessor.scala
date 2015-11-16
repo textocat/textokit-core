@@ -3,13 +3,14 @@
  */
 package com.textocat.textokit.morph
 
+import com.textocat.textokit.morph.fs.Word
+import com.textocat.textokit.tokenizer.fstype.W
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase
+import org.apache.uima.cas.text.AnnotationIndex
 import org.apache.uima.fit.util.CasUtil
 import org.apache.uima.jcas.JCas
-import org.apache.uima.analysis_component.JCasAnnotator_ImplBase
+
 import scala.collection.JavaConversions.iterableAsScalaIterable
-import com.textocat.textokit.tokenizer.fstype.W
-import org.apache.uima.cas.text.AnnotationIndex
-import com.textocat.textokit.morph.fs.Word
 
 /**
  * @author Rinat Gareev

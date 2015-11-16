@@ -3,9 +3,9 @@
  */
 package com.textocat.textokit.phrrecog.input
 
-import scala.util.parsing.input.Reader
 import org.apache.uima.cas.text.AnnotationFS
-import scala.util.parsing.input.Position
+
+import scala.util.parsing.input.{Position, Reader}
 
 /**
  * @author Rinat Gareev
@@ -21,7 +21,7 @@ class AnnotationSpan[A >: Null <: AnnotationFS](annoList: List[A]) {
 
   lazy val reader: Reader[A] = new AnnotationReader(annoList)
 
-  private class AnnotationReader private[AnnotationSpan] (inputList: List[A]) extends Reader[A] {
+  private class AnnotationReader private[AnnotationSpan](inputList: List[A]) extends Reader[A] {
 
     override val atEnd: Boolean = inputList.isEmpty
 

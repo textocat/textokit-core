@@ -3,27 +3,23 @@
  */
 package com.textocat.textokit.phrrecog
 
-import org.apache.uima.fit.component.JCasAnnotator_ImplBase
-import org.apache.uima.fit.util.{FSCollectionFactory, CasUtil}
-import org.apache.uima.jcas.JCas
-import com.textocat.textokit.morph.fs.Word
-import org.apache.uima.cas.text.AnnotationFS
 import com.google.common.collect.ComparisonChain
-import scala.collection.mutable.ListBuffer
-import org.apache.uima.jcas.tcas.Annotation
-import com.textocat.textokit.morph.fs.Wordform
-import parsing.WordUtils._
-import com.textocat.textokit.morph.model.{ MorphConstants => M }
-import com.textocat.textokit.segmentation.fstype.Sentence
-import org.apache.uima.cas.Type
-import scala.collection.JavaConversions.asScalaBuffer
-import scala.collection.JavaConversions.iterableAsScalaIterable
-import VPRecognizer._
-import scala.collection.mutable.HashSet
-import scala.collection.mutable.Buffer
-import org.apache.uima.jcas.cas.FSArray
-import grizzled.slf4j.Logging
+import com.textocat.textokit.morph.fs.{Word, Wordform}
+import com.textocat.textokit.morph.model.{MorphConstants => M}
+import com.textocat.textokit.phrrecog.VPRecognizer._
 import com.textocat.textokit.phrrecog.cas.VerbPhrase
+import com.textocat.textokit.segmentation.fstype.Sentence
+import grizzled.slf4j.Logging
+import org.apache.uima.cas.Type
+import org.apache.uima.cas.text.AnnotationFS
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase
+import org.apache.uima.fit.util.{CasUtil, FSCollectionFactory}
+import org.apache.uima.jcas.JCas
+import org.apache.uima.jcas.cas.FSArray
+import org.apache.uima.jcas.tcas.Annotation
+
+import scala.collection.JavaConversions.{asScalaBuffer, iterableAsScalaIterable}
+import scala.collection.mutable.{Buffer, HashSet, ListBuffer}
 
 /**
  * @author Rinat Gareev
@@ -69,14 +65,14 @@ class VPRecognizer extends JCasAnnotator_ImplBase with Logging {
 
   // returns phrase wordforms; first wf of iter is a head of phrase
   private def handleFiniteVerb(
-    wordforms: Buffer[IndexedSeq[Wordform]],
-    verbIndex: Int,
-    verb: Wordform): Iterable[Wordform] = List(verb)
+                                wordforms: Buffer[IndexedSeq[Wordform]],
+                                verbIndex: Int,
+                                verb: Wordform): Iterable[Wordform] = List(verb)
 
   private def handleShortPerfective(
-    wordforms: Buffer[IndexedSeq[Wordform]],
-    spIndex: Int,
-    sp: Wordform): Iterable[Wordform] =
+                                     wordforms: Buffer[IndexedSeq[Wordform]],
+                                     spIndex: Int,
+                                     sp: Wordform): Iterable[Wordform] =
     if (spIndex > 0) {
       val toBeIdx = spIndex - 1
       wordforms(toBeIdx).find(hasLemma("есть", M.VERB) _) match {
@@ -86,9 +82,9 @@ class VPRecognizer extends JCasAnnotator_ImplBase with Logging {
     } else sp :: Nil
 
   private def handleInfinitive(
-    wordforms: Buffer[IndexedSeq[Wordform]],
-    infIndex: Int,
-    inf: Wordform): Iterable[Wordform] = {
+                                wordforms: Buffer[IndexedSeq[Wordform]],
+                                infIndex: Int,
+                                inf: Wordform): Iterable[Wordform] = {
     val infW = inf.getWord
     debug("Handling infinitive: (%s,%s) %s".format(infW.getBegin, infW.getEnd, infW.getCoveredText))
     var head: Wordform = null
@@ -107,7 +103,7 @@ class VPRecognizer extends JCasAnnotator_ImplBase with Logging {
     var result: Option[Wordform] = None
     wordforms.find(wfs => {
       wfs.find(pred(_)) match {
-        case opt @ Some(_) => {
+        case opt@Some(_) => {
           result = opt
           true
         }

@@ -3,16 +3,15 @@
  */
 package com.textocat.textokit.morph
 
+import com.textocat.textokit.morph.fs.{Word, Wordform}
+import com.textocat.textokit.morph.model.{MorphConstants => M}
+import com.textocat.textokit.tokenizer.fstype.NUM
+import org.apache.uima.cas.text.AnnotationIndex
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase
 import org.apache.uima.jcas.JCas
-import com.textocat.textokit.tokenizer.fstype.NUM
+import org.apache.uima.jcas.cas.{FSArray, StringArray}
+
 import scala.collection.JavaConversions.iterableAsScalaIterable
-import org.apache.uima.cas.text.AnnotationIndex
-import com.textocat.textokit.morph.fs.Word
-import org.apache.uima.jcas.cas.FSArray
-import com.textocat.textokit.morph.fs.Wordform
-import org.apache.uima.jcas.cas.StringArray
-import com.textocat.textokit.morph.model.{MorphConstants => M}
 
 /**
  * @author Rinat Gareev

@@ -1,21 +1,19 @@
 package com.textocat.textokit.phrrecog.util
 
+import com.textocat.textokit.commons.cas.FSUtils
+import com.textocat.textokit.morph.fs.{Word, Wordform}
+import com.textocat.textokit.phrrecog.cas.{NounPhrase, Phrase}
+import com.textocat.textokit.phrrecog.util.NPAnnotationStringParser._
 import com.textocat.textokit.phrrecog.wfOffsetComp
-import com.textocat.textokit.phrrecog._
-import org.apache.uima.fit.util.FSCollectionFactory
-import scala.collection.Map
-import org.apache.uima.jcas.JCas
-import com.textocat.textokit.morph.fs.Word
-import NPAnnotationStringParser._
-import scala.collection.immutable.TreeSet
-import org.apache.uima.jcas.cas.FSArray
-import com.textocat.textokit.phrrecog.cas.NounPhrase
 import grizzled.slf4j.Logging
 import org.apache.uima.cas.text.AnnotationFS
-import com.textocat.textokit.phrrecog.cas.Phrase
+import org.apache.uima.fit.util.FSCollectionFactory
+import org.apache.uima.jcas.JCas
+import org.apache.uima.jcas.cas.FSArray
+
 import scala.collection.JavaConversions.asJavaIterable
-import com.textocat.textokit.morph.fs.Wordform
-import com.textocat.textokit.commons.cas.FSUtils
+import scala.collection.Map
+import scala.collection.immutable.TreeSet
 
 class NPAnnotationStringParserFactory extends PhraseStringParsersFactory {
   override def createParser(jCas: JCas, tokens: Array[AnnotationFS]): NPAnnotationStringParser =
