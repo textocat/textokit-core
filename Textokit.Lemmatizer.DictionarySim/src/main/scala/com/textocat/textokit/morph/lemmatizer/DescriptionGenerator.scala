@@ -1,16 +1,15 @@
 package com.textocat.textokit.morph.lemmatizer
 
 import java.io.File
-import org.apache.uima.fit.factory.ExternalResourceFactory.createExternalResourceDescription
-import org.apache.uima.fit.factory.AnalysisEngineFactory
+
 import com.textocat.textokit.commons.io.IoUtils
-import org.apache.uima.resource.metadata.MetaDataObject
-import com.textocat.textokit.tokenizer.TokenizerAPI
-import com.textocat.textokit.segmentation.SentenceSplitterAPI
-import org.apache.uima.resource.metadata.impl.Import_impl
 import com.textocat.textokit.commons.util.PipelineDescriptorUtils
-import com.textocat.textokit.postagger.PosTaggerAPI
 import com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory
+import com.textocat.textokit.postagger.PosTaggerAPI
+import com.textocat.textokit.segmentation.SentenceSplitterAPI
+import com.textocat.textokit.tokenizer.TokenizerAPI
+import org.apache.uima.resource.metadata.MetaDataObject
+import org.apache.uima.resource.metadata.impl.Import_impl
 
 object DescriptionGenerator {
 

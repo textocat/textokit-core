@@ -3,10 +3,10 @@
  */
 package com.textocat.textokit.morph.lemmatizer
 
-import org.apache.uima.fit.factory.ExternalResourceFactory
-import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
 import java.io.File
+
+import org.apache.commons.io.{FileUtils, IOUtils}
+import org.apache.uima.fit.factory.ExternalResourceFactory
 
 /**
  * @author Rinat Gareev

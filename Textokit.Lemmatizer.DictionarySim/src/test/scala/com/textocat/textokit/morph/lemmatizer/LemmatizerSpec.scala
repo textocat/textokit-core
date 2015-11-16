@@ -1,22 +1,19 @@
 package com.textocat.textokit.morph.lemmatizer
 
-import scala.collection.JavaConversions._
-import org.scalatest._
-import org.apache.uima.fit.factory.AnalysisEngineFactory
+import com.textocat.textokit.commons.util.PipelineDescriptorUtils
+import com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory
+import com.textocat.textokit.morph.fs.{Word, Wordform}
+import com.textocat.textokit.postagger.PosTaggerAPI
+import com.textocat.textokit.segmentation.SentenceSplitterAPI
+import com.textocat.textokit.tokenizer.TokenizerAPI
+import org.apache.uima.cas.FeatureStructure
+import org.apache.uima.fit.factory.ExternalResourceFactory
 import org.apache.uima.fit.pipeline.SimplePipeline
 import org.apache.uima.fit.util.JCasUtil.select
 import org.apache.uima.util.CasCreationUtils
-import org.apache.uima.fit.factory.ExternalResourceFactory.createExternalResourceDescription
-import java.io.File
-import com.textocat.textokit.morph.fs.{ Wordform, Word }
-import org.apache.uima.cas.FeatureStructure
-import com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory
-import com.textocat.textokit.morph.dictionary.MorphologyAnnotator
-import com.textocat.textokit.commons.util.PipelineDescriptorUtils
-import com.textocat.textokit.tokenizer.TokenizerAPI
-import com.textocat.textokit.segmentation.SentenceSplitterAPI
-import com.textocat.textokit.postagger.PosTaggerAPI
-import org.apache.uima.fit.factory.ExternalResourceFactory
+import org.scalatest._
+
+import scala.collection.JavaConversions._
 
 /**
  * Created by fsqcds on 07/05/14.

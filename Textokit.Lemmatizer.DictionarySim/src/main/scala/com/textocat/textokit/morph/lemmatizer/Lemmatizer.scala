@@ -1,17 +1,17 @@
 package com.textocat.textokit.morph.lemmatizer
 
+import com.textocat.textokit.morph.dictionary.WordUtils
+import com.textocat.textokit.morph.dictionary.resource.MorphDictionaryHolder
+import com.textocat.textokit.morph.fs.{Word, Wordform}
+import com.textocat.textokit.morph.model.{Wordform => DictWordform}
+import org.apache.uima.cas.FeatureStructure
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase
+import org.apache.uima.fit.descriptor.ExternalResource
+import org.apache.uima.fit.factory.AnalysisEngineFactory
+import org.apache.uima.fit.util.JCasUtil.select
+import org.apache.uima.jcas.JCas
 
 import scala.collection.JavaConversions._
-import org.apache.uima.jcas.JCas
-import org.apache.uima.fit.util.JCasUtil.select
-import com.textocat.textokit.morph.fs.{ Word, Wordform }
-import com.textocat.textokit.morph.model.{ Wordform => DictWordform }
-import org.apache.uima.cas.FeatureStructure
-import org.apache.uima.fit.descriptor.ExternalResource
-import com.textocat.textokit.morph.dictionary.resource.MorphDictionaryHolder
-import com.textocat.textokit.morph.dictionary.WordUtils
-import org.apache.uima.fit.factory.AnalysisEngineFactory
 
 /**
  * Created by fsqcds on 07/05/14.
@@ -60,6 +60,7 @@ class Lemmatizer extends JCasAnnotator_ImplBase {
 
 object Lemmatizer {
   val ResourceKeyDictionary = "morphDictionary"
+
   def createDescription() = AnalysisEngineFactory.createEngineDescription(classOf[Lemmatizer],
     LemmatizerAPI.getTypeSystemDescription)
 }

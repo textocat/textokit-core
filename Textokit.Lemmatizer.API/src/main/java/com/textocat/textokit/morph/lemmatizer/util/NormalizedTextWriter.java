@@ -1,6 +1,13 @@
 package com.textocat.textokit.morph.lemmatizer.util;
 
 import com.google.common.base.Preconditions;
+import com.textocat.textokit.commons.io.IoUtils;
+import com.textocat.textokit.commons.util.DocumentUtils;
+import com.textocat.textokit.morph.fs.Word;
+import com.textocat.textokit.postagger.MorphCasUtils;
+import com.textocat.textokit.tokenizer.fstype.BREAK;
+import com.textocat.textokit.tokenizer.fstype.Token;
+import com.textocat.textokit.tokenizer.fstype.TokenBase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.uima.UimaContext;
@@ -13,13 +20,6 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import com.textocat.textokit.morph.fs.Word;
-import com.textocat.textokit.tokenizer.fstype.BREAK;
-import com.textocat.textokit.tokenizer.fstype.Token;
-import com.textocat.textokit.tokenizer.fstype.TokenBase;
-import com.textocat.textokit.commons.io.IoUtils;
-import com.textocat.textokit.commons.util.DocumentUtils;
-import com.textocat.textokit.postagger.MorphCasUtils;
 
 import java.io.File;
 import java.io.IOException;
