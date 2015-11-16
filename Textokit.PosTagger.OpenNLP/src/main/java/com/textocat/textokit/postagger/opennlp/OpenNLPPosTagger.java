@@ -59,7 +59,7 @@ public class OpenNLPPosTagger extends JCasAnnotator_ImplBase {
     public static final String PARAM_SEQUENCE_VALIDATOR_CLASS = "sequenceValidatorClass";
     public static final String RESOURCE_POS_MODEL = "posModel";
     public static final String DEFAULT_SEQUENCE_VALIDATOR_CLASS =
-            "PunctuationTokenSequenceValidator";
+            "com.textocat.textokit.postagger.opennlp.DictionaryGrammemeLevelTokenSequenceValidator";
 
     /**
      * Create a resource description with the specified parameter values. The

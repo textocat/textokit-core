@@ -43,7 +43,13 @@
         <externalResourceDependency>
             <key>posModel</key>
             <description/>
-            <interfaceName>java.lang.Object</interfaceName>
+            <interfaceName>com.textocat.textokit.postagger.opennlp.OpenNLPModelHolder</interfaceName>
+            <optional>false</optional>
+        </externalResourceDependency>
+        <externalResourceDependency>
+            <key>morphDict</key>
+            <description/>
+            <interfaceName>com.textocat.textokit.morph.dictionary.resource.MorphDictionaryHolder</interfaceName>
             <optional>false</optional>
         </externalResourceDependency>
     </externalResourceDependencies>
@@ -61,6 +67,10 @@
             <externalResourceBinding>
                 <key>posModel</key>
                 <resourceName>com.textocat.textokit.postagger.opennlp.ClasspathPOSModelHolder-default</resourceName>
+            </externalResourceBinding>
+            <externalResourceBinding>
+                <key>morphDict</key>
+                <resourceName>MorphDictionary</resourceName>
             </externalResourceBinding>
         </externalResourceBindings>
     </resourceManagerConfiguration>
