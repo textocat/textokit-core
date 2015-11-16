@@ -13,7 +13,7 @@
         <configurationParameterSettings/>
         <typeSystemDescription>
             <imports>
-                <import name="org.opencorpora.morphology-ts"/>
+                <import name="com.textocat.textokit.morph.morphology-ts"/>
             </imports>
         </typeSystemDescription>
         <fsIndexCollection/>

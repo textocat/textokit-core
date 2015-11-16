@@ -194,7 +194,6 @@
             <dependency>
                 <groupId>com.textocat.textokit.core</groupId>
                 <artifactId>textokit-pos-tagger-opennlp-model</artifactId>
-                <scope>runtime</scope>
                 <classifier>rnc1M-8cat</classifier>
                 <version>0.1-20151116-1</version>
             </dependency>

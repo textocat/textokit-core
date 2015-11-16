@@ -50,7 +50,7 @@ public class LemmatizerAPI {
      * A name of type-system description that define types of annotations that
      * are affected by lemmatizer.
      */
-    public static final String TYPESYSTEM_LEMMATIZER = "org.opencorpora.morphology-ts";
+    public static final String TYPESYSTEM_LEMMATIZER = "com.textocat.textokit.morph.morphology-ts";
 
     /**
      * A name of analysis engine description that can be imported. An

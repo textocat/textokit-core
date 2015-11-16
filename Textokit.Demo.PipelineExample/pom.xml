@@ -57,6 +57,7 @@
             <groupId>com.textocat.textokit.core</groupId>
             <artifactId>textokit-dictionary-opencorpora-resource</artifactId>
             <classifier>rnc</classifier>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.textocat.textokit.core</groupId>
@@ -70,8 +71,8 @@
         <dependency>
             <groupId>com.textocat.textokit.core</groupId>
             <artifactId>textokit-pos-tagger-opennlp-model</artifactId>
-            <scope>runtime</scope>
             <classifier>rnc1M-8cat</classifier>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
