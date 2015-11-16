@@ -3,55 +3,43 @@
  */
 package com.textocat.textokit.phrrecog
 
-import com.textocat.textokit.phrrecog.parsing.{NP, NPParsers}
-import org.apache.uima.fit.component.CasAnnotator_ImplBase
-import org.apache.uima.fit.util.{FSCollectionFactory, CasUtil}
-import org.apache.uima.jcas.JCas
-import scala.collection.JavaConversions._
-import com.textocat.textokit.segmentation.fstype.Sentence
-import org.apache.uima.cas.text.AnnotationFS
-import input.AnnotationSpan
-import org.apache.uima.cas.TypeSystem
-import org.apache.uima.cas.Type
-import com.textocat.textokit.morph.fs.Word
-import org.apache.uima.cas.CAS
-import scala.util.parsing.input.Reader
-import org.apache.uima.jcas.cas.FSArray
+import com.textocat.textokit.morph.fs.{Word, Wordform}
 import com.textocat.textokit.phrrecog.cas.NounPhrase
+import com.textocat.textokit.phrrecog.input.AnnotationSpan
+import com.textocat.textokit.phrrecog.parsing.{NP, NPParsers}
+import com.textocat.textokit.segmentation.fstype.Sentence
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase
+import org.apache.uima.fit.util.{FSCollectionFactory, JCasUtil}
+import org.apache.uima.jcas.JCas
+import org.apache.uima.jcas.cas.FSArray
+import org.apache.uima.jcas.tcas.Annotation
+
+import scala.collection.JavaConversions._
 import scala.collection.immutable.TreeSet
-import com.textocat.textokit.morph.fs.Wordform
+import scala.util.parsing.input.Reader
 
 /**
  * @author Rinat Gareev
  *
  */
-class NPRecognizer extends CasAnnotator_ImplBase with NPParsers {
-  private var wordType: Type = _
+class NPRecognizer extends JCasAnnotator_ImplBase with NPParsers {
 
-  override def typeSystemInit(ts: TypeSystem) {
-    wordType = ts.getType(classOf[Word].getName)
+  override def process(jCas: JCas): Unit = {
+    JCasUtil.select(jCas, classOf[Sentence]).foreach(processSpan(jCas, _))
   }
 
-  override def process(cas: CAS): Unit =
-    process(cas.getJCas())
-
-  private def process(jCas: JCas) =
-    jCas.getAnnotationIndex(Sentence.typeIndexID).foreach(processSpan(_))
-
-  private def processSpan(span: AnnotationFS) {
-    val spanWords = CasUtil.selectCovered(span.getCAS(), wordType, span)
-      .asInstanceOf[java.util.List[Word]].toList
-    if (!spanWords.isEmpty)
+  private def processSpan(jCas: JCas, span: Annotation) {
+    val spanWords = JCasUtil.selectCovered(jCas, classOf[Word], span).toList
+    if (spanWords.nonEmpty)
       parseFrom(new AnnotationSpan(spanWords).reader)
   }
 
   private def parseFrom(reader: Reader[Word]): Unit =
     if (!reader.atEnd)
       np(reader) match {
-        case Success(np, rest) => {
+        case Success(np, rest) =>
           addToCas(np)
           parseFrom(rest)
-        }
         case Failure(_, _) =>
           // start from next anno
           parseFrom(reader.rest)
@@ -64,7 +52,7 @@ class NPRecognizer extends CasAnnotator_ImplBase with NPParsers {
 
   private def createNPAnnotation(np: NP): NounPhrase = {
     val head = np.noun
-    val jCas = head.getCAS().getJCas()
+    val jCas = head.getCAS.getJCas
 
     val phrase = new NounPhrase(jCas)
     phrase.setBegin(head.getWord.getBegin)
@@ -85,7 +73,7 @@ class NPRecognizer extends CasAnnotator_ImplBase with NPParsers {
     phrase.setDependentWords(depWordsFsArray)
 
     // TODO low priority: add a sanity check to avoid infinite recursion
-    val depAnnoQ = np.depNPs.map(createNPAnnotation(_))
+    val depAnnoQ = np.depNPs.map(createNPAnnotation)
     val depNPsFsArray = new FSArray(jCas, depAnnoQ.size)
     FSCollectionFactory.fillArrayFS(depNPsFsArray, depAnnoQ)
     phrase.setDependentPhrases(depNPsFsArray)

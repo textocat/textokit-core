@@ -81,6 +81,11 @@
         <dependency>
             <groupId>com.textocat.textokit.core</groupId>
             <artifactId>textokit-lemmatizer-dictionary-sim</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.textocat.textokit.core</groupId>
+            <artifactId>textokit-phrase-recognizer</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

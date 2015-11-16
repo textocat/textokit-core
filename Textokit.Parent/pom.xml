@@ -178,6 +178,11 @@
                 <artifactId>textokit-lemmatizer-dictionary-sim</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-phrase-recognizer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- component resources (dictionaries, models, etc.) -->
             <dependency>
                 <groupId>com.textocat.textokit.core</groupId>

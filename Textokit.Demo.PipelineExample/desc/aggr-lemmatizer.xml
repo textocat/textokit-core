@@ -19,6 +19,9 @@
             <!-- from LemmatizerAPI -->
             <import name="com.textocat.textokit.morph.lemmatizer.lemmatizer-ae" />
         </delegateAnalysisEngine>
+        <delegateAnalysisEngine key="np-recognizer">
+            <import name="com.textocat.textokit.phrrecog.NPRecognizer" />
+        </delegateAnalysisEngine>
     </delegateAnalysisEngineSpecifiers>
     <analysisEngineMetaData>
         <name>Lemmatizer Pipeline</name>
@@ -31,6 +34,7 @@
                 <node>sentence-splitter</node>
                 <node>pos-tagger</node>
                 <node>lemmatizer</node>
+                <node>np-recognizer</node>
             </fixedFlow>
         </flowConstraints>
         <operationalProperties>
