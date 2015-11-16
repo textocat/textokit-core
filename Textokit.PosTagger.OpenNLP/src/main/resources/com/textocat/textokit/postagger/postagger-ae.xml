@@ -50,23 +50,17 @@
     <resourceManagerConfiguration>
         <externalResources>
             <externalResource>
-                <name>com.textocat.textokit.postagger.opennlp.DefaultPOSModelHolder-0</name>
+                <name>com.textocat.textokit.postagger.opennlp.ClasspathPOSModelHolder-default</name>
                 <description/>
-                <configurableDataResourceSpecifier>
-                    <url>file:pos-tagger-model.zip</url>
-                    <resourceMetaData>
-                        <name/>
-                        <configurationParameters/>
-                        <configurationParameterSettings/>
-                    </resourceMetaData>
-                </configurableDataResourceSpecifier>
-                <implementationName>com.textocat.textokit.postagger.opennlp.DefaultPOSModelHolder</implementationName>
+                <customResourceSpecifier>
+                    <resourceClassName>com.textocat.textokit.postagger.opennlp.ClasspathPOSModelHolder</resourceClassName>
+                </customResourceSpecifier>
             </externalResource>
         </externalResources>
         <externalResourceBindings>
             <externalResourceBinding>
                 <key>posModel</key>
-                <resourceName>com.textocat.textokit.postagger.opennlp.DefaultPOSModelHolder-0</resourceName>
+                <resourceName>com.textocat.textokit.postagger.opennlp.ClasspathPOSModelHolder-default</resourceName>
             </externalResourceBinding>
         </externalResourceBindings>
     </resourceManagerConfiguration>

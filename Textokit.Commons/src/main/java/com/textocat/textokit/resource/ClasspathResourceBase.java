@@ -14,9 +14,8 @@
  *    limitations under the License.
  */
 
-package com.textocat.textokit.morph.opencorpora.resource;
+package com.textocat.textokit.resource;
 
-import com.textocat.textokit.morph.opencorpora.OpencorporaMorphDictionaryAPI;
 import org.apache.uima.fit.component.Resource_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -28,11 +27,11 @@ import java.util.Map;
 /**
  * @author Rinat Gareev
  */
-abstract class ClasspathResourceBase extends Resource_ImplBase {
-    public static final String PARAM_DICTIONARY_CLASSPATH = "dictionaryClassPath";
+public abstract class ClasspathResourceBase extends Resource_ImplBase {
+    public static final String PARAM_RESOURCE_CLASSPATH = "resourceClassPath";
 
-    @ConfigurationParameter(name = PARAM_DICTIONARY_CLASSPATH, mandatory = false)
-    private String dictionaryClassPath;
+    @ConfigurationParameter(name = PARAM_RESOURCE_CLASSPATH, mandatory = false)
+    private String resourceClassPath;
     //
     protected ClassPathResource resource;
 
@@ -41,10 +40,12 @@ abstract class ClasspathResourceBase extends Resource_ImplBase {
             throws ResourceInitializationException {
         if (!super.initialize(aSpecifier, aAdditionalParams))
             return false;
-        if (dictionaryClassPath == null) {
-            dictionaryClassPath = OpencorporaMorphDictionaryAPI.locateDictionaryClassPath();
+        if (resourceClassPath == null) {
+            resourceClassPath = locateDefaultResourceClassPath();
         }
-        resource = new ClassPathResource(dictionaryClassPath);
+        resource = new ClassPathResource(resourceClassPath);
         return true;
     }
+
+    protected abstract String locateDefaultResourceClassPath();
 }

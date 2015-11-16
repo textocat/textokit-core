@@ -20,6 +20,8 @@ import com.textocat.textokit.morph.dictionary.resource.GramModel;
 import com.textocat.textokit.morph.dictionary.resource.GramModelHolder;
 import com.textocat.textokit.morph.dictionary.resource.MorphDictionary;
 import com.textocat.textokit.morph.dictionary.resource.MorphDictionaryHolder;
+import com.textocat.textokit.morph.opencorpora.OpencorporaMorphDictionaryAPI;
+import com.textocat.textokit.resource.ClasspathResourceBase;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
@@ -36,6 +38,11 @@ public class ClasspathMorphDictionaryResource extends ClasspathResourceBase
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private CacheResourceKey cacheKey;
     private MorphDictionary dict;
+
+    @Override
+    protected String locateDefaultResourceClassPath() {
+        return OpencorporaMorphDictionaryAPI.locateDictionaryClassPath();
+    }
 
     @Override
     public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams)

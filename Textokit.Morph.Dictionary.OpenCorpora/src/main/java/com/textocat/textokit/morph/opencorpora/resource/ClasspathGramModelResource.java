@@ -18,6 +18,8 @@ package com.textocat.textokit.morph.opencorpora.resource;
 
 import com.textocat.textokit.morph.dictionary.resource.GramModel;
 import com.textocat.textokit.morph.dictionary.resource.GramModelHolder;
+import com.textocat.textokit.morph.opencorpora.OpencorporaMorphDictionaryAPI;
+import com.textocat.textokit.resource.ClasspathResourceBase;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
@@ -28,6 +30,11 @@ import java.util.Map;
  */
 public class ClasspathGramModelResource extends ClasspathResourceBase implements GramModelHolder {
     private GramModel gm;
+
+    @Override
+    protected String locateDefaultResourceClassPath() {
+        return OpencorporaMorphDictionaryAPI.locateDictionaryClassPath();
+    }
 
     @Override
     public boolean initialize(ResourceSpecifier aSpecifier, Map<String, Object> aAdditionalParams) throws ResourceInitializationException {
