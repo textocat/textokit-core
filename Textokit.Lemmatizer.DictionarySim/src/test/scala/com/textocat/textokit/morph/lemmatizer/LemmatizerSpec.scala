@@ -58,6 +58,6 @@ class LemmatizerSpec extends FlatSpec with Matchers {
         wordformFS.asInstanceOf[Wordform].getLemma
       })
     })
-    lemmas should be(List("душа", "мой", "озарён", "неземной", "радость", "oracle", "купил", "sun"))
+    lemmas should be(List("душа", "мой", "озарён", "неземной", "радость", null, "купил", null))
   }
 }

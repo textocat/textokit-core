@@ -41,7 +41,7 @@ class Lemmatizer extends JCasAnnotator_ImplBase {
     (first & second).size.toDouble / (first | second).size
   }
 
-  def findLemma(wordform: Wordform): String = {
+  def findLemma(wordform: Wordform): Option[String] = {
     val dict = dictHolder.getDictionary
     val wordText = WordUtils.normalizeToDictionaryForm(wordform.getWord.getCoveredText)
     val entries = dict.getEntries(wordText)
@@ -52,10 +52,9 @@ class Lemmatizer extends JCasAnnotator_ImplBase {
         val wfGrammems: Set[String] = dict.getGramModel().toGramSet(dictWf.getGrammems).toSet
         jaccardCoef(targetGrammems.toArray.toSet, wfGrammems)
       }).getLemmaId
-
-      dictHolder.getDictionary.getLemma(lemmaId).getString
+      Some(dictHolder.getDictionary.getLemma(lemmaId).getString)
     } else {
-      wordText
+      None
     }
   }
 
@@ -63,11 +62,9 @@ class Lemmatizer extends JCasAnnotator_ImplBase {
     select(aJCAS, classOf[Word]).foreach((word: Word) => {
       word.getWordforms.toArray.foreach((wordformFS: FeatureStructure) => {
         val wordform = wordformFS.asInstanceOf[Wordform]
-        try {
-          val lemma = findLemma(wordform)
-          wordform.setLemma(lemma)
-        } catch {
-          case e: IndexOutOfBoundsException => {}
+        findLemma(wordform) match {
+          case Some(lemma) => wordform.setLemma(lemma)
+          case None =>
         }
       })
     })
