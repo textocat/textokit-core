@@ -29,5 +29,6 @@
         <module>Textokit.Demo.PipelineExample</module>
         <module>Textokit.Lemmatizer.API</module>
         <module>Textokit.Lemmatizer.DictionarySim</module>
+        <module>Textokit.PhraseRecognizer</module>
     </modules>
 </project>
