@@ -15,12 +15,10 @@
             <!-- from PosTaggerAPI -->
             <import name="com.textocat.textokit.postagger.postagger-ae"/>
         </delegateAnalysisEngine>
-        <!--
         <delegateAnalysisEngine key="lemmatizer">
-            <!- from LemmatizerAPI ->
+            <!-- from LemmatizerAPI -->
             <import name="com.textocat.textokit.morph.lemmatizer.lemmatizer-ae" />
         </delegateAnalysisEngine>
-        -->
     </delegateAnalysisEngineSpecifiers>
     <analysisEngineMetaData>
         <name>Lemmatizer Pipeline</name>
@@ -32,7 +30,7 @@
                 <node>tokenizer</node>
                 <node>sentence-splitter</node>
                 <node>pos-tagger</node>
-                <!-- <node>lemmatizer</node> -->
+                <node>lemmatizer</node>
             </fixedFlow>
         </flowConstraints>
         <operationalProperties>
