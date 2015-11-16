@@ -5,19 +5,19 @@
 
 	<delegateAnalysisEngineSpecifiers>
 		<delegateAnalysisEngine key="tokenizer">
-			<import name="ru.kfu.itis.issst.uima.tokenizer.tokenizer-ae" />
+			<import name="com.textocat.textokit.tokenizer.tokenizer-ae" />
 		</delegateAnalysisEngine>
 		<delegateAnalysisEngine key="sentenceSplitter">
-			<import name="ru.kfu.itis.issst.uima.segmentation.sentence-splitter-ae" />
+			<import name="com.textocat.textokit.segmentation.sentence-splitter-ae" />
 		</delegateAnalysisEngine>
 		<delegateAnalysisEngine key="morphTagger">
-			<import name="ru.ksu.niimm.cll.uima.morph.opencorpora.MorphologyAnnotator" />
+			<import name="com.textocat.textokit.morph.opencorpora.MorphologyAnnotator" />
 		</delegateAnalysisEngine>
 		<delegateAnalysisEngine key="numProcessor">
-			<import name="ru.kfu.itis.issst.uima.morph.NumProcessor" />
+			<import name="com.textocat.textokit.morph.NumProcessor" />
 		</delegateAnalysisEngine>
 		<delegateAnalysisEngine key="vpRecognizer">
-			<import name="ru.kfu.itis.issst.uima.phrrecog.VPRecognizer" />
+			<import name="com.textocat.textokit.phrrecog.VPRecognizer" />
 		</delegateAnalysisEngine>
 	</delegateAnalysisEngineSpecifiers>
 
@@ -43,7 +43,7 @@
 				<fileResourceSpecifier>
 					<fileUrl>dict.opcorpora.ser</fileUrl>
 				</fileResourceSpecifier>
-				<implementationName>ru.ksu.niimm.cll.uima.morph.opencorpora.resource.SerializedDictionaryResource</implementationName>
+				<implementationName>com.textocat.textokit.morph.opencorpora.resource.SerializedDictionaryResource</implementationName>
 			</externalResource>
 		</externalResources>
 		<externalResourceBindings>

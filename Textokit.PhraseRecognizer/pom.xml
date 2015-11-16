@@ -87,6 +87,10 @@
             <artifactId>scala-library</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-parser-combinators_2.11</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.textocat.textokit.core</groupId>
             <artifactId>textokit-commons</artifactId>
         </dependency>
@@ -130,6 +134,13 @@
     <profiles>
         <profile>
             <id>make-jcas</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.uima</groupId>
+                    <artifactId>uimaj-tools</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>
@@ -144,14 +155,14 @@
                                 <phase>generate-sources</phase>
                                 <configuration>
                                     <executable>java</executable>
+                                    <classpathScope>test</classpathScope>
                                     <arguments>
                                         <argument>-classpath</argument>
                                         <classpath/>
-                                        <argument>-Duima.datapath=src/main/resources</argument>
                                         <argument>org.apache.uima.tools.jcasgen.Jg</argument>
                                         <argument>-jcasgeninput</argument>
                                         <argument>
-                                            src/main/resources/ru/kfu/itis/issst/uima/phrrecog/ts-phrase-recognizer.xml
+                                            src/main/resources/com/textocat/textokit/phrrecog/ts-phrase-recognizer.xml
                                         </argument>
                                         <argument>-jcasgenoutput</argument>
                                         <argument>src/main/jcas</argument>
@@ -174,7 +185,7 @@
                                     <target>
                                         <delete includeemptydirs="true" verbose="true">
                                             <fileset dir="src/main/jcas">
-                                                <exclude name="ru/kfu/itis/issst/uima/phrrecog/**/*.java"/>
+                                                <exclude name="com/textocat/textokit/phrrecog/**/*.java"/>
                                             </fileset>
                                         </delete>
                                     </target>

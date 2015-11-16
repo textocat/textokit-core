@@ -1,9 +1,0 @@
-#
-#Sat Mar 23 15:13:58 MSK 2013
-org.opencorpora.cas.Word.style=color\=-16711681;layer\=0;strategy\=BACKGROUND;
-ru.kfu.itis.issst.uima.chunker.cas.Chunk.style=color\=-256;layer\=0;strategy\=BACKGROUND;
-ru.kfu.itis.issst.uima.phrrecog.cas.VerbPhrase.style=color\=-65536;layer\=0;strategy\=BOX;
-uima.tcas.DocumentAnnotation.style=color\=-856650;layer\=0;strategy\=BACKGROUND;
-ru.kfu.itis.issst.uima.phrrecog.cas.NounPhrase.style=color\=-65536;layer\=0;strategy\=BOX;
-ru.kfu.itis.cll.uima.commons.DocumentMetadata.style=color\=-4795150;layer\=0;strategy\=BACKGROUND;
-ru.kfu.itis.issst.uima.chunking.cas.Chunk.style=color\=-4787530;layer\=0;strategy\=BACKGROUND;

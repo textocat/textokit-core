@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+	<name>Textokit.PhraseRecognizer.TypeSystem</name>
+	<description />
+	<version>0.1</version>
+	<vendor>Textocat and CLLKazan</vendor>
+	<imports>
+		<import name="com.textocat.textokit.morph.morphology-ts" />
+	</imports>
+	<types>
+		<typeDescription>
+			<name>com.textocat.textokit.phrrecog.cas.Phrase</name>
+			<description>
+				Represents typed 'phrase', i.e. a head word with its dependents.
+				Phrase annotation should have the same borders with its head word. 
+			</description>
+			<supertypeName>uima.tcas.Annotation</supertypeName>
+			<features>
+				<featureDescription>
+					<name>head</name>
+					<description />
+					<rangeTypeName>com.textocat.textokit.morph.fs.Wordform</rangeTypeName>
+				</featureDescription>
+				<featureDescription>
+					<name>dependentWords</name>
+					<description />
+					<rangeTypeName>uima.cas.FSArray</rangeTypeName>
+					<elementType>com.textocat.textokit.morph.fs.Wordform</elementType>
+				</featureDescription>
+				<featureDescription>
+					<name>dependentPhrases</name>
+					<description />
+					<rangeTypeName>uima.cas.FSArray</rangeTypeName>
+					<elementType>com.textocat.textokit.phrrecog.cas.Phrase</elementType>
+				</featureDescription>
+			</features>
+		</typeDescription>
+		<typeDescription>
+			<name>com.textocat.textokit.phrrecog.cas.NounPhrase</name>
+			<description>Represents Noun Phrase</description>
+			<supertypeName>com.textocat.textokit.phrrecog.cas.Phrase</supertypeName>
+			<features>
+				<featureDescription>
+					<name>preposition</name>
+					<description />
+					<rangeTypeName>com.textocat.textokit.morph.fs.Wordform</rangeTypeName>
+				</featureDescription>
+				<featureDescription>
+					<name>particle</name>
+					<description />
+					<rangeTypeName>com.textocat.textokit.morph.fs.Wordform</rangeTypeName>
+				</featureDescription>
+			</features>
+		</typeDescription>
+		<typeDescription>
+			<name>com.textocat.textokit.phrrecog.cas.VerbPhrase</name>
+			<description>Represents Verb Phrase</description>
+			<supertypeName>com.textocat.textokit.phrrecog.cas.Phrase</supertypeName>
+		</typeDescription>
+	</types>
+</typeSystemDescription>
