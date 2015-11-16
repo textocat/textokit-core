@@ -26,5 +26,6 @@
         <module>Textokit.PosTagger.OpenNLP</module>
         <module>Textokit.PosTagger.Util.RNC</module>
         <module>Textokit.PosTagger.Lab</module>
+        <module>Textokit.Demo.PipelineExample</module>
     </modules>
 </project>

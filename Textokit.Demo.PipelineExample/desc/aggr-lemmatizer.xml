@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+    <primitive>false</primitive>
+    <delegateAnalysisEngineSpecifiers>
+        <delegateAnalysisEngine key="tokenizer">
+            <!-- from TokenizerAPI -->
+            <import name="com.textocat.textokit.tokenizer.tokenizer-ae"/>
+        </delegateAnalysisEngine>
+        <delegateAnalysisEngine key="sentence-splitter">
+            <!-- from SentenceSplitter API -->
+            <import name="com.textocat.textokit.segmentation.sentence-splitter-ae"/>
+        </delegateAnalysisEngine>
+        <delegateAnalysisEngine key="pos-tagger">
+            <!-- from PosTaggerAPI -->
+            <import name="com.textocat.textokit.postagger.postagger-ae"/>
+        </delegateAnalysisEngine>
+        <!--
+        <delegateAnalysisEngine key="lemmatizer">
+            <!- from LemmatizerAPI ->
+            <import name="com.textocat.textokit.morph.lemmatizer.lemmatizer-ae" />
+        </delegateAnalysisEngine>
+        -->
+    </delegateAnalysisEngineSpecifiers>
+    <analysisEngineMetaData>
+        <name>Lemmatizer Pipeline</name>
+        <description/>
+        <version>0.4</version>
+        <vendor>Textocat and CLLKazan</vendor>
+        <flowConstraints>
+            <fixedFlow>
+                <node>tokenizer</node>
+                <node>sentence-splitter</node>
+                <node>pos-tagger</node>
+                <!-- <node>lemmatizer</node> -->
+            </fixedFlow>
+        </flowConstraints>
+        <operationalProperties>
+            <modifiesCas>true</modifiesCas>
+            <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+            <outputsNewCASes>false</outputsNewCASes>
+        </operationalProperties>
+    </analysisEngineMetaData>
+    <resourceManagerConfiguration>
+        <externalResources>
+            <externalResource>
+                <!-- from PosTaggerAPI and LemmatizerAPI -->
+                <name>MorphDictionary</name>
+                <description/>
+                <customResourceSpecifier>
+                    <resourceClassName>
+                        com.textocat.textokit.morph.opencorpora.resource.ClasspathMorphDictionaryResource
+                    </resourceClassName>
+                </customResourceSpecifier>
+            </externalResource>
+        </externalResources>
+    </resourceManagerConfiguration>
+</analysisEngineDescription>
