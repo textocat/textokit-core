@@ -4,7 +4,19 @@ title: Textokit – Getting Started
 ---
 # Getting Started
 
-## Installation
+## Contents
+
+* [Installation](#installation)
+* [Preliminary reading - UIMA basics](#uima-basics)
+* [Running](#running)
+  * [How to define an input](#define-input)
+  * [How to compose a text processing pipeline](#compose-pipeline)
+  * [How to consume an output](#consume-output)
+  * [How to run a pipeline](#run-pipeline)
+  * [The complete example](#complete-example)
+  * [How to consume an output - 2](#consume-output-2)
+
+## <a name="installation"></a> Installation
 TextoKit is available as a bunch of Maven artifacts.
 They are published to the Textocat repository that you can use by specifying the following in your project POM:
 {% highlight xml %}
@@ -123,18 +135,18 @@ Consequently, you will end up with the following:
 </properties>
 {% endhighlight %}
 
-## Prerequisite - UIMA basics
+## <a name="uima-basics"></a> Preliminary reading - UIMA basics
 [UIMA Tutorial](http://uima.apache.org/d/uimaj-current/tutorials_and_users_guides.html) – chapters 1, 3 and 5.
 
 [UIMA Reference](http://uima.apache.org/d/uimaj-current/references.html) – chapters 2, 4, 5.
 
 [UIMAfit Guide](http://uima.apache.org/d/uimafit-current/tools.uimafit.book.html) – chapters 1 through 6.
 
-## Running
+## <a name="running"></a> Running
 To process texts with UIMA you need to (1) define an input, (2) compose a processing pipeline and (3) consume output.
 Further sections explain each of these stages in detail.
 
-### How to define an input
+### <a name="define-input"></a> How to define an input
 There is the concept of *collection reader* in UIMA.
 Basically it is an interface similar to an iterator of documents where each document is represented by UIMA CAS.
 Check the [UIMA documentation](http://uima.apache.org/d/uimaj-current/tutorials_and_users_guides.html#ugr.tug.cpe.collection_reader.developing) for details.
@@ -157,7 +169,7 @@ TextoKit's collection readers add a single annotation of type `DocumentMetadata`
 and set its `sourceUri` feature (and optionally some others).
 A value of `sourceUri` is supposed to be a reference to source of text, e.g., a file URL, a record identifier, etc.
 
-### How to compose a text processing pipeline
+### <a name="compose-pipeline"></a> How to compose a text processing pipeline
 Text processing pipeline is called an *aggregate analysis engine* in UIMA.
 It is composed from a set of smaller analysis engines and a flow controller.
 The latter defines a route for CASes.
@@ -214,9 +226,11 @@ morphDictDesc.setName(PosTaggerAPI.MORPH_DICTIONARY_RESOURCE_NAME);
 PipelineDescriptorUtils.getResourceManagerConfiguration(aeDesc).addExternalResource(morphDictDesc);
 {% endhighlight %}
 
-### How to consume output
+### <a name="consume-output"></a> How to consume an output
 There are several ways to extract data from a processed CAS depending on a deployment.
-The first approach is to implement an analysis engine and simply add it to the end of the pipeline.
+The first approach is to implement an analysis engine (starting from [`JCasAnnotator_ImplBase`](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/component/JCasAnnotator_ImplBase.html) or [`CasAnnotator_ImplBase`](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/component/CasAnnotator_ImplBase.html)),
+write extraction logic in its `process` method where a CAS instance is passed.
+And then you simply add this AE to the end of the pipeline.
 Here is the example where each word with its lemma and PoS-tag is written to standard output:
 {% highlight java %}
 public class WordPosLemmaWriter extends JCasAnnotator_ImplBase {
@@ -236,7 +250,7 @@ public class WordPosLemmaWriter extends JCasAnnotator_ImplBase {
 
 Another approach will be shown in a section below.
 
-### How to run
+### <a name="run-pipeline"></a> How to run a pipeline
 UIMA provides quite a few options for pipeline deployment.
 The easiest way is arguably provided by UIMAfit's [`SimplePipeline`](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/pipeline/SimplePipeline.html) utility.
 Continuing our example an invocation is the following:
@@ -265,8 +279,29 @@ Note that they are provided in a separate module:
 Although UIMA CPE provides some limited scalability and remote deployment capabilities, it is a medium solution.
 There are at least two more advanced tools: [UIMA Asynchronous Scaleout](https://uima.apache.org/doc-uimaas-what.html) and [UIMA DUCC](https://uima.apache.org/doc-uimaducc-whatitam.html).
 
-### Complete example
+### <a name="complete-example"></a> The complete example
 You can see the complete example described above in [the project on Github](https://github.com/textocat/textokit-core-examples/tree/master/getting-started).
 
-### How to consume output - 2
-With JCasIterable...
+### <a name="consume-output-2"></a> How to consume an output - 2
+Sometimes writing a separate annotator class just to do something with processing output might be excessive.
+If you don't need parallelization of a pipeline (by CPE, AS or DUCC)
+you can inspect CAS instances right in your application code after they are processed by the pipeline.
+For such cases UIMAfit's [JCasIterable](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/pipeline/JCasIterable.html) does all preparations for you:
+each iterator instantiates a collection reader and an analysis engine,
+and creates a CAS instance which will be reused for each document in the collection.
+This CAS instance is returned by the iterator's `next` method, once for each document.
+Consequently, we can rewrite the example above without `WordPosLemmaWriter` as the following:
+
+{% highlight java %}
+JCasIterable jCasIterable = new JCasIterable(readerDesc, aeDesc);
+for (JCas jCas : jCasIterable) {
+    for (Word w : JCasUtil.select(jCas, Word.class)) {
+        String src = w.getCoveredText();
+        String lemma = MorphCasUtils.getFirstLemma(w);
+        String posTag = MorphCasUtils.getFirstPosTag(w);
+        System.out.print(String.format("%s/%s/%s ", src, lemma, posTag));
+    }
+    // mark the end of a document
+    System.out.println("\n");
+}
+{% endhighlight %}
