@@ -149,7 +149,7 @@ TextoKit contains several collection reader implementations, we mention here a f
 
 UIMA needs a `CollectionReaderDescription` to produce an instance of collection reader in runtime.
 You can either write an XML description (as supposed in UIMA documentation) or build it programmatically.
-The latter approach is facilitated by UIMAfit's `CollectionReaderFactory`.
+The latter approach is facilitated by UIMAfit's [`CollectionReaderFactory`](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/factory/CollectionReaderFactory.html).
 The quite common convention is to provide a static factory method in a collection reader class where the method produces a description instance.
 
 The main purpose of a collection reader is to set a document text and some initial feature structures into an empty CAS.
@@ -166,7 +166,7 @@ It implements linear ordering of constituent analysis engines, so you just list 
 
 UIMA needs an `AnalysisEngineDescription` to produce an instance of analysis engine in runtime.
 You can either write an XML description (as supposed in UIMA documentation) or build it programmatically.
-The latter approach is facilitated by UIMAfit's `AnalysisEngineFactory`.
+The latter approach is facilitated by UIMAfit's [`AnalysisEngineFactory`](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/factory/AnalysisEngineFactory.html).
 When you assemble a description for aggregate AE there are a couple of ways to define an inner AE:
 
 * write a description for the inner AE from scratch,
@@ -189,7 +189,7 @@ in corresponding _facade classes_ of API modules, here are a few of them:
 
 * `LemmatizerAPI` (in `textokit-lemmatizer-api`).
 
-Using these names you can assemble an aggregate description with UIMAfit's `AnalysisEngineFactory`:
+Using these names you can assemble an aggregate description with UIMAfit's [`AnalysisEngineFactory`](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/factory/AnalysisEngineFactory.html):
 {% highlight java %}
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.* ;
 ...
@@ -234,10 +234,36 @@ public class WordPosLemmaWriter extends JCasAnnotator_ImplBase {
 }
 {% endhighlight %}
 
-Another approach will be shown in section below.
+Another approach will be shown in a section below.
 
 ### How to run
-TODO
+UIMA provides quite a few options for pipeline deployment.
+The easiest way is arguably provided by UIMAfit's [`SimplePipeline`](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/pipeline/SimplePipeline.html) utility.
+Continuing our example an invocation is the following:
+
+{% highlight java %}
+AnalysisEngineDescription writerDesc = createEngineDescription(WordPosLemmaWriter.class);
+
+SimplePipeline.runPipeline(readerDesc, aeDesc, writerDesc);
+{% endhighlight %}
+
+This approach is good for quick small experiments and testing,
+it utilizes a single thread for analysis and only a single CAS instance which is reset before each document processing.
+
+One of ways to enable multi-threaded processing is to use [Collection Processing Engine](http://uima.apache.org/d/uimaj-current/tutorials_and_users_guides.html#ugr.tug.cpe) machinery for deployment.
+Fortunately, UIMAfit has utilities to minimize efforts for configuring and launching CPE:
+[CpeBuilder](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/cpe/CpeBuilder.html) and [CpePipeline](http://uima.apache.org/d/uimafit-current/api/org/apache/uima/fit/cpe/CpePipeline.html).
+Note that they are provided in a separate module:
+
+{% highlight xml %}
+<dependency>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>uimafit-cpe</artifactId>
+    <version>2.1.0</version>
+</dependency>
+{% endhighlight %}
+Although UIMA CPE provides some limited scalability and remote deployment capabilities, it is a medium solution.
+There are at least two more advanced tools: [UIMA Asynchronous Scaleout](https://uima.apache.org/doc-uimaas-what.html) and [UIMA DUCC](https://uima.apache.org/doc-uimaducc-whatitam.html).
 
 ### Complete example
 You can see the complete example described above in [the project on Github](https://github.com/textocat/textokit-core-examples/tree/master/getting-started).
