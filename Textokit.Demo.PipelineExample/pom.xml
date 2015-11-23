@@ -85,7 +85,12 @@
         </dependency>
         <dependency>
             <groupId>com.textocat.textokit.core</groupId>
-            <artifactId>textokit-phrase-recognizer</artifactId>
+            <artifactId>textokit-phrase-recognizer-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.textocat.textokit.core</groupId>
+            <artifactId>textokit-phrase-recognizer-spc</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

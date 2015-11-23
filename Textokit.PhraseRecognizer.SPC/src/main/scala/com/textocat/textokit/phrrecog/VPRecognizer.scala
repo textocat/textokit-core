@@ -14,9 +14,6 @@
  *    limitations under the License.
  */
 
-/**
- *
- */
 package com.textocat.textokit.phrrecog
 
 import com.google.common.collect.ComparisonChain
@@ -25,7 +22,7 @@ import com.textocat.textokit.morph.model.{MorphConstants => M}
 import com.textocat.textokit.phrrecog.VPRecognizer._
 import com.textocat.textokit.phrrecog.cas.VerbPhrase
 import com.textocat.textokit.segmentation.fstype.Sentence
-import grizzled.slf4j.Logging
+import com.typesafe.scalalogging.StrictLogging
 import org.apache.uima.cas.Type
 import org.apache.uima.cas.text.AnnotationFS
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase
@@ -41,7 +38,7 @@ import scala.collection.mutable.{Buffer, HashSet, ListBuffer}
  * @author Rinat Gareev
  *
  */
-class VPRecognizer extends JCasAnnotator_ImplBase with Logging {
+class VPRecognizer extends JCasAnnotator_ImplBase with StrictLogging {
 
   private var wordType: Type = _
 
@@ -102,7 +99,7 @@ class VPRecognizer extends JCasAnnotator_ImplBase with Logging {
                                 infIndex: Int,
                                 inf: Wordform): Iterable[Wordform] = {
     val infW = inf.getWord
-    debug("Handling infinitive: (%s,%s) %s".format(infW.getBegin, infW.getEnd, infW.getCoveredText))
+    logger.debug("Handling infinitive: (%s,%s) %s".format(infW.getBegin, infW.getEnd, infW.getCoveredText))
     var head: Wordform = null
     // search to the left
     if (infIndex > 0) {

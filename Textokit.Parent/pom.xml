@@ -180,7 +180,12 @@
             </dependency>
             <dependency>
                 <groupId>com.textocat.textokit.core</groupId>
-                <artifactId>textokit-phrase-recognizer</artifactId>
+                <artifactId>textokit-phrase-recognizer-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-phrase-recognizer-spc</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- component resources (dictionaries, models, etc.) -->
@@ -322,6 +327,11 @@
                 <groupId>org.clapper</groupId>
                 <artifactId>grizzled-slf4j_2.11</artifactId>
                 <version>1.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.typesafe.scala-logging</groupId>
+                <artifactId>scala-logging_2.11</artifactId>
+                <version>3.1.0</version>
             </dependency>
             <dependency>
                 <groupId>org.scalatest</groupId>

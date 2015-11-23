@@ -21,7 +21,7 @@ import com.textocat.textokit.morph.fs.{Word, Wordform}
 import com.textocat.textokit.phrrecog.cas.{NounPhrase, Phrase}
 import com.textocat.textokit.phrrecog.util.NPAnnotationStringParser._
 import com.textocat.textokit.phrrecog.wfOffsetComp
-import grizzled.slf4j.Logging
+import com.typesafe.scalalogging.StrictLogging
 import org.apache.uima.cas.text.AnnotationFS
 import org.apache.uima.fit.util.FSCollectionFactory
 import org.apache.uima.jcas.JCas
@@ -37,7 +37,7 @@ class NPAnnotationStringParserFactory extends PhraseStringParsersFactory {
 }
 
 class NPAnnotationStringParser(protected val jCas: JCas, protected val tokens: Array[AnnotationFS])
-  extends PhraseStringParsers with Logging {
+  extends PhraseStringParsers with StrictLogging {
 
   override protected def createAnnotation(prefixedWordformsMap: Map[String, Seq[Wordform]], depPhrases: Seq[Phrase]): NounPhrase = {
     val unprefixedWfs = prefixedWordformsMap.get(null) match {
@@ -53,7 +53,7 @@ class NPAnnotationStringParser(protected val jCas: JCas, protected val tokens: A
         val prepWord = new Word(jCas)
         prepWord.setBegin(sortedList.firstKey.getWord.getBegin)
         prepWord.setEnd(sortedList.lastKey.getWord.getEnd)
-        info("Compound preposition detected: %s".format(prepWord.getCoveredText))
+        logger.info("Compound preposition detected: %s".format(prepWord.getCoveredText))
 
         val prepWf = new Wordform(jCas)
         prepWf.setWord(prepWord)
