@@ -47,7 +47,7 @@ package object phrrecog {
    * Returns the first word of NP.
    * If ignoreAux is true then leading preposition or particle is ignored.
    */
-  def getFirstWord(np: NounPhrase, ignoreAux: Boolean): Word =
+  def getFirstWord(np: NounPhrase, ignoreAux: Boolean = false): Word =
     toTraversable(np, ignoreAux).minBy(_.getWord.getBegin).getWord
 
   private[phrrecog] def toTraversable(np: NounPhrase, ignoreAux: Boolean): Traversable[Wordform] =
@@ -91,14 +91,14 @@ package object phrrecog {
    * Returns the last word of NP.
    * If ignoreAux is true then leading preposition or particle is ignored.
    */
-  def getLastWord(np: NounPhrase, ignoreAux: Boolean): Word =
+  def getLastWord(np: NounPhrase, ignoreAux: Boolean = false): Word =
     toTraversable(np, ignoreAux).maxBy(_.getWord.getBegin).getWord
 
-  def getWords(np: NounPhrase, ignoreAux: Boolean): SortedSet[Word] =
+  def getWords(np: NounPhrase, ignoreAux: Boolean = false): SortedSet[Word] =
     SortedSet.empty[Word](annOffsetComp) ++ toTraversable(np, ignoreAux).map(_.getWord)
 
   def getOffsets(np: NounPhrase): (Int, Int) =
-    (getFirstWord(np, false).getBegin, getLastWord(np, false).getEnd)
+    (getFirstWord(np).getBegin, getLastWord(np).getEnd)
 
   def containWord(np: NounPhrase, w: Word): Boolean =
     toTraversable(np, false).exists(_.getWord == w)

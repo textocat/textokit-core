@@ -12,7 +12,7 @@
             <name>com.textocat.textokit.phrrecog.cas.Phrase</name>
             <description>
                 Represents typed 'phrase', i.e. a head word with its dependents.
-                Phrase annotation should have the same borders with its head word.
+                Phrase annotation has a span starting from its first word and ending on its last word (including).
             </description>
             <supertypeName>uima.tcas.Annotation</supertypeName>
             <features>

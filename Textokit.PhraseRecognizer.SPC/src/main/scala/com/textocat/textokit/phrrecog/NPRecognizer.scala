@@ -13,10 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-/**
- *
- */
 package com.textocat.textokit.phrrecog
 
 import com.textocat.textokit.morph.fs.{Word, Wordform}
@@ -71,8 +67,6 @@ class NPRecognizer extends JCasAnnotator_ImplBase with NPParsers {
     val jCas = head.getCAS.getJCas
 
     val phrase = new NounPhrase(jCas)
-    phrase.setBegin(head.getWord.getBegin)
-    phrase.setEnd(head.getWord.getEnd)
 
     phrase.setHead(head)
     np.prepOpt match {
@@ -93,6 +87,10 @@ class NPRecognizer extends JCasAnnotator_ImplBase with NPParsers {
     val depNPsFsArray = new FSArray(jCas, depAnnoQ.size)
     FSCollectionFactory.fillArrayFS(depNPsFsArray, depAnnoQ)
     phrase.setDependentPhrases(depNPsFsArray)
+    //
+    val (begin, end) = getOffsets(phrase)
+    phrase.setBegin(begin)
+    phrase.setEnd(end)
 
     phrase
   }

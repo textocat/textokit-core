@@ -18,6 +18,7 @@ package com.textocat.textokit.phrrecog.util
 
 import com.textocat.textokit.commons.cas.FSUtils
 import com.textocat.textokit.morph.fs.{Word, Wordform}
+import com.textocat.textokit.phrrecog
 import com.textocat.textokit.phrrecog.cas.{NounPhrase, Phrase}
 import com.textocat.textokit.phrrecog.util.NPAnnotationStringParser._
 import com.textocat.textokit.phrrecog.wfOffsetComp
@@ -80,13 +81,14 @@ class NPAnnotationStringParser(protected val jCas: JCas, protected val tokens: A
     FSCollectionFactory.fillArrayFS(depPhrasesFsArray, depPhrases)
 
     val phrase = new NounPhrase(jCas)
-    phrase.setBegin(headWf.getWord.getBegin)
-    phrase.setEnd(headWf.getWord.getEnd)
     if (prepWfOpt.isDefined) phrase.setPreposition(prepWfOpt.get)
     if (particleWfOpt.isDefined) phrase.setParticle(particleWfOpt.get)
     phrase.setHead(headWf)
     phrase.setDependentWords(depWordformsFsArray)
     phrase.setDependentPhrases(depPhrasesFsArray)
+    val (begin, end) = phrrecog.getOffsets(phrase)
+    phrase.setBegin(begin)
+    phrase.setEnd(end)
     phrase
   }
 }
