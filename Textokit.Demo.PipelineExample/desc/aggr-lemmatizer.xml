@@ -20,7 +20,7 @@
             <import name="com.textocat.textokit.morph.lemmatizer.lemmatizer-ae" />
         </delegateAnalysisEngine>
         <delegateAnalysisEngine key="np-recognizer">
-            <import name="com.textocat.textokit.phrrecog.NPRecognizer" />
+            <import name="com.textocat.textokit.phrrecog.np-recognizer" />
         </delegateAnalysisEngine>
     </delegateAnalysisEngineSpecifiers>
     <analysisEngineMetaData>
