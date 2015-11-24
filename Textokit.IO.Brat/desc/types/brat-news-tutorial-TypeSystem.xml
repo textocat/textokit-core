@@ -6,7 +6,7 @@
 	<vendor />
 
 	<imports>
-		<import name="ru.kfu.itis.cll.uima.commons.Commons-TypeSystem" />
+		<import name="com.textocat.textokit.commons.Commons-TypeSystem" />
 	</imports>
 
 	<types>

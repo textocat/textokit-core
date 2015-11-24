@@ -4,7 +4,7 @@
 	<primitive>false</primitive>
 	<delegateAnalysisEngineSpecifiers>
 		<delegateAnalysisEngine key="U2B">
-			<import name="ru.kfu.itis.issst.uima.brat.UIMA2BratAnnotator" />
+			<import name="com.textocat.textokit.io.brat.UIMA2BratAnnotator" />
 		</delegateAnalysisEngine>
 	</delegateAnalysisEngineSpecifiers>
 	<analysisEngineMetaData>
@@ -100,7 +100,7 @@
 				<name>BratNoteMappers</name>
 				<value>
 					<array>
-						<string>issst.test.HL_City : ru.kfu.itis.issst.uima.brat.test.CityNoteMapper</string>
+						<string>issst.test.HL_City : com.textocat.textokit.io.brat.test.CityNoteMapper</string>
 					</array>
 				</value>
 			</nameValuePair>
