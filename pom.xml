@@ -31,5 +31,6 @@
         <module>Textokit.Lemmatizer.DictionarySim</module>
         <module>Textokit.PhraseRecognizer.API</module>
         <module>Textokit.PhraseRecognizer.SPC</module>
+        <module>Textokit.IO.Brat</module>
     </modules>
 </project>
