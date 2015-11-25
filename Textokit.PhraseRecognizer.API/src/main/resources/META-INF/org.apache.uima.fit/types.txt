@@ -1,0 +1,1 @@
+classpath*:com/textocat/textokit/phrrecog/ts-phrase-recognizer.xml

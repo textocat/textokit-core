@@ -23,6 +23,7 @@ import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.resource.metadata.impl.TypeSystemDescription_impl;
 import org.apache.uima.util.CasCreationUtils;
 import org.junit.Test;
 import com.textocat.textokit.commons.DocumentMetadata;
@@ -80,7 +81,7 @@ public class DocumentUtilsTest {
 
     @Test
     public void setUriShouldFailIfNoTypeDefined() throws ResourceInitializationException {
-        TypeSystemDescription inputTS = TypeSystemDescriptionFactory.createTypeSystemDescription();
+        TypeSystemDescription inputTS = new TypeSystemDescription_impl();
         CAS cas = CasCreationUtils.createCas(inputTS, null, null);
         cas.setDocumentText("Some text");
         assertEquals(null, DocumentUtils.getDocumentUri(cas));
