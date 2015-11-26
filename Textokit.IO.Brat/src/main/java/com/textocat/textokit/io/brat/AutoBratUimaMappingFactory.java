@@ -38,10 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.textocat.textokit.commons.cas.FSTypeUtils.getAnnotationType;
 import static com.textocat.textokit.io.brat.PUtils.toProperJavaName;
@@ -53,17 +50,35 @@ import static java.util.Arrays.asList;
 public class AutoBratUimaMappingFactory extends BratUimaMappingFactoryBase implements Initializable {
 
     public static final String PARAM_NAMESPACES_TO_SCAN = "namespacesToScan";
+    public static final String PARAM_NAME_REWRITES_KEYS = "bratNameRewriteKeys";
+    public static final String PARAM_NAME_REWRITES_VALUES = "bratNameRewriteValues";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @ConfigurationParameter(name = PARAM_NAMESPACES_TO_SCAN, mandatory = false)
     private Set<String> namespacesToScan;
+    @ConfigurationParameter(name = PARAM_NAME_REWRITES_KEYS, mandatory = false)
+    private List<String> bratNameRewriteKeys;
+    @ConfigurationParameter(name = PARAM_NAME_REWRITES_VALUES, mandatory = false)
+    private List<String> bratNameRewriteValues;
     //
     private Type annotationType;
+    private Map<String, String> bratNameRewrites;
 
     @Override
     public void initialize(UimaContext ctx) throws ResourceInitializationException {
         ConfigurationParameterInitializer.initialize(this, ctx);
+        bratNameRewrites = Maps.newHashMap();
+        if (bratNameRewriteKeys != null) {
+            if (bratNameRewriteKeys.size() != bratNameRewriteValues.size()) {
+                throw new IllegalStateException(String.format(
+                        "%s size must correspond to %s",
+                        PARAM_NAME_REWRITES_VALUES, PARAM_NAME_REWRITES_KEYS));
+            }
+            for (int i = 0; i < bratNameRewriteKeys.size(); i++) {
+                bratNameRewrites.put(bratNameRewriteKeys.get(i), bratNameRewriteValues.get(i));
+            }
+        }
     }
 
     @Override
@@ -77,20 +92,22 @@ public class AutoBratUimaMappingFactory extends BratUimaMappingFactoryBase imple
         BratUimaMapping.Builder b = BratUimaMapping.builder();
         // map entity types
         for (BratEntityType bratType : bratTypesCfg.getEntityTypes()) {
-            Type uimaType = searchTypeByBratName(bratType.getName());
+            String bratName = bratType.getName();
+            Type uimaType = searchTypeByBratName(bratName);
             if (uimaType == null) {
-                log.warn("Brat entity type {} will be ignored", bratType.getName());
+                log.warn("Brat entity type {} will be ignored", bratName);
             } else {
                 b.addEntityMapping(bratType, uimaType);
-                log.info("Brat entity type {} is mapped to UIMA type {}", bratType.getName(),
+                log.info("Brat entity type {} is mapped to UIMA type {}", bratName,
                         uimaType);
             }
         }
         // map relation types
         for (BratRelationType bratType : bratTypesCfg.getRelationTypes()) {
-            Type uimaType = searchTypeByBratName(bratType.getName());
+            String bratName = bratType.getName();
+            Type uimaType = searchTypeByBratName(bratName);
             if (uimaType == null) {
-                log.warn("Brat relation type {} will be ignored", bratType.getName());
+                log.warn("Brat relation type {} will be ignored", bratName);
             } else {
                 Map<Feature, String> featureRoles = Maps.newHashMap();
                 for (String argName : asList(bratType.getArg1Name(), bratType.getArg2Name())) {
@@ -100,45 +117,49 @@ public class AutoBratUimaMappingFactory extends BratUimaMappingFactoryBase imple
                         break;
                     } else {
                         featureRoles.put(feat, argName);
-                        log.info("Argument {}#{} is mapped to feature {}", new Object[]{
-                                bratType.getName(), argName, feat
-                        });
+                        log.info("Argument {}#{} is mapped to feature {}", bratName, argName, feat);
                     }
                 }
                 if (featureRoles.size() == 2) {
                     b.addRelationMapping(bratType, uimaType, featureRoles);
-                    log.info("Brat relation type {} is mapped to UIMA type {}", bratType.getName(),
+                    log.info("Brat relation type {} is mapped to UIMA type {}", bratName,
                             uimaType);
                 } else {
                     log.warn("Brat relation type {} will be ignored. Look at previous warnings",
-                            bratType.getName());
+                            bratName);
                 }
             }
         }
         // map event types
         for (BratEventType bratType : bratTypesCfg.getEventTypes()) {
-            Type uimaType = searchTypeByBratName(bratType.getName());
+            String bratName = bratType.getName();
+            Type uimaType = searchTypeByBratName(bratName);
             if (uimaType == null) {
-                log.warn("Brat event type {} will be ignored", bratType.getName());
+                log.warn("Brat event type {} will be ignored", bratName);
             } else {
                 Map<Feature, String> featureRoles = Maps.newHashMap();
                 for (String roleName : bratType.getRoles().keySet()) {
                     Feature feat = searchFeatureByBratRoleName(uimaType, roleName);
                     if (feat == null) {
-                        log.warn("Role {}#{} will be ignored", bratType.getName(), roleName);
+                        log.warn("Role {}#{} will be ignored", bratName, roleName);
                     } else {
                         featureRoles.put(feat, roleName);
-                        log.info("Role {}#{} is mapped to feature {}", new Object[]{
-                                bratType.getName(), roleName, feat
-                        });
+                        log.info("Role {}#{} is mapped to feature {}", bratName, roleName, feat);
                     }
                 }
                 b.addEventMapping(bratType, uimaType, featureRoles);
-                log.info("Brat event type {} is mapped to UIMA type {}", bratType.getName(),
+                log.info("Brat event type {} is mapped to UIMA type {}", bratName,
                         uimaType);
             }
         }
         return b.build();
+    }
+
+    private String rewriteOrSelf(String origName) {
+        if (bratNameRewrites.containsKey(origName)) {
+            return bratNameRewrites.get(origName);
+        }
+        return origName;
     }
 
     private Feature searchFeatureByBratRoleName(Type uimaType, String roleName) {
@@ -163,6 +184,7 @@ public class AutoBratUimaMappingFactory extends BratUimaMappingFactoryBase imple
     }
 
     private Type searchTypeByBratName(String bratName) {
+        bratName = rewriteOrSelf(bratName);
         // generate candidate base names
         Set<String> baseNameCandidates = Sets.newLinkedHashSet();
         // add original name
