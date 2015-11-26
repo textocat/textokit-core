@@ -91,17 +91,25 @@ public class AnnotationUtils {
         return anno.getEnd() - anno.getBegin();
     }
 
+    public static boolean isEmpty(AnnotationFS anno) {
+        return anno.getBegin() == anno.getEnd();
+    }
+
     /**
      * Test two given annotations for overlapping.
      * Annotations overlap if they share at least one common character in a text.
+     * Note that no annotations can overlap with an empty annotation that has equal begin and end.
      *
      * @param first  an annotation instance
      * @param second an annotation instance
      * @return do given annotations overlap or not.
      */
-    public static boolean overlap(Annotation first, Annotation second) {
-        return (first.getBegin() < second.getBegin() && first.getEnd() > second.getBegin())
-                || (first.getBegin() >= second.getBegin() && first.getBegin() < second.getEnd());
+    public static boolean overlap(AnnotationFS first, AnnotationFS second) {
+        if (isEmpty(first) || isEmpty(second)) {
+            return false;
+        }
+        // see http://stackoverflow.com/questions/3269434
+        return first.getBegin() < second.getEnd() && second.getBegin() < first.getEnd();
     }
 
     /**
