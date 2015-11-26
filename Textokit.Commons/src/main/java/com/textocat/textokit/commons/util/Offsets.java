@@ -20,6 +20,8 @@ package com.textocat.textokit.commons.util;
 import org.apache.uima.cas.text.AnnotationFS;
 
 /**
+ * Represents annotation offsets, i.e., a left-closed right-closed integer interval.
+ *
  * @author Rinat Gareev
  */
 public class Offsets {

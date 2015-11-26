@@ -92,13 +92,12 @@ public class AnnotationUtils {
     }
 
     /**
-     * TODO what if first.begin == first.end || second.begin == second.end ?
+     * Test two given annotations for overlapping.
+     * Annotations overlap if they share at least one common character in a text.
      *
-     * @param first
-     * @param second
-     * @return does given annotation overlap or not. See
-     * {@link #getOverlapping(JCas, FSIterator, Annotation)} for
-     * overlapping definition.
+     * @param first  an annotation instance
+     * @param second an annotation instance
+     * @return do given annotations overlap or not.
      */
     public static boolean overlap(Annotation first, Annotation second) {
         return (first.getBegin() < second.getBegin() && first.getEnd() > second.getBegin())
