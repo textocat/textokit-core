@@ -53,7 +53,7 @@ public class AnnotationUtils {
     }
 
     /**
-     * @param anno
+     * @param anno an annotation instance
      * @return string containing given annotation offset and covered text
      */
     public static String toPrettyString(AnnotationFS anno) {
@@ -113,19 +113,15 @@ public class AnnotationUtils {
     }
 
     /**
-     * @param first
-     * @param second
-     * @return overlap length or 0 if given annotation do not overlap. See
-     * {@link #getOverlapping(JCas, FSIterator, Annotation)} for
-     * overlapping (overlapping) definition.
+     * @param first  an annotation instance
+     * @param second an annotation instance
+     * @return a number of shared characters between the two given annotations.
      */
     public static int overlapLength(Annotation first, Annotation second) {
-        if (first.getBegin() < second.getBegin() && first.getEnd() > second.getBegin()) {
-            return Math.min(first.getEnd(), second.getEnd()) - second.getBegin();
-        } else if (first.getBegin() >= second.getBegin() && first.getBegin() < second.getEnd()) {
-            return Math.min(first.getEnd(), second.getEnd()) - first.getBegin();
+        if (!overlap(first, second)) {
+            return 0;
         }
-        return 0;
+        return Math.min(first.getEnd(), second.getEnd()) - Math.max(first.getBegin(), second.getBegin());
     }
 
     /**

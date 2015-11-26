@@ -28,30 +28,32 @@ import org.apache.uima.util.CasCreationUtils;
 import org.junit.Test;
 
 import static java.lang.String.format;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
  * @author Rinat Gareev
  */
 public class AnnotationUtilsTest {
-    public static final Table<Offsets, Offsets, Boolean> overlapTestTable = HashBasedTable.create();
+    // value is a number of shared characters
+    public static final Table<Offsets, Offsets, Integer> overlapTestTable = HashBasedTable.create();
 
     static {
-        overlapTestTable.put(new Offsets(10, 50), new Offsets(50, 60), false);
-        overlapTestTable.put(new Offsets(10, 51), new Offsets(50, 60), true);
-        overlapTestTable.put(new Offsets(20, 30), new Offsets(10, 40), true);
-        overlapTestTable.put(new Offsets(10, 49), new Offsets(50, 60), false);
-        overlapTestTable.put(new Offsets(10, 50), new Offsets(10, 50), true);
-        overlapTestTable.put(new Offsets(10, 50), new Offsets(10, 51), true);
-        overlapTestTable.put(new Offsets(10, 50), new Offsets(11, 50), true);
+        overlapTestTable.put(new Offsets(10, 50), new Offsets(50, 60), 0);
+        overlapTestTable.put(new Offsets(10, 51), new Offsets(50, 60), 1);
+        overlapTestTable.put(new Offsets(20, 30), new Offsets(10, 40), 10);
+        overlapTestTable.put(new Offsets(10, 49), new Offsets(50, 60), 0);
+        overlapTestTable.put(new Offsets(10, 50), new Offsets(10, 50), 40);
+        overlapTestTable.put(new Offsets(10, 50), new Offsets(10, 51), 40);
+        overlapTestTable.put(new Offsets(10, 50), new Offsets(11, 50), 39);
         // nothing overlaps with empty offsets
-        overlapTestTable.put(new Offsets(10, 10), new Offsets(20, 30), false);
-        overlapTestTable.put(new Offsets(10, 10), new Offsets(5, 15), false);
-        overlapTestTable.put(new Offsets(10, 10), new Offsets(10, 15), false);
-        overlapTestTable.put(new Offsets(10, 10), new Offsets(5, 10), false);
+        overlapTestTable.put(new Offsets(10, 10), new Offsets(20, 30), 0);
+        overlapTestTable.put(new Offsets(10, 10), new Offsets(5, 15), 0);
+        overlapTestTable.put(new Offsets(10, 10), new Offsets(10, 15), 0);
+        overlapTestTable.put(new Offsets(10, 10), new Offsets(5, 10), 0);
         // this table must be simmetrical
-        Table<Offsets, Offsets, Boolean> tmp = HashBasedTable.create();
-        for (Table.Cell<Offsets, Offsets, Boolean> cell : overlapTestTable.cellSet()) {
+        Table<Offsets, Offsets, Integer> tmp = HashBasedTable.create();
+        for (Table.Cell<Offsets, Offsets, Integer> cell : overlapTestTable.cellSet()) {
             tmp.put(cell.getColumnKey(), cell.getRowKey(), cell.getValue());
         }
         overlapTestTable.putAll(tmp);
@@ -67,14 +69,14 @@ public class AnnotationUtilsTest {
                 .getJCas();
         Annotation firstAnno = new Annotation(cas);
         Annotation secondAnno = new Annotation(cas);
-        for (Table.Cell<Offsets, Offsets, Boolean> testCell : overlapTestTable.cellSet()) {
+        for (Table.Cell<Offsets, Offsets, Integer> testCell : overlapTestTable.cellSet()) {
             firstAnno.setBegin(testCell.getRowKey().getBegin());
             firstAnno.setEnd(testCell.getRowKey().getEnd());
             //
             secondAnno.setBegin(testCell.getColumnKey().getBegin());
             secondAnno.setEnd(testCell.getColumnKey().getEnd());
             //
-            if (testCell.getValue()) {
+            if (testCell.getValue() > 0) {
                 if (!AnnotationUtils.overlap(firstAnno, secondAnno)) {
                     fail(format("Annotations %s and %s must overlap but they do not", firstAnno, secondAnno));
                 }
@@ -83,6 +85,26 @@ public class AnnotationUtilsTest {
                     fail(format("Annotations %s and %s must not overlap but they do", firstAnno, secondAnno));
                 }
             }
+        }
+    }
+
+    @Test
+    public void testOverlapLength() throws ResourceInitializationException, CASException {
+        JCas cas = CasCreationUtils.createCas(
+                TypeSystemDescriptionFactory.createTypeSystemDescription(), null, null)
+                .getJCas();
+        Annotation firstAnno = new Annotation(cas);
+        Annotation secondAnno = new Annotation(cas);
+        for (Table.Cell<Offsets, Offsets, Integer> testCell : overlapTestTable.cellSet()) {
+            firstAnno.setBegin(testCell.getRowKey().getBegin());
+            firstAnno.setEnd(testCell.getRowKey().getEnd());
+            //
+            secondAnno.setBegin(testCell.getColumnKey().getBegin());
+            secondAnno.setEnd(testCell.getColumnKey().getEnd());
+            //
+            assertEquals("overlapLength",
+                    AnnotationUtils.overlapLength(firstAnno, secondAnno),
+                    testCell.getValue().longValue());
         }
     }
 }
