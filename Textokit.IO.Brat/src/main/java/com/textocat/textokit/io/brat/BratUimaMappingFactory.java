@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.textocat.textokit.io.brat;
 
@@ -9,15 +9,14 @@ import org.nlplab.brat.configuration.BratTypesConfiguration;
 
 /**
  * @author Rinat Gareev
- * 
  */
 public interface BratUimaMappingFactory {
 
-	// Init
-	void setTypeSystem(TypeSystem ts);
+    // Init
+    void setTypeSystem(TypeSystem ts);
 
-	void setBratTypes(BratTypesConfiguration btConf);
+    void setBratTypes(BratTypesConfiguration btConf);
 
-	// Then invoke
-	BratUimaMapping getMapping() throws ResourceInitializationException;
+    // Then invoke
+    BratUimaMapping getMapping() throws ResourceInitializationException;
 }

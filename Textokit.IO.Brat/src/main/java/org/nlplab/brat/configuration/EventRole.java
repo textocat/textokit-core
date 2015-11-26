@@ -1,82 +1,81 @@
 /**
- * 
+ *
  */
 package org.nlplab.brat.configuration;
 
-import java.util.Set;
-
+import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 
 public class EventRole {
-	public static enum Cardinality {
-		ONE(false), OPTIONAL(false), ARRAY(true), NON_EMPTY_ARRAY(true);
+    public static enum Cardinality {
+        ONE(false), OPTIONAL(false), ARRAY(true), NON_EMPTY_ARRAY(true);
 
-		private boolean allowsMultipleValues;
+        private boolean allowsMultipleValues;
 
-		private Cardinality(boolean allowsMultipleValues) {
-			this.allowsMultipleValues = allowsMultipleValues;
-		}
+        private Cardinality(boolean allowsMultipleValues) {
+            this.allowsMultipleValues = allowsMultipleValues;
+        }
 
-		public boolean allowsMultipleValues() {
-			return allowsMultipleValues;
-		}
-	}
+        public boolean allowsMultipleValues() {
+            return allowsMultipleValues;
+        }
+    }
 
-	private String role;
-	private Set<BratType> rangeTypes;
-	private Cardinality cardinality;
+    private String role;
+    private Set<BratType> rangeTypes;
+    private Cardinality cardinality;
 
-	public EventRole(String role, Iterable<BratType> rangeTypes, Cardinality cardinality) {
-		this.role = role;
-		this.rangeTypes = ImmutableSet.copyOf(rangeTypes);
-		if (this.rangeTypes.isEmpty()) {
-			throw new IllegalArgumentException("Empty rangeTypes");
-		}
-		this.cardinality = cardinality;
-		if (role == null || rangeTypes == null || cardinality == null) {
-			throw new NullPointerException();
-		}
-	}
+    public EventRole(String role, Iterable<BratType> rangeTypes, Cardinality cardinality) {
+        this.role = role;
+        this.rangeTypes = ImmutableSet.copyOf(rangeTypes);
+        if (this.rangeTypes.isEmpty()) {
+            throw new IllegalArgumentException("Empty rangeTypes");
+        }
+        this.cardinality = cardinality;
+        if (role == null || rangeTypes == null || cardinality == null) {
+            throw new NullPointerException();
+        }
+    }
 
-	public EventRole(String role, BratType range, Cardinality cardinality) {
-		this(role, ImmutableSet.of(range), cardinality);
-	}
+    public EventRole(String role, BratType range, Cardinality cardinality) {
+        this(role, ImmutableSet.of(range), cardinality);
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public Set<BratType> getRangeTypes() {
-		return rangeTypes;
-	}
+    public Set<BratType> getRangeTypes() {
+        return rangeTypes;
+    }
 
-	public Cardinality getCardinality() {
-		return cardinality;
-	}
+    public Cardinality getCardinality() {
+        return cardinality;
+    }
 
-	@Override
-	public int hashCode() {
-		return role.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return role.hashCode();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof EventRole)) {
-			return false;
-		}
-		EventRole that = (EventRole) obj;
-		return new EqualsBuilder().append(this.role, that.role)
-				.append(this.rangeTypes, that.rangeTypes)
-				.append(this.cardinality, that.cardinality).isEquals();
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof EventRole)) {
+            return false;
+        }
+        EventRole that = (EventRole) obj;
+        return new EqualsBuilder().append(this.role, that.role)
+                .append(this.rangeTypes, that.rangeTypes)
+                .append(this.cardinality, that.cardinality).isEquals();
+    }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.NO_FIELD_NAMES_STYLE)
-				.append(role).append(rangeTypes).append(cardinality).toString();
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.NO_FIELD_NAMES_STYLE)
+                .append(role).append(rangeTypes).append(cardinality).toString();
+    }
 }

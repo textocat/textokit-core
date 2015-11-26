@@ -3,6 +3,7 @@ package com.textocat.textokit.io.brat;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.*;
+import com.textocat.textokit.commons.DocumentMetadata;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +21,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.nlplab.brat.ann.*;
 import org.nlplab.brat.configuration.*;
 import org.nlplab.brat.configuration.EventRole.Cardinality;
-import com.textocat.textokit.commons.DocumentMetadata;
 
 import java.io.*;
 import java.nio.file.Path;

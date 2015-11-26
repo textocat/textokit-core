@@ -2,6 +2,8 @@ package com.textocat.textokit.io.brat;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.textocat.textokit.commons.DocumentMetadata;
+import com.textocat.textokit.commons.cas.FSUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -19,15 +21,13 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.nlplab.brat.ann.*;
 import org.nlplab.brat.configuration.*;
-import com.textocat.textokit.commons.cas.FSUtils;
-import com.textocat.textokit.commons.DocumentMetadata;
 
 import java.io.*;
 import java.util.*;
 
-import static org.nlplab.brat.BratConstants.*;
 import static com.textocat.textokit.commons.util.AnnotatorUtils.annotationTypeExist;
 import static com.textocat.textokit.commons.util.AnnotatorUtils.featureExist;
+import static org.nlplab.brat.BratConstants.*;
 
 /**
  * @author RGareev
