@@ -125,45 +125,28 @@ public class AnnotationUtils {
     }
 
     /**
-     * Given:
-     * <p>
-     * target.begin = tb, target.end = te,
-     * </p>
-     * <p>
-     * requested.begin = rb, requested.end = re,
-     * </p>
-     * <p>
-     * overlapping constraint is: (tb&lt;rb && te&gt;rb) || (tb&ge;rb &&
-     * tb&lt;re)
-     * </p>
-     *
-     * @param cas
-     * @param iter       source iterator
-     * @param targetAnno annotation which result annotations must overlap with
-     * @return iterator over annotations overlapping with targetAnno from source
-     * iterator
+     * @param cas        a CAS instance
+     * @param iter       a source iterator
+     * @param targetAnno an annotation which result annotations must overlap with
+     * @return iterator over annotations that overlaps with targetAnno from the source iterator
+     * @see #overlap(AnnotationFS, AnnotationFS)
      */
     public static <T extends FeatureStructure> FSIterator<T> getOverlapping(CAS cas,
                                                                             FSIterator<T> iter, AnnotationFS targetAnno) {
         ConstraintFactory cf = ConstraintFactory.instance();
-        FSMatchConstraint firstDisjunct;
+        FSMatchConstraint beginConjunct;
         {
             FSIntConstraint beginConstraint = cf.createIntConstraint();
-            beginConstraint.lt(targetAnno.getBegin());
+            beginConstraint.lt(targetAnno.getEnd());
+            beginConjunct = cf.embedConstraint(newArrayList("begin"), beginConstraint);
+        }
+        FSMatchConstraint endConjunct;
+        {
             FSIntConstraint endConstraint = cf.createIntConstraint();
             endConstraint.gt(targetAnno.getBegin());
-            firstDisjunct = cf.and(
-                    cf.embedConstraint(newArrayList("begin"), beginConstraint),
-                    cf.embedConstraint(newArrayList("end"), endConstraint));
+            endConjunct = cf.embedConstraint(newArrayList("end"), endConstraint);
         }
-        FSMatchConstraint secondDisjunct;
-        {
-            FSIntConstraint beginConstraint = cf.createIntConstraint();
-            beginConstraint.geq(targetAnno.getBegin());
-            beginConstraint.lt(targetAnno.getEnd());
-            secondDisjunct = cf.embedConstraint(newArrayList("begin"), beginConstraint);
-        }
-        FSMatchConstraint overlapConstraint = cf.or(firstDisjunct, secondDisjunct);
+        FSMatchConstraint overlapConstraint = cf.and(beginConjunct, endConjunct);
         return cas.createFilteredIterator(iter, overlapConstraint);
     }
 
