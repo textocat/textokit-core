@@ -28,6 +28,7 @@ import java.util.*;
  *
  * @author Rinat Gareev
  */
+@Deprecated
 class TreeMapOverlapIndex<A extends AnnotationFS> implements OverlapIndex<A> {
     private final Comparator<AnnotationFS> offsetComp = AnnotationOffsetComparator
             .instance(AnnotationFS.class);
@@ -55,6 +56,10 @@ class TreeMapOverlapIndex<A extends AnnotationFS> implements OverlapIndex<A> {
         annoIds = Maps.newHashMap();
         while (srcIter.hasNext()) {
             A sa = srcIter.next();
+            // empty annotations overlap with nothing
+            if (AnnotationUtils.isEmpty(sa)) {
+                continue;
+            }
             // by begin
             {
                 int saBegin = sa.getBegin();
@@ -92,6 +97,8 @@ class TreeMapOverlapIndex<A extends AnnotationFS> implements OverlapIndex<A> {
 
     @Override
     public Set<A> getOverlapping(int begin, int end) {
+        // TODO this implementation is broken
+        // it does not handle cas when one annotations cover another
         Set<A> result = Sets.newTreeSet(innerComparator);
         // annotations whose begin in [begin, end) interval
         NavigableMap<Integer, Set<A>> subByBegin = beginIdx.subMap(begin, true, end, false);

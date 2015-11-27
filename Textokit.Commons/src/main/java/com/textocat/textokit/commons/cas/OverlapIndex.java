@@ -33,12 +33,13 @@ import java.util.Set;
 public interface OverlapIndex<A extends AnnotationFS> {
 
     /**
-     * @param begin
-     * @param end
+     * @param begin first character of an annotation
+     * @param end   the first character after the annotation
      * @return set of annotations that overlap with annotation whose offsets are
      * given by parameters. Result ordering is defined by offsets
      * (according to {@link AnnotationIndex}. If offsets are equals then
      * source iterator ordering is used.
+     * @see AnnotationUtils#overlap(AnnotationFS, AnnotationFS)
      */
     Set<A> getOverlapping(int begin, int end);
 

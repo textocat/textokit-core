@@ -265,7 +265,7 @@ public class AnnotationUtils {
     }
 
     public static <A extends AnnotationFS> OverlapIndex<A> createOverlapIndex(Iterator<A> srcIter) {
-        return TreeMapOverlapIndex.from(srcIter);
+        return new AITOverlapIndex<>(srcIter);
     }
 
     /**

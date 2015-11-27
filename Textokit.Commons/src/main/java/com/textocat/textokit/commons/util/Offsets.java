@@ -48,4 +48,8 @@ public class Offsets {
     public boolean isIdenticalWith(AnnotationFS anno) {
         return anno.getBegin() == begin && anno.getEnd() == end;
     }
+
+    public boolean overlaps(Offsets that) {
+        return this.begin < that.end && that.begin < this.end;
+    }
 }
