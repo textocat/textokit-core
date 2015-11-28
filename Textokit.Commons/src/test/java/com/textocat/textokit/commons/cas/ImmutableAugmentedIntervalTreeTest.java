@@ -16,6 +16,7 @@
 
 package com.textocat.textokit.commons.cas;
 
+import com.google.common.collect.Lists;
 import com.textocat.textokit.commons.util.OffsetsWithValue;
 import org.junit.Test;
 
@@ -57,5 +58,12 @@ public class ImmutableAugmentedIntervalTreeTest {
                 tree.getOverlapping(10, 15));
         assertEquals(newArrayList(srcIntervals.get(4), srcIntervals.get(1), srcIntervals.get(3), srcIntervals.get(6)),
                 tree.getOverlapping(5, 8));
+    }
+
+    @Test
+    public void testEmpty() {
+        ImmutableAugmentedIntervalTree<String> tree = new ImmutableAugmentedIntervalTree<>(
+                Lists.<OffsetsWithValue<String>>newArrayList());
+        assertEquals(newArrayList(), tree.getOverlapping(10, 20));
     }
 }

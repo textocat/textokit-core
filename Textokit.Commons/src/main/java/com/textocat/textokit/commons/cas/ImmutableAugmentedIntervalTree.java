@@ -34,6 +34,10 @@ class ImmutableAugmentedIntervalTree<V> {
 
     public ImmutableAugmentedIntervalTree(List<OffsetsWithValue<V>> intervals) {
         intervals = Lists.newArrayList(intervals);
+        if (intervals.isEmpty()) {
+            root = null;
+            return;
+        }
         // using stable sort to preserve the source ordering
         Collections.sort(intervals, new Comparator<OffsetsWithValue<?>>() {
             @Override
@@ -51,6 +55,9 @@ class ImmutableAugmentedIntervalTree<V> {
     }
 
     public List<OffsetsWithValue<V>> getOverlapping(int begin, int end) {
+        if (root == null) {
+            return Collections.emptyList();
+        }
         List<OffsetsWithValue<V>> resultList = Lists.newLinkedList();
         search(root, new Offsets(begin, end), resultList);
         return resultList;
