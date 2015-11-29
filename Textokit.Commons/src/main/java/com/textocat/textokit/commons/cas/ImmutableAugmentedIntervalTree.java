@@ -33,11 +33,11 @@ import java.util.List;
 class ImmutableAugmentedIntervalTree<V> {
 
     public ImmutableAugmentedIntervalTree(List<OffsetsWithValue<V>> intervals) {
-        intervals = Lists.newArrayList(intervals);
         if (intervals.isEmpty()) {
             root = null;
             return;
         }
+        intervals = Lists.newArrayList(intervals);
         // using stable sort to preserve the source ordering
         Collections.sort(intervals, new Comparator<OffsetsWithValue<?>>() {
             @Override

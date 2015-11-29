@@ -19,6 +19,8 @@ package com.textocat.textokit.commons.util;
 
 import org.apache.uima.cas.text.AnnotationFS;
 
+import java.util.Objects;
+
 /**
  * Represents annotation offsets, i.e., a left-closed right-closed integer interval.
  *
@@ -51,5 +53,27 @@ public class Offsets {
 
     public boolean overlaps(Offsets that) {
         return this.begin < that.end && that.begin < this.end;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Offsets offsets = (Offsets) o;
+        return Objects.equals(begin, offsets.begin) &&
+                Objects.equals(end, offsets.end);
+    }
+
+    @Override
+    public String toString() {
+        return com.google.common.base.Objects.toStringHelper(this)
+                .add("begin", begin)
+                .add("end", end)
+                .toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(begin, end);
     }
 }

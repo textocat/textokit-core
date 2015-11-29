@@ -66,4 +66,42 @@ public class ImmutableAugmentedIntervalTreeTest {
                 Lists.<OffsetsWithValue<String>>newArrayList());
         assertEquals(newArrayList(), tree.getOverlapping(10, 20));
     }
+
+    @Test
+    public void testOnTokensLikeSeq() {
+        List<OffsetsWithValue<String>> intervalList = newArrayList(
+                ival(1, 3),
+                ival(4, 5),
+                ival(6, 10),
+                ival(11, 20),
+                ival(20, 25),
+                ival(26, 30),
+                ival(31, 34),
+                ival(35, 36),
+                ival(37, 42),
+                ival(43, 50)
+        );
+        ImmutableAugmentedIntervalTree<String> tree = new ImmutableAugmentedIntervalTree<>(intervalList);
+        assertEquals(newArrayList(ival(6, 10)), tree.getOverlapping(6, 10));
+        assertEquals(newArrayList(ival(6, 10)), tree.getOverlapping(7, 10));
+        assertEquals(newArrayList(ival(4, 5), ival(6, 10)), tree.getOverlapping(4, 10));
+        assertEquals(newArrayList(ival(11, 20)), tree.getOverlapping(10, 19));
+        assertEquals(newArrayList(ival(11, 20)), tree.getOverlapping(10, 20));
+        assertEquals(newArrayList(ival(11, 20)), tree.getOverlapping(11, 20));
+        assertEquals(newArrayList(ival(31, 34), ival(35, 36), ival(37, 42)), tree.getOverlapping(32, 40));
+        assertEquals(newArrayList(ival(37, 42)), tree.getOverlapping(37, 42));
+        assertEquals(newArrayList(ival(37, 42)), tree.getOverlapping(36, 42));
+        assertEquals(newArrayList(ival(37, 42)), tree.getOverlapping(37, 43));
+        assertEquals(newArrayList(ival(37, 42)), tree.getOverlapping(36, 43));
+        //
+        assertEquals(newArrayList(ival(20, 25), ival(26, 30), ival(31, 34)), tree.getOverlapping(20, 34));
+        assertEquals(newArrayList(ival(20, 25), ival(26, 30), ival(31, 34)), tree.getOverlapping(21, 34));
+        assertEquals(newArrayList(ival(20, 25), ival(26, 30), ival(31, 34)), tree.getOverlapping(20, 35));
+        assertEquals(newArrayList(ival(20, 25), ival(26, 30), ival(31, 34)), tree.getOverlapping(24, 35));
+        assertEquals(newArrayList(ival(11, 20), ival(20, 25), ival(26, 30)), tree.getOverlapping(19, 31));
+    }
+
+    private static OffsetsWithValue<String> ival(int begin, int end) {
+        return new OffsetsWithValue<>(begin, end, null);
+    }
 }
