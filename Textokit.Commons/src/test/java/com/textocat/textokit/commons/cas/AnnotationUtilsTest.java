@@ -57,7 +57,7 @@ public class AnnotationUtilsTest {
             tmp.put(cell.getColumnKey(), cell.getRowKey(), cell.getValue());
         }
         overlapTestTable.putAll(tmp);
-        if (overlapTestTable.size() != 22) {
+        if (overlapTestTable.size() != 21) {
             throw new IllegalStateException();
         }
     }
