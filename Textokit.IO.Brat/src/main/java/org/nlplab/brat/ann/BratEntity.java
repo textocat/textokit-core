@@ -19,12 +19,36 @@ package org.nlplab.brat.ann;
 
 import org.nlplab.brat.configuration.BratEntityType;
 
+import java.util.Map;
+
 /**
  * @author Rinat Gareev
  */
-public class BratEntity extends BratTextBoundAnnotation<BratEntityType> {
+public class BratEntity extends BratTextBoundAnnotation<BratEntityType> implements HasAttributes {
+
+    private AttributeHolder attrHolder = new AttributeHolder();
 
     public BratEntity(BratEntityType type, int begin, int end, String spannedText) {
         super(type, begin, end, spannedText);
+    }
+
+    @Override
+    public String getAttribute(String attrName) {
+        return attrHolder.getAttribute(attrName);
+    }
+
+    @Override
+    public boolean hasBinaryAttribute(String attrName) {
+        return attrHolder.hasBinaryAttribute(attrName);
+    }
+
+    @Override
+    public Map<String, Object> getAttributesMap() {
+        return attrHolder.getAttributesMap();
+    }
+
+    @Override
+    public void setAttribute(String name, Object value) {
+        attrHolder.setAttribute(name, value);
     }
 }

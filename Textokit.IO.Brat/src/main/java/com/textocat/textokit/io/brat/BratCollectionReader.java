@@ -158,6 +158,8 @@ public class BratCollectionReader extends CasCollectionReader_ImplBase {
                 new FileInputStream(bratDoc.getAnnFile()), ANN_FILES_ENCODING));
         try {
             bratContainer.readFrom(annReader);
+        } catch (Exception e) {
+            throw new IllegalStateException("Parsing " + currentDocName, e);
         } finally {
             IOUtils.closeQuietly(annReader);
         }

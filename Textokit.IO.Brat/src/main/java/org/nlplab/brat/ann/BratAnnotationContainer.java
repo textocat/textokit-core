@@ -278,8 +278,7 @@ public class BratAnnotationContainer {
                 BratNoteAnnotation note = parseNote(line);
                 add(note);
             } else if (line.startsWith(ATTRIBUTE_ID_PREFIX)) {
-                // TODO parse attribute lines when attributes are supported
-                // just ignore now
+                parseAttribute(line);
             } else if (line.startsWith(NORMALIZATION_ID_PREFIX)) {
                 // TODO parse normalization line
                 // just ignore now
@@ -428,6 +427,38 @@ public class BratAnnotationContainer {
         BratNoteAnnotation note = new BratNoteAnnotation(type, targetAnno, content);
         note.setId(id);
         return note;
+    }
+
+    private void parseAttribute(String str) {
+        StringParser p = new StringParser(str);
+        String id = p.consume1(ID_PATTERN);
+        assert id.startsWith(ATTRIBUTE_ID_PREFIX);
+        p.skip(SPACE_PATTERN);
+        String attrTypeName = p.consume1(TYPE_NAME_PATTERN);
+        BratAttributeType attrType = (BratAttributeType) typesCfg.getType(attrTypeName);
+        p.skip(SPACE_PATTERN);
+        String targetId = p.consume1(ID_PATTERN);
+        BratAnnotation targetAnno = getAnnotation(targetId);
+        String attrVal = null;
+        if (p.skipOptional(SPACE_PATTERN)) {
+            attrVal = p.getCurrentString().trim();
+            if (attrVal.isEmpty()) {
+                attrVal = null;
+            }
+        }
+        HasAttributes targetAttrHolder;
+        if (targetAnno instanceof BratEntity) {
+            targetAttrHolder = (BratEntity) targetAnno;
+        } else {
+            // TODO
+            throw new UnsupportedOperationException("Attribute values are supported only for entities");
+        }
+        if (attrVal == null) {
+            // set binary
+            targetAttrHolder.setAttribute(attrType.getName(), true);
+        } else {
+            targetAttrHolder.setAttribute(attrType.getName(), attrVal);
+        }
     }
 
     private void appendRoleValues(StringBuilder target,
