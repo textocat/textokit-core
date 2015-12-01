@@ -108,7 +108,7 @@ public class AutoBratUimaMappingFactory extends BratUimaMappingFactoryBase imple
                         attr2FeatMap.put(attrType.getName(), f);
                     }
                 }
-                b.addEntityMapping(bratType, uimaType);
+                b.addEntityMapping(bratType, uimaType, attr2FeatMap, null);
                 log.info("Brat entity type {} is mapped to UIMA type {}", bratName,
                         uimaType);
             }

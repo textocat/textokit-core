@@ -451,7 +451,8 @@ public class BratAnnotationContainer {
             targetAttrHolder = (BratEntity) targetAnno;
         } else {
             // TODO
-            throw new UnsupportedOperationException("Attribute values are supported only for entities");
+            log.warn("Ignoring attribute {} -- Attribute values are supported only for entities", attrTypeName);
+            return;
         }
         if (attrVal == null) {
             // set binary
