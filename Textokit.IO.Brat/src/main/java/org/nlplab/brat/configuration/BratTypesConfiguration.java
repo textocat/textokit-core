@@ -31,10 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -79,6 +76,10 @@ public class BratTypesConfiguration {
 
     public Collection<BratEventType> getEventTypes() {
         return getTypes(BratEventType.class);
+    }
+
+    public Collection<BratAttributeType> getAttributes() {
+        return getTypes(BratAttributeType.class);
     }
 
     // aux method
@@ -132,6 +133,10 @@ public class BratTypesConfiguration {
         // write at least empty attributes section to avoid brat warnings
         out.println();
         out.println("[attributes]");
+        if (!getAttributes().isEmpty()) {
+            // TODO
+            throw new UnsupportedOperationException("Writing attributes config");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -301,6 +306,12 @@ public class BratTypesConfiguration {
             return bet;
         }
 
+        public BratAttributeType addAttributeType(String name, List<String> values) {
+            BratAttributeType bat = new BratAttributeType(name, Sets.newHashSet(values));
+            addType(bat);
+            return bat;
+        }
+
         public BratTypesConfiguration build() {
             instance.name2Type = ImmutableMap.copyOf(instance.name2Type);
             return instance;
@@ -388,8 +399,7 @@ public class BratTypesConfiguration {
                             }
                             break;
                         case ATTRIBUTES:
-                            // TODO LOW: handle [attributes] section line
-                            // do nothing
+                            parseAttributeLine(builder, line);
                             break;
                         default:
                             throw new UnsupportedOperationException();
@@ -414,6 +424,7 @@ public class BratTypesConfiguration {
     private static final Pattern MACRO_DEF_NAME = Pattern.compile("<(\\p{Alnum}+)>");
     private static final Pattern MACRO_DEF_EQ = Pattern.compile("\\s*=\\s*");
     private static final Splitter typeNameSplitter = Splitter.on('|').trimResults();
+    private static final Pattern ATTR_RANGE_TYPE_DEF = Pattern.compile("Arg:(<?[-_\\p{Alnum}]+>?)");
 
     private static void parseEntityLine(Builder b, String line,
                                         Map<Integer, BratEntityType> hierBranch) {
@@ -523,6 +534,28 @@ public class BratTypesConfiguration {
         }
         roleTypeNames.putAll(roleName, typeNames);
         roleCardinalities.put(roleName, parseCardinality(roleDef[2]));
+    }
+
+    private static final Splitter.MapSplitter KV_Splitter = Splitter.on(',').trimResults().withKeyValueSeparator(':');
+    private static final Splitter ATTR_VAL_Splitter = Splitter.on('|');
+
+    private static void parseAttributeLine(Builder b, String line) {
+        StringParser p = new StringParser(line);
+        String attributeName = p.consume1(TYPE_NAME_PATTERN);
+        p.skip(SPACE_PATTERN);
+        Map<String, String> attrDefMap = KV_Splitter.split(p.getCurrentString());
+        // must define range types
+        if (!attrDefMap.containsKey("Arg")) {
+            throw new IllegalStateException(String.format(
+                    "No range types define for attribute %s", attributeName));
+        }
+        List<String> valueNames = Lists.newLinkedList();
+        if (attrDefMap.containsKey("Value")) {
+            String valuesStr = attrDefMap.get("Value").trim();
+            if (valuesStr.isEmpty()) throw new IllegalStateException("Empty Value: in the attribute definition");
+            valueNames.addAll(ATTR_VAL_Splitter.splitToList(valuesStr));
+        }
+        b.addAttributeType(attributeName, valueNames);
     }
 
     private static int getPrefixCharNum(char ch, String str) {

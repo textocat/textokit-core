@@ -17,6 +17,7 @@
 
 package org.nlplab.brat.configuration;
 
+import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.nlplab.brat.configuration.EventRole.Cardinality;
 
@@ -49,6 +50,14 @@ public class BratTypesConfigurationTest {
         BratEventType shType = btConf.getType("Something-Happened", BratEventType.class);
         assertEquals("Something-Happened", shType.getName());
         assertEquals(0, shType.getRoles().size());
+        //
+        assertEquals(Sets.newHashSet(
+                        new BratAttributeType("Individual"),
+                        new BratAttributeType("Mention", "Name", "Nominal", "Other"),
+                        new BratAttributeType("Negation"),
+                        new BratAttributeType("Confidence", "High", "Neutral", "Low")
+                ),
+                Sets.newHashSet(btConf.getAttributes()));
     }
 
 }
