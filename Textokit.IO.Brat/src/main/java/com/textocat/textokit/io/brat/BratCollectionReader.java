@@ -176,6 +176,7 @@ public class BratCollectionReader extends CasCollectionReader_ImplBase {
                 AnnotationFS uAnno = cas.createAnnotation(uType,
                         bEntity.getBegin(), bEntity.getEnd());
 
+                mapAttributes(entMapping.getAttributeToFeatureMap(), bEntity, uAnno);
                 mapNote(entMapping, bEntity, uAnno);
 
                 cas.addFsToIndexes(uAnno);
@@ -229,6 +230,23 @@ public class BratCollectionReader extends CasCollectionReader_ImplBase {
         mappingCtx = null;
         this.cas = null;
         bratContainer = null;
+    }
+
+    private void mapAttributes(Map<String, Feature> attr2FeatMap,
+                               HasAttributes attrHolder, AnnotationFS uAnno) {
+        for (String attrName : attr2FeatMap.keySet()) {
+            Feature uFeat = attr2FeatMap.get(attrName);
+            Object attrValue = attrHolder.getAttributesMap().get(attrName);
+            if (attrValue == null) {
+                continue;
+            } else if (attrValue instanceof Boolean) {
+                uAnno.setBooleanValue(uFeat, (Boolean) attrValue);
+            } else if (attrValue instanceof String) {
+                uAnno.setStringValue(uFeat, (String) attrValue);
+            } else {
+                throw new IllegalStateException();
+            }
+        }
     }
 
     private <BT extends BratType> void mapNote(BratUimaTypeMappingBase<BT> typeMapping,

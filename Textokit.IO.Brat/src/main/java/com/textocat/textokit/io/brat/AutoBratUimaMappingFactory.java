@@ -23,6 +23,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.textocat.textokit.commons.cas.FSTypeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
@@ -31,12 +32,12 @@ import org.apache.uima.fit.component.initialize.ConfigurationParameterInitialize
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.initializable.Initializable;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.nlplab.brat.configuration.BratAttributeType;
 import org.nlplab.brat.configuration.BratEntityType;
 import org.nlplab.brat.configuration.BratEventType;
 import org.nlplab.brat.configuration.BratRelationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -97,6 +98,16 @@ public class AutoBratUimaMappingFactory extends BratUimaMappingFactoryBase imple
             if (uimaType == null) {
                 log.warn("Brat entity type {} will be ignored", bratName);
             } else {
+                // search matching attributes
+                Map<String, Feature> attr2FeatMap = Maps.newHashMap();
+                for (BratAttributeType attrType : bratTypesCfg.getAttributes()) {
+                    Feature f = searchFeatureByBratName(uimaType, attrType.getName());
+                    if (f != null) {
+                        log.info("Brat attribute {} for type {} is mapped into UIMA feature {}",
+                                attrType.getName(), bratName, f.getName());
+                        attr2FeatMap.put(attrType.getName(), f);
+                    }
+                }
                 b.addEntityMapping(bratType, uimaType);
                 log.info("Brat entity type {} is mapped to UIMA type {}", bratName,
                         uimaType);
@@ -178,6 +189,20 @@ public class AutoBratUimaMappingFactory extends BratUimaMappingFactoryBase imple
             feat = uimaType.getFeatureByBaseName(featName);
             if (feat != null) {
                 return feat;
+            }
+        }
+        return null;
+    }
+
+    private Feature searchFeatureByBratName(Type uimaType, String bratName) {
+        bratName = rewriteOrSelf(bratName);
+        Set<String> baseNameCandidates = Sets.newLinkedHashSet();
+        baseNameCandidates.add(bratName);
+        baseNameCandidates.add(StringUtils.uncapitalize(toProperJavaName(bratName)));
+        for (String baseName : baseNameCandidates) {
+            Feature f = uimaType.getFeatureByBaseName(baseName);
+            if (f != null) {
+                return f;
             }
         }
         return null;

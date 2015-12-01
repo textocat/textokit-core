@@ -52,12 +52,14 @@ public class BratUimaMapping {
         }
 
         public Builder addEntityMapping(BratEntityType bratType, Type uimaType) {
-            return addEntityMapping(bratType, uimaType, null);
+            return addEntityMapping(bratType, uimaType, Maps.<String, Feature>newHashMap(), null);
         }
 
         public Builder addEntityMapping(BratEntityType bratType, Type uimaType,
+                                        Map<String, Feature> attr2FeatMap,
                                         BratNoteMapper noteMapper) {
             instance.entityTypeMappings.put(bratType, new BratUimaEntityMapping(bratType, uimaType,
+                    attr2FeatMap,
                     noteMapper));
             return this;
         }
@@ -134,7 +136,9 @@ public class BratUimaMapping {
         for (Type uType : src.getEntityUimaTypes()) {
             UimaBratEntityMapping srcEntMapping = src.getEntityMapping(uType);
             BratEntityType bType = srcEntMapping.bratType;
+            // TODO implement feature=>attribute mapping
             BratUimaEntityMapping entMapping = new BratUimaEntityMapping(bType, uType,
+                    Maps.<String, Feature>newHashMap(),
                     srcEntMapping.noteMapper);
             if (result.entityTypeMappings.put(bType, entMapping) != null) {
                 reportAmbiguousReversal(bType);
@@ -198,8 +202,18 @@ abstract class BratUimaTypeMappingBase<BT extends BratType> {
 }
 
 class BratUimaEntityMapping extends BratUimaTypeMappingBase<BratEntityType> {
-    public BratUimaEntityMapping(BratEntityType bratType, Type uimaType, BratNoteMapper noteMapper) {
+    private Map<String, Feature> attr2FeatureMapping;
+
+    public BratUimaEntityMapping(BratEntityType bratType, Type uimaType,
+                                 Map<String, Feature> attr2FeatureMapping,
+                                 BratNoteMapper noteMapper) {
         super(bratType, uimaType, noteMapper);
+        //
+        this.attr2FeatureMapping = ImmutableMap.copyOf(attr2FeatureMapping);
+    }
+
+    public Map<String, Feature> getAttributeToFeatureMap() {
+        return attr2FeatureMapping;
     }
 }
 
