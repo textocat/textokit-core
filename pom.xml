@@ -33,5 +33,6 @@
         <module>Textokit.PhraseRecognizer.SPC</module>
         <module>Textokit.IO.Brat</module>
         <module>Textokit.Util.RutaSeeder</module>
+        <module>Textokit.Evaluation</module>
     </modules>
 </project>
