@@ -3,7 +3,7 @@
 	<name>UIMA.Ext.Commons-TypeSystem</name>
 	<description />
 	<version>1.0</version>
-	<vendor>Computational Linguistics Lab of Kazan Federal University</vendor>
+	<vendor>Textocat and CLLKazan</vendor>
 	<types>
 		<typeDescription>
 			<name>test.TestFirst</name>
