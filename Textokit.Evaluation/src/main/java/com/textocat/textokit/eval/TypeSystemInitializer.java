@@ -20,8 +20,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.CasCreationUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -40,6 +43,8 @@ import static org.apache.uima.util.CasCreationUtils.mergeTypeSystems;
  * @author Rinat Gareev
  */
 public class TypeSystemInitializer implements FactoryBean<TypeSystem> {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Value("${typeSystem.description.paths}")
     private String typeSystemDescPathsString;
@@ -78,8 +83,8 @@ public class TypeSystemInitializer implements FactoryBean<TypeSystem> {
             }
         }
         if (tsDesc == null) {
-            throw new IllegalStateException(
-                    "Type system description paths or names were not specified!");
+            log.info("TypeSystemDescription will be created using the UIMAFit discovery");
+            tsDesc = TypeSystemDescriptionFactory.createTypeSystemDescription();
         }
         CAS dumbCas = CasCreationUtils.createCas(tsDesc, null, null);
         TypeSystem typeSystem = dumbCas.getTypeSystem();
