@@ -1,4 +1,3 @@
-
 package com.textocat.textokit.eval.event.logging;
 
 import org.apache.uima.cas.TypeSystem;
@@ -6,25 +5,24 @@ import org.apache.uima.cas.text.AnnotationFS;
 
 /**
  * @author Rinat Gareev
- * 
  */
 public class CoveredTextAnnotationPrinter implements AnnotationPrinter {
 
-	private static final CoveredTextAnnotationPrinter INSTANCE = new CoveredTextAnnotationPrinter();
+    private static final CoveredTextAnnotationPrinter INSTANCE = new CoveredTextAnnotationPrinter();
 
-	public static CoveredTextAnnotationPrinter getInstance() {
-		return INSTANCE;
-	}
+    public static CoveredTextAnnotationPrinter getInstance() {
+        return INSTANCE;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getString(AnnotationFS anno) {
-		return anno == null ? null : anno.getCoveredText();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getString(AnnotationFS anno) {
+        return anno == null ? null : anno.getCoveredText();
+    }
 
-	@Override
-	public void init(TypeSystem ts) {
-	}
+    @Override
+    public void init(TypeSystem ts) {
+    }
 }

@@ -1,4 +1,3 @@
-
 package com.textocat.textokit.eval.matching;
 
 import org.apache.uima.cas.TypeSystem;
@@ -9,33 +8,32 @@ import org.springframework.core.env.Environment;
 
 /**
  * @author Rinat Gareev
- * 
  */
 public class MatchingConfigurationFactory implements
-		FactoryBean<TypeBasedMatcherDispatcher<AnnotationFS>> {
+        FactoryBean<TypeBasedMatcherDispatcher<AnnotationFS>> {
 
-	@Autowired
-	private Environment environment;
-	@Autowired
-	private TypeSystem ts;
+    @Autowired
+    private Environment environment;
+    @Autowired
+    private TypeSystem ts;
 
-	// state
-	private TypeBasedMatcherDispatcher<AnnotationFS> instance;
+    // state
+    private TypeBasedMatcherDispatcher<AnnotationFS> instance;
 
-	@Override
-	public TypeBasedMatcherDispatcher<AnnotationFS> getObject() throws Exception {
-		if (instance == null) {
-			instance = new MatchingConfigurationInitializer(ts, environment).create();
-		}
-		return instance;
-	}
+    @Override
+    public TypeBasedMatcherDispatcher<AnnotationFS> getObject() throws Exception {
+        if (instance == null) {
+            instance = new MatchingConfigurationInitializer(ts, environment).create();
+        }
+        return instance;
+    }
 
-	public Class<?> getObjectType() {
-		return TypeBasedMatcherDispatcher.class;
-	}
+    public Class<?> getObjectType() {
+        return TypeBasedMatcherDispatcher.class;
+    }
 
-	@Override
-	public boolean isSingleton() {
-		return true;
-	}
+    @Override
+    public boolean isSingleton() {
+        return true;
+    }
 }

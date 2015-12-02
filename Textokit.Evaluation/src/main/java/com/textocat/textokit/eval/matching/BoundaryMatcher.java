@@ -1,34 +1,32 @@
-
 package com.textocat.textokit.eval.matching;
 
 import org.apache.uima.cas.text.AnnotationFS;
 
 /**
  * @author Rinat Gareev
- * 
  */
 public class BoundaryMatcher implements Matcher<AnnotationFS> {
 
-	public static final BoundaryMatcher INSTANCE = new BoundaryMatcher();
+    public static final BoundaryMatcher INSTANCE = new BoundaryMatcher();
 
-	private BoundaryMatcher() {
-	}
+    private BoundaryMatcher() {
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean match(AnnotationFS ref, AnnotationFS cand) {
-		return ref.getBegin() == cand.getBegin() && ref.getEnd() == cand.getEnd();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean match(AnnotationFS ref, AnnotationFS cand) {
+        return ref.getBegin() == cand.getBegin() && ref.getEnd() == cand.getEnd();
+    }
 
-	@Override
-	public String toString() {
-		return getClass().getSimpleName();
-	}
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
 
-	@Override
-	public void print(StringBuilder out, AnnotationFS value) {
-		out.append(value.getCoveredText());
-	}
+    @Override
+    public void print(StringBuilder out, AnnotationFS value) {
+        out.append(value.getCoveredText());
+    }
 }
