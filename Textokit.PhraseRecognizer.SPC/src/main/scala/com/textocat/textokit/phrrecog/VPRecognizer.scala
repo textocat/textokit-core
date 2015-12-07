@@ -22,7 +22,7 @@ import com.textocat.textokit.morph.model.{MorphConstants => M}
 import com.textocat.textokit.phrrecog.VPRecognizer._
 import com.textocat.textokit.phrrecog.cas.VerbPhrase
 import com.textocat.textokit.segmentation.fstype.Sentence
-import com.typesafe.scalalogging.StrictLogging
+import com.typesafe.scalalogging.slf4j.StrictLogging
 import org.apache.uima.cas.Type
 import org.apache.uima.cas.text.AnnotationFS
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase

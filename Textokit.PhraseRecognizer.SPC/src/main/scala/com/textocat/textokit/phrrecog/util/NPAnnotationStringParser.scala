@@ -22,7 +22,7 @@ import com.textocat.textokit.phrrecog
 import com.textocat.textokit.phrrecog.cas.{NounPhrase, Phrase}
 import com.textocat.textokit.phrrecog.util.NPAnnotationStringParser._
 import com.textocat.textokit.phrrecog.wfOffsetComp
-import com.typesafe.scalalogging.StrictLogging
+import com.typesafe.scalalogging.slf4j.StrictLogging
 import org.apache.uima.cas.text.AnnotationFS
 import org.apache.uima.fit.util.FSCollectionFactory
 import org.apache.uima.jcas.JCas
@@ -32,6 +32,9 @@ import scala.collection.JavaConversions.asJavaIterable
 import scala.collection.Map
 import scala.collection.immutable.TreeSet
 
+/**
+ * @author Rinat Gareev
+ */
 class NPAnnotationStringParserFactory extends PhraseStringParsersFactory {
   override def createParser(jCas: JCas, tokens: Array[AnnotationFS]): NPAnnotationStringParser =
     new NPAnnotationStringParser(jCas, tokens)

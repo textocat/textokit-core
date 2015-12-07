@@ -112,7 +112,7 @@
         </dependency>
         <dependency>
             <groupId>com.typesafe.scala-logging</groupId>
-            <artifactId>scala-logging_2.11</artifactId>
+            <artifactId>scala-logging-slf4j_2.11</artifactId>
         </dependency>
         <!-- testing -->
         <dependency>
