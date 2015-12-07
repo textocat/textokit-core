@@ -68,6 +68,10 @@
             <artifactId>scala-library</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-parser-combinators_2.11</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.textocat.textokit.core</groupId>
             <artifactId>textokit-commons</artifactId>
         </dependency>
