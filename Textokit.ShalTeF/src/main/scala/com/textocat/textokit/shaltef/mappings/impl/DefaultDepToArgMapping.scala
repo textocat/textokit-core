@@ -1,17 +1,14 @@
 package com.textocat.textokit.shaltef.mappings.impl
 
-import com.textocat.textokit.shaltef.mappings.{SlotMapping, DepToArgMapping}
+import com.textocat.textokit.shaltef.mappings.{DepToArgMapping, SlotMapping}
+import org.apache.commons.lang3.builder.{HashCodeBuilder, ToStringBuilder, ToStringStyle}
 import org.apache.uima.cas.Type
-import scala.collection.immutable.Iterable
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
-import org.apache.commons.lang3.builder.HashCodeBuilder
 
 /**
  * @author Rinat Gareev
  */
 private[mappings] class DefaultDepToArgMapping(val templateAnnoType: Type,
-  val triggerLemmaIds: Set[Int], val slotMappings: List[SlotMapping])
+                                               val triggerLemmaIds: Set[Int], val slotMappings: List[SlotMapping])
   extends DepToArgMapping {
 
   override def equals(obj: Any): Boolean =

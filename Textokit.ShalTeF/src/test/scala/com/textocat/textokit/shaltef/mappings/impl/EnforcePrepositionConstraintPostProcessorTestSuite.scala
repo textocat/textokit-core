@@ -3,16 +3,17 @@
  */
 package com.textocat.textokit.shaltef.mappings.impl
 
-import com.textocat.textokit.morph.dictionary.resource.{GramModel, MorphDictionary}
-import com.textocat.textokit.shaltef.mappings.{DepToArgMappingsBuilder, MappingsParserConfig, SlotMapping}
-import com.textocat.textokit.shaltef.mappings.pattern._
-import org.scalatest.FunSuite
-import scala.collection.JavaConversions.{ seqAsJavaList, bufferAsJavaList }
-import org.scalatest.mock.MockitoSugar
-import org.mockito.Mockito._
-import org.apache.uima.cas.Type
-import org.apache.uima.cas.Feature
 import java.util.BitSet
+
+import com.textocat.textokit.morph.dictionary.resource.{GramModel, MorphDictionary}
+import com.textocat.textokit.shaltef.mappings.pattern._
+import com.textocat.textokit.shaltef.mappings.{DepToArgMappingsBuilder, MappingsParserConfig, SlotMapping}
+import org.apache.uima.cas.{Feature, Type}
+import org.mockito.Mockito._
+import org.scalatest.FunSuite
+import org.scalatest.mock.MockitoSugar
+
+import scala.collection.JavaConversions.seqAsJavaList
 
 /**
  * @author Rinat Gareev
@@ -28,15 +29,15 @@ class EnforcePrepositionConstraintPostProcessorTestSuite extends FunSuite with M
     someGrBS.set(100)
     when(gramModel.getGrammemWithChildrenBits("someGr", false)).thenReturn(someGrBS)
     when(gramModel.toGramSet(someGrBS)).thenReturn(List("v1", "v2"))
-    
+
     val constrValueFactory = new ConstraintValueFactory(gramModel)
     val constrTargetFactory = new ConstraintTargetFactory(gramModel)
     val constrFactory = new PhraseConstraintFactory
     val parserCfg = new MappingsParserConfig(morphDict)
 
-    import constrValueFactory._
     import constrFactory._
     import constrTargetFactory._
+    import constrValueFactory._
     // prepare non-empty builder
     val mpBuilder = DepToArgMappingsBuilder()
     val type1 = mock[Type]

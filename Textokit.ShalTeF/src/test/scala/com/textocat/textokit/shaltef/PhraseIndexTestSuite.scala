@@ -1,37 +1,23 @@
 package com.textocat.textokit.shaltef
 
+import java.io.{BufferedInputStream, File, FileInputStream, InputStream}
+
 import com.textocat.textokit.morph.fs.{Word, Wordform}
-import com.textocat.textokit.shaltef.util.{CasTestUtils, NprCasBuilder}
-import org.apache.uima.fit.util.FSCollectionFactory
-import org.scalatest.FunSuite
-import org.apache.uima.cas.CAS
-import java.io.InputStream
-import org.apache.uima.cas.TypeSystem
-import org.apache.uima.fit.factory.TypeSystemDescriptionFactory._
-import org.apache.uima.util.CasCreationUtils
-import java.io.File
-import java.io.BufferedInputStream
-import java.io.FileInputStream
-import org.apache.uima.cas.impl.XmiCasDeserializer
-import com.textocat.textokit.segmentation.fstype.Sentence
-import org.apache.uima.fit.util.CasUtil._
-import org.apache.uima.cas.text.AnnotationFS
-import com.textocat.textokit.tokenizer.fstype.Token
-import com.textocat.textokit.phrrecog.cas.Phrase
-import com.textocat.textokit.phrrecog.cas.NounPhrase
-import scala.collection.JavaConversions.{ asJavaCollection, iterableAsScalaIterable }
-import org.apache.uima.fit.util.FSCollectionFactory._
-import org.apache.uima.jcas.cas.FSArray
-import com.textocat.textokit.tokenizer.fstype.W
-import org.apache.uima.jcas.JCas
-import scala.collection.mutable
-import org.apache.uima.cas.impl.XmiCasSerializer
-import java.io.BufferedOutputStream
-import java.io.FileOutputStream
-import org.apache.uima.cas.text.AnnotationIndex
-import com.textocat.textokit.commons.cas.FSUtils
-import com.textocat.textokit.tokenizer.TokenizerAPI
+import com.textocat.textokit.phrrecog.cas.{NounPhrase, Phrase}
 import com.textocat.textokit.segmentation.SentenceSplitterAPI
+import com.textocat.textokit.segmentation.fstype.Sentence
+import com.textocat.textokit.shaltef.util.{CasTestUtils, NprCasBuilder}
+import com.textocat.textokit.tokenizer.TokenizerAPI
+import org.apache.uima.cas.{CAS, TypeSystem}
+import org.apache.uima.cas.impl.XmiCasDeserializer
+import org.apache.uima.cas.text.{AnnotationFS, AnnotationIndex}
+import org.apache.uima.fit.util.CasUtil._
+import org.apache.uima.fit.util.FSCollectionFactory
+import org.apache.uima.jcas.JCas
+import org.apache.uima.util.CasCreationUtils
+import org.scalatest.FunSuite
+
+import scala.collection.JavaConversions.iterableAsScalaIterable
 
 /**
  * @author Rinat Gareev
@@ -65,7 +51,7 @@ class PhraseIndexTestSuite extends FunSuite with CasTestUtils {
         TestNP("года", depWords = "2014" :: Nil) ::
         TestNP("сборными", "между",
           depNPs = TestNP("Ирландии", depWords = "Северной" :: Nil) :: TestNP("России") :: Nil) ::
-          TestNP("срок", "на", depWords = "более" :: "поздний" :: Nil) :: Nil)
+        TestNP("срок", "на", depWords = "более" :: "поздний" :: Nil) :: Nil)
     assert(idx.refWordIndex == 3)
   }
 
@@ -92,10 +78,10 @@ class PhraseIndexTestSuite extends FunSuite with CasTestUtils {
     val idx = new PhraseIndex(segment, selectWord(jCas, "чемпионата"), ts)
     assert(idx.phraseSeq.toList.map(toTestNP(_)) ===
       TestNP("мира") ::
-      TestNP("футболу", "по") ::
-      TestNP("года", depWords = "2014" :: Nil) ::
-      TestNP("сборными", "между",
-        depNPs = TestNP("Ирландии", depWords = "Северной" :: Nil) :: TestNP("России") :: Nil) ::
+        TestNP("футболу", "по") ::
+        TestNP("года", depWords = "2014" :: Nil) ::
+        TestNP("сборными", "между",
+          depNPs = TestNP("Ирландии", depWords = "Северной" :: Nil) :: TestNP("России") :: Nil) ::
         TestNP("срок", "на", depWords = "более" :: "поздний" :: Nil) :: Nil)
     assert(idx.refWordIndex == -1)
   }
@@ -107,9 +93,9 @@ class PhraseIndexTestSuite extends FunSuite with CasTestUtils {
     val idx = new PhraseIndex(segment, selectWord(jCas, "мира"), ts)
     assert(idx.phraseSeq.toList.map(toTestNP(_)) ===
       TestNP("футболу", "по") ::
-      TestNP("года", depWords = "2014" :: Nil) ::
-      TestNP("сборными", "между",
-        depNPs = TestNP("Ирландии", depWords = "Северной" :: Nil) :: TestNP("России") :: Nil) ::
+        TestNP("года", depWords = "2014" :: Nil) ::
+        TestNP("сборными", "между",
+          depNPs = TestNP("Ирландии", depWords = "Северной" :: Nil) :: TestNP("России") :: Nil) ::
         TestNP("срок", "на", depWords = "более" :: "поздний" :: Nil) :: Nil)
     assert(idx.refWordIndex == -1)
   }
@@ -142,7 +128,7 @@ class PhraseIndexTestSuite extends FunSuite with CasTestUtils {
         TestNP("года", depWords = "2014" :: Nil) ::
         TestNP("сборными", "между",
           depNPs = TestNP("Ирландии", depWords = "Северной" :: Nil) :: TestNP("России") :: Nil) ::
-          Nil)
+        Nil)
     assert(idx.refWordIndex == 3)
   }
 
@@ -180,7 +166,7 @@ class PhraseIndexTestSuite extends FunSuite with CasTestUtils {
 }
 
 private[shaltef] case class TestNP(head: String, prepOpt: String = null, particleOpt: String = null,
-  depWords: List[String] = Nil, depNPs: List[TestNP] = Nil)
+                                   depWords: List[String] = Nil, depNPs: List[TestNP] = Nil)
 
 object PhraseIndexTestSuiteResources extends App {
   private val text = "Отборочный матч чемпионата мира по футболу 2014 года между сборными Северной Ирландии и России перенесен на более поздний срок."

@@ -4,7 +4,7 @@ import java.net.URL
 import java.{util => jul}
 
 import com.textocat.textokit.commons.util.AnnotatorUtils._
-import com.textocat.textokit.morph.dictionary.resource.{GramModelHolder, MorphDictionaryHolder}
+import com.textocat.textokit.morph.dictionary.resource.MorphDictionaryHolder
 import com.textocat.textokit.morph.fs.{Word, Wordform}
 import com.textocat.textokit.phrrecog
 import com.textocat.textokit.phrrecog.cas.{NounPhrase, Phrase}

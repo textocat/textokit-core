@@ -1,11 +1,12 @@
 package com.textocat.textokit.shaltef.mappings.impl
 
 import com.textocat.textokit.morph.fs.Wordform
-import com.textocat.textokit.shaltef.mappings.{DepToArgMappingsBuilder, DepToArgMappingsHolder, DepToArgMapping}
+import com.textocat.textokit.shaltef.mappings.{DepToArgMapping, DepToArgMappingsBuilder, DepToArgMappingsHolder}
 import com.typesafe.scalalogging.slf4j.StrictLogging
+
+import scala.collection.immutable.TreeMap
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
-import scala.collection.immutable.TreeMap
 
 /**
  * @author Rinat Gareev
@@ -63,7 +64,7 @@ private[mappings] class DefaultDepToArgMappingsBuilder extends DepToArgMappingsB
 }
 
 private[mappings] class DefaultDepToArgMappingsHolder(
-  val triggerLemmaId2Mappings: Map[Int, List[DepToArgMapping]])
+                                                       val triggerLemmaId2Mappings: Map[Int, List[DepToArgMapping]])
   extends DepToArgMappingsHolder {
 
   def containsTriggerLemma(lemmaId: Int): Boolean =

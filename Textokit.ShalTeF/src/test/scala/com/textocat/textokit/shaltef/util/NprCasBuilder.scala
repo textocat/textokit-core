@@ -1,27 +1,23 @@
 package com.textocat.textokit.shaltef.util
 
-import com.textocat.textokit.morph.fs.{Word, Wordform}
-import org.apache.uima.cas.TypeSystem
-import org.apache.uima.util.CasCreationUtils
-import java.io.BufferedOutputStream
-import org.apache.uima.cas.impl.XmiCasSerializer
-import java.io.FileOutputStream
-import scala.collection.mutable
-import com.textocat.textokit.tokenizer.fstype.W
+import java.io.{BufferedOutputStream, FileOutputStream}
+
 import com.textocat.textokit.commons.cas.FSUtils
-import com.textocat.textokit.phrrecog.cas.NounPhrase
-import com.textocat.textokit.phrrecog.cas.Phrase
-import scala.collection.JavaConversions.{ asJavaCollection, iterableAsScalaIterable }
+import com.textocat.textokit.morph.fs.{Word, Wordform}
+import com.textocat.textokit.phrrecog.cas.{NounPhrase, Phrase}
+import com.textocat.textokit.segmentation.SentenceSplitterAPI
+import com.textocat.textokit.segmentation.fstype.Sentence
+import com.textocat.textokit.tokenizer.TokenizerAPI
+import com.textocat.textokit.tokenizer.fstype.W
+import org.apache.uima.cas.impl.XmiCasSerializer
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory._
 import org.apache.uima.fit.util.FSCollectionFactory._
-import org.apache.uima.jcas.cas.FSArray
-import com.textocat.textokit.segmentation.fstype.Sentence
-import com.textocat.textokit.phrrecog.fsArrayToTraversable
-import org.apache.uima.jcas.cas.StringArray
 import org.apache.uima.jcas.JCas
-import NprCasBuilder._
-import com.textocat.textokit.tokenizer.TokenizerAPI
-import com.textocat.textokit.segmentation.SentenceSplitterAPI
+import org.apache.uima.jcas.cas.StringArray
+import org.apache.uima.util.CasCreationUtils
+
+import scala.collection.JavaConversions.{asJavaCollection, iterableAsScalaIterable}
+import scala.collection.mutable
 
 /**
  * @author Rinat Gareev
@@ -71,8 +67,8 @@ class NprCasBuilder(val text: String, additionalTypeSystemNames: List[String]) {
     else wfMap(id)
 
   def np(headId: String, prepId: String = null, particleId: String = null,
-    depWordIds: Iterable[String] = Nil, depNPs: Iterable[Phrase] = Nil,
-    index: Boolean = false): NounPhrase = {
+         depWordIds: Iterable[String] = Nil, depNPs: Iterable[Phrase] = Nil,
+         index: Boolean = false): NounPhrase = {
     val npAnno = new NounPhrase(jCas)
     val head = w(headId)
     npAnno.setBegin(head.getWord.getBegin)

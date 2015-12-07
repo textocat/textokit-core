@@ -1,9 +1,9 @@
 package com.textocat.textokit.shaltef.mappings.pattern
 
+import com.textocat.textokit.commons.cas.FSUtils
 import com.textocat.textokit.morph.fs.Wordform
 
-import scala.collection.JavaConversions.{ collectionAsScalaIterable, asScalaSet }
-import com.textocat.textokit.commons.cas.FSUtils
+import scala.collection.JavaConversions.asScalaSet
 
 /**
  * @author Rinat Gareev

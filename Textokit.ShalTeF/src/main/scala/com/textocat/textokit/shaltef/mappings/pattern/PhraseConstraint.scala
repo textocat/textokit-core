@@ -1,9 +1,7 @@
 package com.textocat.textokit.shaltef.mappings.pattern
 
 import com.textocat.textokit.phrrecog.cas.Phrase
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
-import org.apache.commons.lang3.builder.HashCodeBuilder
+import org.apache.commons.lang3.builder.{HashCodeBuilder, ToStringBuilder, ToStringStyle}
 
 /**
  * @author Rinat Gareev
@@ -20,8 +18,8 @@ class PhraseConstraintFactory {
     new UnOpPhraseConstraint(op, v)
 }
 
-private[mappings] class BinOpPhraseConstraint private[pattern] (
-  val target: ConstraintTarget, val op: BinaryConstraintOperator, val value: ConstraintValue)
+private[mappings] class BinOpPhraseConstraint private[pattern](
+                                                                val target: ConstraintTarget, val op: BinaryConstraintOperator, val value: ConstraintValue)
   extends PhraseConstraint {
 
   override def matches(phr: Phrase, ctx: MatchingContext): Boolean =
@@ -40,8 +38,8 @@ private[mappings] class BinOpPhraseConstraint private[pattern] (
     .append(target).append(op).append(value).toString
 }
 
-private[mappings] class UnOpPhraseConstraint private[pattern] (
-  val op: UnaryConstraintOperator, val value: ConstraintValue)
+private[mappings] class UnOpPhraseConstraint private[pattern](
+                                                               val op: UnaryConstraintOperator, val value: ConstraintValue)
   extends PhraseConstraint {
   override def matches(phr: Phrase, ctx: MatchingContext): Boolean =
     op(phr, value.getValue(ctx))

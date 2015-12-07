@@ -1,8 +1,9 @@
 package com.textocat.textokit.shaltef.mappings.pattern
 
 import com.textocat.textokit.phrrecog.cas.Phrase
-import scala.collection.immutable.Iterable
 import org.apache.commons.lang3.builder.HashCodeBuilder
+
+import scala.collection.immutable.Iterable
 
 /**
  * @author Rinat Gareev
@@ -12,7 +13,7 @@ trait PhrasePattern {
 }
 
 private[mappings] class ConstraintConjunctionPhrasePattern(
-  val constraints: Iterable[PhraseConstraint])
+                                                            val constraints: Iterable[PhraseConstraint])
   extends PhrasePattern {
 
   override def matches(phr: Phrase, ctx: MatchingContext): Boolean = {

@@ -1,6 +1,6 @@
 package com.textocat.textokit.shaltef.mappings
 
-import com.textocat.textokit.morph.dictionary.resource.{GramModel, MorphDictionary}
+import com.textocat.textokit.morph.dictionary.resource.GramModel
 import com.textocat.textokit.morph.fs.Wordform
 import com.typesafe.scalalogging.slf4j.StrictLogging
 

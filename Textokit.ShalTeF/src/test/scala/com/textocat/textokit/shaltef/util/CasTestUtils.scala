@@ -2,8 +2,8 @@ package com.textocat.textokit.shaltef.util
 
 import org.apache.uima.cas.TypeSystem
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory._
-import org.apache.uima.util.CasCreationUtils
 import org.apache.uima.jcas.JCas
+import org.apache.uima.util.CasCreationUtils
 
 /**
  * @author Rinat Gareev

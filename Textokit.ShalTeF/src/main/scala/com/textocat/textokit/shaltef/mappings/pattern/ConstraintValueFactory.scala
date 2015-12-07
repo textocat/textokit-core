@@ -5,12 +5,12 @@ import com.textocat.textokit.morph.dictionary.resource.GramModel
 /**
  * @author Rinat Gareev
  */
-class ConstraintValueFactory(gramModel:GramModel) {
+class ConstraintValueFactory(gramModel: GramModel) {
   def constant(valueString: String): ConstraintValue = ConstantScalarValue(valueString)
 
   def constantCollection(values: Iterable[String]): ConstraintValue = ConstantCollectionValue(values)
 
-  def constantCollectionAlternatives(colValues: Set[Iterable[String]]): ConstraintValue = 
+  def constantCollectionAlternatives(colValues: Set[Iterable[String]]): ConstraintValue =
     ConstantCollectionAlternatives(colValues)
 
   def triggerFeatureReference(refString: String): ConstraintValue = {

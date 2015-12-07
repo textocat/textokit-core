@@ -3,8 +3,8 @@
  */
 package com.textocat.textokit.shaltef.mappings.impl
 
-import com.textocat.textokit.shaltef.mappings.pattern._
 import com.textocat.textokit.shaltef.mappings._
+import com.textocat.textokit.shaltef.mappings.pattern._
 import com.typesafe.scalalogging.slf4j.StrictLogging
 
 /**
@@ -12,7 +12,7 @@ import com.typesafe.scalalogging.slf4j.StrictLogging
  *
  */
 class EnforcePrepositionConstraintPostProcessor(config: MappingsParserConfig) extends DepToArgMappingsPostProcessor
-  with StrictLogging {
+with StrictLogging {
 
   import config.constraintFactory._
   import config.constraintTargetFactory._

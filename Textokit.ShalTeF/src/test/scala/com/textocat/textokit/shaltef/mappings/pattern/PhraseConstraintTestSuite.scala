@@ -1,10 +1,10 @@
 package com.textocat.textokit.shaltef.mappings.pattern
 
+import com.textocat.textokit.morph.model.{MorphConstants => M}
+import com.textocat.textokit.phrrecog.cas.Phrase
 import com.textocat.textokit.shaltef.util.{CasTestUtils, NprCasBuilder}
 import org.scalatest.FunSuite
 import org.scalatest.mock.MockitoSugar
-import com.textocat.textokit.morph.model.{ MorphConstants => M }
-import com.textocat.textokit.phrrecog.cas.Phrase
 
 /**
  * @author Rinat Gareev

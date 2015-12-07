@@ -1,16 +1,18 @@
 package com.textocat.textokit.shaltef.mappings
 
+import java.io.File
+import java.util.BitSet
+
 import com.textocat.textokit.morph.dictionary.resource.{GramModel, MorphDictionary}
 import com.textocat.textokit.morph.model.Wordform
 import com.textocat.textokit.shaltef.mappings.impl.{DefaultDepToArgMapping, DefaultDepToArgMappingsHolder}
 import com.textocat.textokit.shaltef.mappings.pattern._
 import com.textocat.textokit.shaltef.util.CasTestUtils
-import org.scalatest.FunSuite
 import org.mockito.Mockito._
+import org.scalatest.FunSuite
 import org.scalatest.mock.MockitoSugar
-import scala.collection.JavaConversions.{ seqAsJavaList, bufferAsJavaList }
-import java.io.File
-import java.util.BitSet
+
+import scala.collection.JavaConversions.seqAsJavaList
 
 /**
  * @author Rinat Gareev
@@ -56,9 +58,9 @@ class TextualMappingsParserTestSuite extends FunSuite with MockitoSugar with Cas
     val mappings = mappingsBuilder.build().asInstanceOf[DefaultDepToArgMappingsHolder]
     assert(mappings.triggerLemmaId2Mappings.size === 2)
 
-    import constrValueFactory._
-    import constrTargetFactory._
     import constrFactory._
+    import constrTargetFactory._
+    import constrValueFactory._
     val pattern1 = new ConstraintConjunctionPhrasePattern(
       phraseConstraint(headFeature("case"), Equals, constant("nomn")) ::
         phraseConstraint(headFeature("gndr"), Equals, triggerFeatureReference("gndr")) ::

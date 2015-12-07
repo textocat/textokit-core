@@ -8,7 +8,7 @@ package com.textocat.textokit.shaltef.mappings
  *
  */
 trait DepToArgMappingsPostProcessor {
-  
-  def postprocess(mpBuilder:DepToArgMappingsBuilder)
+
+  def postprocess(mpBuilder: DepToArgMappingsBuilder)
 
 }

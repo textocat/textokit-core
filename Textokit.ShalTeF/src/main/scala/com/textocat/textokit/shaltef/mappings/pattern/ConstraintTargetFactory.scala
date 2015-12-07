@@ -1,16 +1,13 @@
 package com.textocat.textokit.shaltef.mappings.pattern
 
 import com.textocat.textokit.morph.dictionary.resource.GramModel
-import com.textocat.textokit.phrrecog.cas.Phrase
-import org.apache.commons.lang3.builder.ToStringBuilder
-import org.apache.commons.lang3.builder.ToStringStyle
-import com.textocat.textokit.phrrecog.cas.NounPhrase
-import org.apache.commons.lang3.builder.HashCodeBuilder
+import com.textocat.textokit.phrrecog.cas.{NounPhrase, Phrase}
+import org.apache.commons.lang3.builder.{HashCodeBuilder, ToStringBuilder, ToStringStyle}
 
 /**
  * @author Rinat Gareev
  */
-class ConstraintTargetFactory(gramModel : GramModel) {
+class ConstraintTargetFactory(gramModel: GramModel) {
 
   def headFeature(featStr: String): ConstraintTarget = {
     getGramCategory(gramModel, featStr) match {

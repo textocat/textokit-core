@@ -1,16 +1,15 @@
 package com.textocat.textokit.shaltef.mappings
 
+import java.io.{BufferedReader, InputStreamReader, Reader}
 import java.net.URL
+
 import com.textocat.textokit.shaltef.mappings.impl.DefaultDepToArgMapping
 import com.textocat.textokit.shaltef.mappings.pattern._
-import org.apache.uima.cas.Type
-import java.io.InputStreamReader
-import java.io.BufferedReader
+import org.apache.uima.cas.{Feature, Type}
+
+import scala.collection.JavaConversions.iterableAsScalaIterable
 import scala.collection.mutable
 import scala.util.parsing.combinator.JavaTokenParsers
-import org.apache.uima.cas.Feature
-import scala.collection.JavaConversions.iterableAsScalaIterable
-import java.io.Reader
 
 /**
  * @author Rinat Gareev
@@ -78,7 +77,7 @@ private[mappings] class TextualMappingsParser(config: MappingsParserConfig) exte
       case "?=>" => true
     }
 
-    private def templateFeatureName: Parser[Option[Feature]] = ident ^? ({
+    private def templateFeatureName: Parser[Option[Feature]] = ident ^?( {
       case featName if templateType.getFeatureByBaseName(featName) != null =>
         Some(templateType.getFeatureByBaseName(featName))
     }, "Type %s does not have feature '%s'".format(templateType, _))
@@ -97,10 +96,10 @@ private[mappings] class TextualMappingsParser(config: MappingsParserConfig) exte
 
     private def slotConstraintUnOp = unOpConstraint(headPathOp, constantMatrix)
 
-    import constraintValueFactory._
     import constraintTargetFactory._
+    import constraintValueFactory._
 
-    private def constraintTarget: Parser[ConstraintTarget] = rep1sep(ident, ".") ^? ({
+    private def constraintTarget: Parser[ConstraintTarget] = rep1sep(ident, ".") ^?( {
       case List("head", gramCat) => headFeature(gramCat)
       case List("prep") => prepositionTarget
     }, "Unknown constraint target: %s".format(_))
@@ -109,8 +108,8 @@ private[mappings] class TextualMappingsParser(config: MappingsParserConfig) exte
       "=" ^^ { _ => Equals }
 
     private def unOpConstraint(
-      unOpParser: Parser[UnaryConstraintOperator],
-      valueParser: Parser[ConstraintValue]): Parser[PhraseConstraint] =
+                                unOpParser: Parser[UnaryConstraintOperator],
+                                valueParser: Parser[ConstraintValue]): Parser[PhraseConstraint] =
       (unOpParser <~ "(") ~ valueParser <~ ")" ^^ {
         case unOp ~ value => constraintFactory.phraseConstraint(unOp, value)
       }
@@ -144,6 +143,7 @@ private[mappings] class TextualMappingsParser(config: MappingsParserConfig) exte
       listList => constraintValueFactory.constantCollectionAlternatives(listList.toSet)
     }
   }
+
 }
 
 object TextualMappingsParser {
