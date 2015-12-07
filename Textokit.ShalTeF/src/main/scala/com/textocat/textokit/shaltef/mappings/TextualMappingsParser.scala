@@ -145,9 +145,7 @@ private[mappings] class TextualMappingsParser(config: MappingsParserConfig) exte
       str => str.substring(1, str.length() - 1)
     }
 
-    private def triggerValueRef = "$trigger." ~> ident ^^ {
-      triggerFeatureReference
-    }
+    private def triggerValueRef = "$trigger." ~> ident ^^ triggerFeatureReference
 
     private def constantList = rep1sep(constantParser, ",") ^^ {
       constantCollection(_)

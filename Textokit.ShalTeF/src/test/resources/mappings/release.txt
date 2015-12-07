@@ -6,8 +6,8 @@ prep="в" ?=> date
 # some comment here
 [lemma("выйдет")]
 head.case="nomn" & head.gndr=$trigger.gndr => obj
-prep="в" & headPath("году") => date
-headPath("пресс-релиза" | "сообщения", "сайте") => subj
+prep="в" & headPath("год") => date
+headPath("пресс-релиз" | "сообщение", "сайт") => subj
 prep="на" => _
 # more comments
 # final comment

@@ -31,7 +31,7 @@ class ConstraintValueFactory(gramModel: GramModel) {
 
   def triggerFeatureReference(refString: String): ConstraintValue = {
     getGramCategory(gramModel, refString) match {
-      case Some(gramCatSet) => new TriggerGrammemeReference(gramCatSet)
+      case Some(gramCatSet) => TriggerGrammemeReference(gramCatSet)
       case None => throw new IllegalArgumentException(
         "Unknown trigger feature reference: %s".format(refString))
     }

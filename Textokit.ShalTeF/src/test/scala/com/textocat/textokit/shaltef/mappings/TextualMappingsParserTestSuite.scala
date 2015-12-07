@@ -100,11 +100,11 @@ class TextualMappingsParserTestSuite extends FunSuite with MockitoSugar with Cas
     val pattern5 = new ConstraintConjunctionPhrasePattern(
       phraseConstraint(prepositionTarget, Equals, constant("в")) ::
         phraseConstraint(HasHeadsPath, constantCollectionAlternatives(
-          Set(List("году"))))
+          Set(List("год"))))
         :: Nil)
     val pattern6 = new ConstraintConjunctionPhrasePattern(
       phraseConstraint(HasHeadsPath, constantCollectionAlternatives(
-        Set(List("пресс-релиза"), List("сообщения", "сайте"))))
+        Set(List("пресс-релиз"), List("сообщение", "сайт"))))
         :: Nil)
     val pattern7 = new ConstraintConjunctionPhrasePattern(
       phraseConstraint(prepositionTarget, Equals, constant("на"))

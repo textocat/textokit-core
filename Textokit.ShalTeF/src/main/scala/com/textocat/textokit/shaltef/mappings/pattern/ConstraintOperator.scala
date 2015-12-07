@@ -48,9 +48,14 @@ case object HasHeadsPath extends UnaryConstraintOperator {
   private def matches(phr: Phrase, expectedHeads: List[String]): Boolean =
     if (expectedHeads.isEmpty) true
     else if (phr == null) false
-    else if (phr.getHead.getWord.getCoveredText == expectedHeads.head) {
+    else if (getHeadLemma(phr) == expectedHeads.head) {
       val depPhrases = fsArrayToTraversable(phr.getDependentPhrases, classOf[Phrase])
       if (depPhrases.isEmpty) matches(null, expectedHeads.tail)
       else depPhrases.exists(matches(_, expectedHeads.tail))
     } else false
+
+  private def getHeadLemma(phr: Phrase): String = phr.getHead.getLemma match {
+    case null => phr.getHead.getWord.getCoveredText
+    case str => str
+  }
 }
