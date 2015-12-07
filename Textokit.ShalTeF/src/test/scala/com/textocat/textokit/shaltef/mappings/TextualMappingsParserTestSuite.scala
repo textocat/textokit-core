@@ -89,9 +89,9 @@ class TextualMappingsParserTestSuite extends FunSuite with MockitoSugar with Cas
         :: Nil)
     assert(mappings.triggerLemmaId2Mappings(100) === new DefaultDepToArgMapping(
       templateAnnoType, Set(100),
-      new SlotMapping(pattern1, false, Some(subjFeat)) ::
-        new SlotMapping(pattern2, false, Some(objFeat)) ::
-        new SlotMapping(pattern3, true, Some(dateFeat)) :: Nil)
+      SlotMapping(pattern1, false, Some(subjFeat)) ::
+        SlotMapping(pattern2, false, Some(objFeat)) ::
+        SlotMapping(pattern3, true, Some(dateFeat)) :: Nil)
       :: Nil)
 
     val pattern4 = new ConstraintConjunctionPhrasePattern(
@@ -111,10 +111,10 @@ class TextualMappingsParserTestSuite extends FunSuite with MockitoSugar with Cas
         :: Nil)
     assert(mappings.triggerLemmaId2Mappings(200) === new DefaultDepToArgMapping(
       templateAnnoType, Set(200),
-      new SlotMapping(pattern4, false, Some(objFeat)) ::
-        new SlotMapping(pattern5, false, Some(dateFeat)) ::
-        new SlotMapping(pattern6, false, Some(subjFeat)) ::
-        new SlotMapping(pattern7, false, None) :: Nil)
+      SlotMapping(pattern4, false, Some(objFeat)) ::
+        SlotMapping(pattern5, false, Some(dateFeat)) ::
+        SlotMapping(pattern6, false, Some(subjFeat)) ::
+        SlotMapping(pattern7, false, None) :: Nil)
       :: Nil)
   }
 

@@ -67,13 +67,13 @@ class EnforcePrepositionConstraintPostProcessorTestSuite extends FunSuite with M
       phraseConstraint(HasHeadsPath, constantCollectionAlternatives(Set(List("someHead")))) ::
         phraseConstraint(prepositionTarget, Equals, constant("somePrep")) :: Nil)
     mpBuilder.add(new DefaultDepToArgMapping(type1, Set(1, 3, 5),
-      new SlotMapping(pattern1, false, Some(feat1)) :: new SlotMapping(pattern2, false, None) :: Nil))
+      SlotMapping(pattern1, false, Some(feat1)) :: SlotMapping(pattern2, false, None) :: Nil))
 
     val pattern3 = new ConstraintConjunctionPhrasePattern(
       phraseConstraint(HasHeadsPath, constantCollectionAlternatives(
         Set(List("oneHead"), List("anotherHead")))) :: Nil)
     mpBuilder.add(new DefaultDepToArgMapping(type2, Set(2, 4, 5),
-      new SlotMapping(pattern3, false, Some(feat2)) :: Nil))
+      SlotMapping(pattern3, false, Some(feat2)) :: Nil))
 
     val postProcessor = new EnforcePrepositionConstraintPostProcessor(parserCfg)
     postProcessor.postprocess(mpBuilder)
@@ -86,7 +86,7 @@ class EnforcePrepositionConstraintPostProcessorTestSuite extends FunSuite with M
       phraseConstraint(prepositionTarget, Equals, constant(null)) ::
         phraseConstraint(headFeature("someGr"), Equals, constant("someGrValue")) :: Nil)
     assert(rmIter.next() === new DefaultDepToArgMapping(type1, Set(1, 3, 5),
-      new SlotMapping(pattern1Fixed, false, Some(feat1)) :: new SlotMapping(pattern2, false, None) :: Nil))
+      SlotMapping(pattern1Fixed, false, Some(feat1)) :: SlotMapping(pattern2, false, None) :: Nil))
 
     val pattern3Fixed = new ConstraintConjunctionPhrasePattern(
       phraseConstraint(prepositionTarget, Equals, constant(null)) ::
@@ -94,7 +94,7 @@ class EnforcePrepositionConstraintPostProcessorTestSuite extends FunSuite with M
           Set(List("oneHead"), List("anotherHead")))) :: Nil)
 
     assert(rmIter.next() === new DefaultDepToArgMapping(type2, Set(2, 4, 5),
-      new SlotMapping(pattern3Fixed, false, Some(feat2)) :: Nil))
+      SlotMapping(pattern3Fixed, false, Some(feat2)) :: Nil))
   }
 
 }

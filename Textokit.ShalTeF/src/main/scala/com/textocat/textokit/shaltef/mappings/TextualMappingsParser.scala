@@ -24,7 +24,6 @@ import com.textocat.textokit.shaltef.mappings.pattern._
 import org.apache.uima.cas.{Feature, Type}
 
 import scala.collection.JavaConversions.iterableAsScalaIterable
-import scala.collection.mutable
 import scala.util.parsing.combinator.JavaTokenParsers
 
 /**
@@ -72,20 +71,19 @@ private[mappings] class TextualMappingsParser(config: MappingsParserConfig) exte
     private def identifiedWordformLiteral = stringLiteral ^? {
       case strLiteral =>
         val str = strLiteral.substring(1, strLiteral.length - 1)
-        val strWordforms = morphDict.getEntries(str)
-        val lemmaIdSet = new mutable.HashSet[Int]
-        if (strWordforms != null)
-          for (strWf <- strWordforms; if strWf.getLemmaId >= 0)
-            lemmaIdSet.add(strWf.getLemmaId)
-        if (strWordforms.isEmpty)
+        val lemmaIdSet = morphDict.getEntries(str) match {
+          case null => Set.empty[Int]
+          case wfSet => wfSet.filter(_.getLemmaId >= 0).map(_.getLemmaId).toSet
+        }
+        if (lemmaIdSet.isEmpty)
           throw new IllegalArgumentException("Can't find lemmaId for word '%s'".format(str))
-        else lemmaIdSet.toSet
+        else lemmaIdSet
     }
 
     private def slotMapping: Parser[SlotMapping] =
       slotPattern ~ slotMappingOptionality ~ (templateFeatureName | templateFeatureStub) ^^ {
         case pattern ~ optionality ~ slotFeatureOpt =>
-          new SlotMapping(pattern, optionality, slotFeatureOpt)
+          SlotMapping(pattern, optionality, slotFeatureOpt)
       }
 
     private def slotMappingOptionality: Parser[Boolean] = ("=>" | "?=>") ^^ {

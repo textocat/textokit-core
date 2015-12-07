@@ -27,7 +27,7 @@ class ConstraintTargetFactory(gramModel: GramModel) {
 
   def headFeature(featStr: String): ConstraintTarget = {
     getGramCategory(gramModel, featStr) match {
-      case Some(gramIds) => new HeadGrammemeTarget(gramIds)
+      case Some(gramIds) => HeadGrammemeTarget(gramIds)
       case None => throw new IllegalArgumentException(
         "Unknown head constraint target: %s".format(featStr))
     }
@@ -36,22 +36,11 @@ class ConstraintTargetFactory(gramModel: GramModel) {
   def prepositionTarget: ConstraintTarget = PrepositionTarget
 }
 
-private[pattern] class HeadGrammemeTarget(protected val gramIds: Set[String])
+private[pattern] case class HeadGrammemeTarget(gramIds: Set[String])
   extends ConstraintTarget with GrammemeExtractor {
 
   override def getValue(phr: Phrase): String = extractGrammeme(phr.getHead)
 
-  override def equals(obj: Any): Boolean = obj match {
-    case that: HeadGrammemeTarget => this.gramIds == that.gramIds
-    case _ => false
-  }
-
-  override def hashCode(): Int =
-    new HashCodeBuilder().append(gramIds).toHashCode()
-
-  override def toString =
-    new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-      .append(gramIds).toString
 }
 
 private[mappings] object PrepositionTarget extends ConstraintTarget {

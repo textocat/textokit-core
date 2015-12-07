@@ -50,7 +50,7 @@ with StrictLogging {
   }
 
   private def enforcePrepositionConstraint(sm: SlotMapping): SlotMapping =
-    new SlotMapping(enforcePrepositionConstraint(sm.pattern), sm.isOptional, sm.slotFeatureOpt)
+    SlotMapping(enforcePrepositionConstraint(sm.pattern), sm.isOptional, sm.slotFeatureOpt)
 
   private def enforcePrepositionConstraint(p: PhrasePattern): PhrasePattern =
     p match {
@@ -66,7 +66,7 @@ with StrictLogging {
 
   private def isPrepositionConstraint(pc: PhraseConstraint) =
     pc match {
-      case binPC: BinOpPhraseConstraint => binPC.target == PrepositionTarget
+      case BinOpPhraseConstraint(target, _, _) => target == PrepositionTarget
       case _ => false
     }
 }
