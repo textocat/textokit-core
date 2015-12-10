@@ -63,7 +63,7 @@ public class DictionaryAnnotator<V> extends CasAnnotator_ImplBase {
     public static final String PARAM_INPUT_TOKEN_TYPE = "inputTokenType";
     public static final String PARAM_NORM_FORM_FEATURE_PATH = "normFormFeaturePath";
     public static final String PARAM_BOUNDARY_ANNOTATION_TYPE = "boundaryAnnoType";
-    // TODO implement PARAM_FALLBACK_TO_COVERED_TEXT
+    public static final String PARAM_NORM_FALLBACK_TO_COVERED_TEXT = "normFallbackToCoveredText";
 
     @ExternalResource(key = RESOURCE_CHUNKER)
     private Chunker<V> dictMatcher;
@@ -76,6 +76,9 @@ public class DictionaryAnnotator<V> extends CasAnnotator_ImplBase {
     @ConfigurationParameter(name = PARAM_NORM_FORM_FEATURE_PATH, mandatory = false,
             defaultValue = "lemma")
     private String normFeaturePathStr;
+    @ConfigurationParameter(name = PARAM_NORM_FALLBACK_TO_COVERED_TEXT, mandatory = false,
+            defaultValue = "true")
+    private Boolean normFallbackToCoveredText;
     @ConfigurationParameter(name = PARAM_BOUNDARY_ANNOTATION_TYPE, mandatory = false,
             defaultValue = "com.textocat.textokit.segmentation.fstype.Sentence")
     private Class<? extends AnnotationFS> boundaryAnnoClass;
@@ -84,7 +87,7 @@ public class DictionaryAnnotator<V> extends CasAnnotator_ImplBase {
     private Type inputTokenType;
     private ChunkAnnotationAdapter<V> chunkAnnotationAdapter;
     // per-CAS state
-    private Function<FeatureStructure, String> normFunction;
+    private Function<AnnotationFS, String> normFunction;
 
     @Override
     public void initialize(UimaContext ctx) throws ResourceInitializationException {
@@ -104,7 +107,7 @@ public class DictionaryAnnotator<V> extends CasAnnotator_ImplBase {
     @Override
     public void process(CAS cas) throws AnalysisEngineProcessException {
         try {
-            normFunction = FSUtils.stringFeaturePathFunc(cas, inputTokenType, normFeaturePathStr);
+            normFunction = new NormFunction(FSUtils.stringFeaturePathFunc(cas, inputTokenType, normFeaturePathStr));
         } catch (CASException e) {
             throw new AnalysisEngineProcessException(e);
         }
@@ -131,5 +134,24 @@ public class DictionaryAnnotator<V> extends CasAnnotator_ImplBase {
 
     private void makeResultAnnotation(AnnotationFS firstToken, AnnotationFS lastToken, V chunkMetadata) {
         chunkAnnotationAdapter.makeAnnotation(firstToken, lastToken, chunkMetadata);
+    }
+
+    private class NormFunction implements Function<AnnotationFS, String> {
+        private Function<FeatureStructure, String> normFeatureFunction;
+
+        public NormFunction(Function<FeatureStructure, String> normFeatureFunction) {
+            this.normFeatureFunction = normFeatureFunction;
+        }
+
+        @Override
+        public String apply(AnnotationFS anno) {
+            String res = normFeatureFunction.apply(anno);
+            if (res == null && normFallbackToCoveredText) {
+                // TODO refactor out lower-casing
+                res = anno.getCoveredText().toLowerCase();
+            }
+            return res;
+        }
+
     }
 }
