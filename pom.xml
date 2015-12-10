@@ -30,6 +30,7 @@
         <module>Textokit.Lemmatizer.API</module>
         <module>Textokit.Lemmatizer.DictionarySim</module>
         <module>Textokit.DictionaryMatcher</module>
+        <module>Textokit.DictionaryMatcher.Mensa</module>
         <module>Textokit.PhraseRecognizer.API</module>
         <module>Textokit.PhraseRecognizer.SPC</module>
         <module>Textokit.ShalTeF</module>

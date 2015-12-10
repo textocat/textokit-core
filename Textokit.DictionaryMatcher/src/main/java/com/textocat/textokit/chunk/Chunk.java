@@ -34,5 +34,5 @@ public interface Chunk<V> {
     /**
      * @return a metadata associated with the matched dictionary item
      */
-    V entry();
+    V metadata();
 }

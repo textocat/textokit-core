@@ -40,7 +40,7 @@ import java.util.RandomAccess;
 import java.util.Set;
 
 /**
- * @param <V> a type of dictionary entry ({@link com.textocat.textokit.chunk.Chunk}) metadata.
+ * @param <V> a type of dictionary metadata ({@link com.textocat.textokit.chunk.Chunk}) metadata.
  * @author Rinat Gareev
  */
 public class DictionaryAnnotator<V> extends CasAnnotator_ImplBase {
@@ -128,7 +128,7 @@ public class DictionaryAnnotator<V> extends CasAnnotator_ImplBase {
         for (Chunk<V> m : matches) {
             AnnotationFS mFirstToken = tokens.get(m.start());
             AnnotationFS mLastToken = tokens.get(m.end());
-            makeResultAnnotation(mFirstToken, mLastToken, m.entry());
+            makeResultAnnotation(mFirstToken, mLastToken, m.metadata());
         }
     }
 
