@@ -7,9 +7,9 @@
         <version>0.1-SNAPSHOT</version>
         <relativePath>../Textokit.Parent/pom.xml</relativePath>
     </parent>
-    <artifactId>textokit-phrase-recognizer-spc</artifactId>
-    <name>Textokit.PhraseRecognizer.ScalaParserCombinators</name>
-    <description>Textokit Phrase Recognizer implementation based on Scala Parser Combinators grammars</description>
+    <artifactId>textokit-shaltef</artifactId>
+    <name>Textokit.ShalTeF</name>
+    <description>Textokit's SHALlow parsing-based TEmplate Filler</description>
 
     <build>
         <plugins>
@@ -32,8 +32,6 @@
                             <goal>compile</goal>
                             <goal>testCompile</goal>
                         </goals>
-                        <configuration>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -75,10 +73,6 @@
         </dependency>
         <dependency>
             <groupId>com.textocat.textokit.core</groupId>
-            <artifactId>textokit-phrase-recognizer-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.textocat.textokit.core</groupId>
             <artifactId>textokit-commons</artifactId>
         </dependency>
         <dependency>
@@ -87,11 +81,11 @@
         </dependency>
         <dependency>
             <groupId>com.textocat.textokit.core</groupId>
-            <artifactId>textokit-sentence-splitter-api</artifactId>
+            <artifactId>textokit-morph-dictionary-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.textocat.textokit.core</groupId>
-            <artifactId>textokit-postagger-api</artifactId>
+            <artifactId>textokit-phrase-recognizer-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.uima</groupId>
@@ -105,11 +99,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
-        <!-- logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.typesafe.scala-logging</groupId>
             <artifactId>scala-logging-slf4j_2.11</artifactId>
@@ -118,6 +107,15 @@
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.11</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.textocat.textokit.core</groupId>
+            <artifactId>textokit-eval</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

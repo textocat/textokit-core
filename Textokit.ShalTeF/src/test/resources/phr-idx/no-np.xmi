@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><xmi:XMI xmlns:cas="http:///uima/cas.ecore" xmlns:fstype2="http:///com/textocat/textokit/tokenizer/fstype.ecore" xmlns:xmi="http://www.omg.org/XMI" xmlns:cas2="http:///com/textocat/textokit/phrrecog/cas.ecore" xmlns:tcas="http:///uima/tcas.ecore" xmlns:fstype="http:///com/textocat/textokit/segmentation/fstype.ecore" xmlns:fs="http:///com/textocat/textokit/morph/fs.ecore" xmi:version="2.0">
+    <cas:NULL xmi:id="0"/>
+    <tcas:DocumentAnnotation xmi:id="8" sofa="1" begin="0" end="127" language="x-unspecified"/>
+    <fstype2:W xmi:id="13" sofa="1" begin="0" end="10"/>
+    <fstype2:W xmi:id="33" sofa="1" begin="11" end="15"/>
+    <fstype2:W xmi:id="53" sofa="1" begin="16" end="26"/>
+    <fstype2:W xmi:id="73" sofa="1" begin="27" end="31"/>
+    <fstype2:W xmi:id="93" sofa="1" begin="32" end="34"/>
+    <fstype2:W xmi:id="113" sofa="1" begin="35" end="42"/>
+    <fstype2:W xmi:id="133" sofa="1" begin="43" end="47"/>
+    <fstype2:W xmi:id="153" sofa="1" begin="48" end="52"/>
+    <fstype2:W xmi:id="173" sofa="1" begin="53" end="58"/>
+    <fstype2:W xmi:id="193" sofa="1" begin="59" end="67"/>
+    <fstype2:W xmi:id="213" sofa="1" begin="68" end="76"/>
+    <fstype2:W xmi:id="233" sofa="1" begin="77" end="85"/>
+    <fstype2:W xmi:id="253" sofa="1" begin="86" end="87"/>
+    <fstype2:W xmi:id="273" sofa="1" begin="88" end="94"/>
+    <fstype2:W xmi:id="293" sofa="1" begin="95" end="104"/>
+    <fstype2:W xmi:id="313" sofa="1" begin="105" end="107"/>
+    <fstype2:W xmi:id="333" sofa="1" begin="108" end="113"/>
+    <fstype2:W xmi:id="353" sofa="1" begin="114" end="121"/>
+    <fstype2:W xmi:id="373" sofa="1" begin="122" end="126"/>
+    <fs:Word xmi:id="17" sofa="1" begin="0" end="10" wordforms="23" token="13"/>
+    <fs:Word xmi:id="37" sofa="1" begin="11" end="15" wordforms="43" token="33"/>
+    <fs:Word xmi:id="57" sofa="1" begin="16" end="26" wordforms="63" token="53"/>
+    <fs:Word xmi:id="77" sofa="1" begin="27" end="31" wordforms="83" token="73"/>
+    <fs:Word xmi:id="97" sofa="1" begin="32" end="34" wordforms="103" token="93"/>
+    <fs:Word xmi:id="117" sofa="1" begin="35" end="42" wordforms="123" token="113"/>
+    <fs:Word xmi:id="137" sofa="1" begin="43" end="47" wordforms="143" token="133"/>
+    <fs:Word xmi:id="157" sofa="1" begin="48" end="52" wordforms="163" token="153"/>
+    <fs:Word xmi:id="177" sofa="1" begin="53" end="58" wordforms="183" token="173"/>
+    <fs:Word xmi:id="197" sofa="1" begin="59" end="67" wordforms="203" token="193"/>
+    <fs:Word xmi:id="217" sofa="1" begin="68" end="76" wordforms="223" token="213"/>
+    <fs:Word xmi:id="237" sofa="1" begin="77" end="85" wordforms="243" token="233"/>
+    <fs:Word xmi:id="257" sofa="1" begin="86" end="87" wordforms="263" token="253"/>
+    <fs:Word xmi:id="277" sofa="1" begin="88" end="94" wordforms="283" token="273"/>
+    <fs:Word xmi:id="297" sofa="1" begin="95" end="104" wordforms="303" token="293"/>
+    <fs:Word xmi:id="317" sofa="1" begin="105" end="107" wordforms="323" token="313"/>
+    <fs:Word xmi:id="337" sofa="1" begin="108" end="113" wordforms="343" token="333"/>
+    <fs:Word xmi:id="357" sofa="1" begin="114" end="121" wordforms="363" token="353"/>
+    <fs:Word xmi:id="377" sofa="1" begin="122" end="126" wordforms="383" token="373"/>
+    <fstype:Sentence xmi:id="393" sofa="1" begin="0" end="127"/>
+    <cas:Sofa xmi:id="1" sofaNum="1" sofaID="_InitialView" mimeType="text" sofaString="Отборочный матч чемпионата мира по футболу 2014 года между сборными Северной Ирландии и России перенесен на более поздний срок."/>
+    <fs:Wordform xmi:id="23" lemmaId="0" word="17"/>
+    <fs:Wordform xmi:id="43" lemmaId="0" word="37"/>
+    <fs:Wordform xmi:id="63" lemmaId="0" word="57"/>
+    <fs:Wordform xmi:id="83" lemmaId="0" word="77"/>
+    <fs:Wordform xmi:id="103" lemmaId="0" word="97"/>
+    <fs:Wordform xmi:id="123" lemmaId="0" word="117"/>
+    <fs:Wordform xmi:id="143" lemmaId="0" word="137"/>
+    <fs:Wordform xmi:id="163" lemmaId="0" word="157"/>
+    <fs:Wordform xmi:id="183" lemmaId="0" word="177"/>
+    <fs:Wordform xmi:id="203" lemmaId="0" word="197"/>
+    <fs:Wordform xmi:id="223" lemmaId="0" word="217"/>
+    <fs:Wordform xmi:id="243" lemmaId="0" word="237"/>
+    <fs:Wordform xmi:id="263" lemmaId="0" word="257"/>
+    <fs:Wordform xmi:id="283" lemmaId="0" word="277"/>
+    <fs:Wordform xmi:id="303" lemmaId="0" word="297"/>
+    <fs:Wordform xmi:id="323" lemmaId="0" word="317"/>
+    <fs:Wordform xmi:id="343" lemmaId="0" word="337"/>
+    <fs:Wordform xmi:id="363" lemmaId="0" word="357"/>
+    <fs:Wordform xmi:id="383" lemmaId="0" word="377"/>
+    <cas:View sofa="1" members="8 13 33 53 73 93 113 133 153 173 193 213 233 253 273 293 313 333 353 373 17 37 57 77 97 117 137 157 177 197 217 237 257 277 297 317 337 357 377 393"/>
+</xmi:XMI>
