@@ -193,6 +193,11 @@
                 <artifactId>textokit-eval</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-dictionary-matcher</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- component resources (dictionaries, models, etc.) -->
             <dependency>
                 <groupId>com.textocat.textokit.core</groupId>

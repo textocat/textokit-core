@@ -36,5 +36,6 @@
         <module>Textokit.IO.Brat</module>
         <module>Textokit.Util.RutaSeeder</module>
         <module>Textokit.Evaluation</module>
+        <module>Textokit.DictionaryMatcher.Tools</module>
     </modules>
 </project>
