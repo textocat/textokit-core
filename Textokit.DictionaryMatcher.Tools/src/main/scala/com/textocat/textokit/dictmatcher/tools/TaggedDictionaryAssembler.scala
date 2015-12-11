@@ -32,6 +32,7 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory
 import org.apache.uima.fit.util.JCasUtil
 
 import scala.collection.JavaConversions._
+import scala.collection.immutable.ListMap
 import scala.io.Source
 
 /**
@@ -120,7 +121,7 @@ object TaggedDictionaryAssembler {
   }
 
   private val lemmatizerAEDesc = {
-    val desc = PipelineDescriptorUtils.createAggregateDescription(Map(
+    val desc = PipelineDescriptorUtils.createAggregateDescription(ListMap(
       "tokenizer" -> TokenizerAPI.getAEImport,
       "sentence-splitter" -> SingleSentenceAnnotator.createDescription(),
       "pos-tagger" -> PosTaggerAPI.getAEImport,
