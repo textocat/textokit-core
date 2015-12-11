@@ -16,9 +16,9 @@
 
 package com.textocat.textokit.dictmatcher.tools
 
-import java.io.{BufferedOutputStream, File}
+import java.io.File
 
-import com.textocat.textokit.chunk.ChunkerBuilder
+import com.textocat.textokit.commons.io.IoUtils
 import com.textocat.textokit.commons.util.PipelineDescriptorUtils
 import com.textocat.textokit.morph.commons.SimplyWordAnnotator
 import com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory
@@ -27,8 +27,6 @@ import com.textocat.textokit.morph.lemmatizer.LemmatizerAPI
 import com.textocat.textokit.postagger.PosTaggerAPI
 import com.textocat.textokit.segmentation.SingleSentenceAnnotator
 import com.textocat.textokit.tokenizer.TokenizerAPI
-import org.apache.commons.io.FileUtils
-import org.apache.commons.lang3.SerializationUtils
 import org.apache.uima.analysis_engine.AnalysisEngine
 import org.apache.uima.fit.factory.AnalysisEngineFactory
 import org.apache.uima.fit.util.JCasUtil
@@ -37,11 +35,9 @@ import scala.collection.JavaConversions._
 import scala.io.Source
 
 /**
- * TODO NOT FINISHED, as there are no serializable Chunker implementations yet
  * <p>
  * An app that takes a set of input files in the format specified below and produces
- * a serialized instance of [[com.textocat.textokit.chunk.Chunker]] which
- * can be later instantiated by [[com.textocat.textokit.resource.SerializedResourceLocator]].
+ * an output plain text file which is ready to use by {@link com.textocat.textokit.dictmatcher.TaggedChunkerBuilderResource}.
  * </p>
  * <h2>Input (text) file format:</h2>
  * <p>One dictionary entry per line.
@@ -55,7 +51,7 @@ import scala.io.Source
  *
  * @author Rinat Gareev
  */
-object TaggedDictionarySerializerApp {
+object TaggedDictionaryAssembler {
 
   val loggingPeriodicity = 1000
 
@@ -73,44 +69,54 @@ object TaggedDictionarySerializerApp {
         System.err.println("Usage: <input-dir> <ser-output-file> < filename => tag >+")
         sys.exit(1)
     }
-    // TODO
-    val builder: ChunkerBuilder[String] = ???
-    //
-    val lemmatizerAE: AnalysisEngine = AnalysisEngineFactory.createEngine(lemmatizerAEDesc)
-    val jCas = lemmatizerAE.newJCas()
-    var entryCounter = 0
-    def addToBuilder(file: File, tag: String): Unit = {
-      val fileSrc = Source.fromFile(file, "UTF-8")
-      try {
-        for (line <- fileSrc.getLines() if line.trim.nonEmpty) {
-          jCas.setDocumentText(line)
-          lemmatizerAE.process(jCas)
-          // TODO refactor this strategy and save with chunker
-          val tokens = JCasUtil.select(jCas, classOf[SimplyWord]).map(sw => sw.getLemma match {
-            case null => sw.getCoveredText
-            case lemma => lemma
-          })
-          builder.addEntry(asJavaIterable(tokens), tag)
-          // TODO implement debug option when normalized tokens are written into a separate plain text file
-          entryCounter += 1
-          if (entryCounter % loggingPeriodicity == 0) {
-            println(s"$entryCounter entries have been added...")
+    // prepare output
+    val out = IoUtils.openPrintWriter(outputFile)
+    try {
+      // prepare normalizer
+      val lemmatizerAE: AnalysisEngine = AnalysisEngineFactory.createEngine(lemmatizerAEDesc)
+      val jCas = lemmatizerAE.newJCas()
+      var entryCounter = 0
+      //
+      def addToBuilder(file: File, tag: String): Unit = {
+        val fileSrc = Source.fromFile(file, "UTF-8")
+        try {
+          for (line <- fileSrc.getLines() if line.trim.nonEmpty) {
+            jCas.setDocumentText(line)
+            lemmatizerAE.process(jCas)
+            // TODO refactor this strategy and save with chunker
+            val tokens = JCasUtil.select(jCas, classOf[SimplyWord]).map(sw => sw.getLemma match {
+              case null => sw.getCoveredText
+              case lemma => lemma
+            })
+            if (tokens.isEmpty) {
+              println("WARN: No tokens in line:\n" + line)
+            } else {
+              // OUTPUT
+              import com.textocat.textokit.dictmatcher.TaggedChunkerBuilderResource._
+              out.print(tokens.mkString(TOKEN_SEPARATOR))
+              out.print(TAG_DELIMITER)
+              out.println(tag)
+              //
+              entryCounter += 1
+              if (entryCounter % loggingPeriodicity == 0) {
+                println(s"$entryCounter entries have been added...")
+              }
+            }
+            jCas.reset()
           }
-          jCas.reset()
+        } finally {
+          fileSrc.close()
         }
-      } finally {
-        fileSrc.close()
       }
+      //
+      for ((filename, tag) <- fileTagTuples) {
+        addToBuilder(new File(inputBaseDir, filename), tag)
+      }
+    } finally {
+      out.close()
     }
     //
-    for ((filename, tag) <- fileTagTuples) {
-      addToBuilder(new File(inputBaseDir, filename), tag)
-    }
-    val chunker = builder.build()
-    //
-    val out = new BufferedOutputStream(FileUtils.openOutputStream(outputFile))
-    SerializationUtils.serialize(chunker.asInstanceOf[java.io.Serializable], out)
-    println(s"Finished serialization. The result file size is ${outputFile.length() / 1024} Kb")
+    println(s"Finished. The result file size is ${outputFile.length() / 1024} Kb")
   }
 
   private val lemmatizerAEDesc = {
@@ -119,7 +125,7 @@ object TaggedDictionarySerializerApp {
       "sentence-splitter" -> SingleSentenceAnnotator.createDescription(),
       "pos-tagger" -> PosTaggerAPI.getAEImport,
       "lemmatizer" -> LemmatizerAPI.getAEImport,
-      "sw-make" -> SimplyWordAnnotator.createDescription()
+      "sw-maker" -> SimplyWordAnnotator.createDescription()
     ))
     val morphDictDesc = MorphDictionaryAPIFactory.getMorphDictionaryAPI.getResourceDescriptionForCachedInstance
     morphDictDesc.setName(PosTaggerAPI.MORPH_DICTIONARY_RESOURCE_NAME)

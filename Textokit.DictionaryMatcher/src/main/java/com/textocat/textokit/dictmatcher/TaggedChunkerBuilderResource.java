@@ -93,14 +93,16 @@ public class TaggedChunkerBuilderResource extends SpringResourceLocator {
         if (line.startsWith("#")) {
             return null;
         }
-        String[] tokTagSplit = line.split("\t");
+        String[] tokTagSplit = line.split(TAG_DELIMITER);
         if (tokTagSplit.length != 2) cantParseLine(line);
         String tag = tokTagSplit[1].trim();
         Iterable<String> tokens = TOKEN_SPLITTER.split(tokTagSplit[0]);
         return new DictEntry(tokens, tag);
     }
 
-    private static Splitter TOKEN_SPLITTER = Splitter.on(' ').trimResults().omitEmptyStrings();
+    public static final String TOKEN_SEPARATOR = " ";
+    public static final String TAG_DELIMITER = "\t";
+    private static Splitter TOKEN_SPLITTER = Splitter.on(TOKEN_SEPARATOR).trimResults().omitEmptyStrings();
 
     private void cantParseLine(String line) {
         throw new IllegalStateException("Can't parse line:\n" + line);
