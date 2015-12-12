@@ -81,7 +81,7 @@ object TaggedDictionaryAssembler {
       def addToBuilder(file: File, tag: String): Unit = {
         val fileSrc = Source.fromFile(file, "UTF-8")
         try {
-          for (line <- fileSrc.getLines() if line.trim.nonEmpty) {
+          for (line <- fileSrc.getLines() if line.trim.nonEmpty && !line.startsWith("#")) {
             jCas.setDocumentText(line)
             lemmatizerAE.process(jCas)
             // TODO refactor this strategy and save with chunker
