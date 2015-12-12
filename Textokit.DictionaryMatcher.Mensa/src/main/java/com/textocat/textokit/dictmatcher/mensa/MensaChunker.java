@@ -42,14 +42,27 @@ public class MensaChunker<V> implements Chunker<V> {
 
     @Override
     public Set<Chunk<V>> chunks(Iterable<String> tokens) {
-        IteratorTextSource textSrc = new IteratorTextSource(tokens.iterator());
-        Iterator<IMatch<String>> matchIter = machine.matchIterator(textSrc);
-        Set<Chunk<V>> res = Sets.newHashSet();
-        while (matchIter.hasNext()) {
-            IMatch<String> m = matchIter.next();
-            res.add(new ChunkBean<>((int) m.getStart(), (int) m.getEnd() - 1, (V) m.getKeyword().getUserData()));
+        IteratorTextSource textSrc = null;
+        try {
+            textSrc = new IteratorTextSource(tokens.iterator());
+            textSrc.open();
+            Iterator<IMatch<String>> matchIter = machine.matchIterator(textSrc);
+            Set<Chunk<V>> res = Sets.newHashSet();
+            while (matchIter.hasNext()) {
+                IMatch<String> m = matchIter.next();
+                res.add(new ChunkBean<>((int) m.getStart(), (int) m.getEnd() - 1, (V) m.getKeyword().getUserData()));
+            }
+            return res;
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        } finally {
+            try {
+                if (textSrc != null) {
+                    textSrc.close();
+                }
+            } catch (IOException e) {
+            }
         }
-        return res;
     }
 
     private class IteratorTextSource extends AbstractTextSource<String> {
