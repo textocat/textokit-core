@@ -245,4 +245,16 @@ public class FSUtils {
         };
     }
 
+    public static Function<FeatureStructure, String> stringFeaturePathFunc(
+            CAS cas, Type inputFSType, String featurePath) throws CASException {
+        final FeaturePath path = cas.createFeaturePath();
+        path.initialize(featurePath);
+        path.typeInit(inputFSType);
+        return new Function<FeatureStructure, String>() {
+            @Override
+            public String apply(FeatureStructure fs) {
+                return path.getStringValue(fs);
+            }
+        };
+    }
 }
