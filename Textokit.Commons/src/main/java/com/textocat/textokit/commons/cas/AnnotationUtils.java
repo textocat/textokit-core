@@ -18,7 +18,10 @@
 package com.textocat.textokit.commons.cas;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.apache.uima.cas.*;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -287,5 +290,15 @@ public class AnnotationUtils {
 
     public static Function<AnnotationFS, String> coveredTextFunction() {
         return coveredTextFunction;
+    }
+
+    public static <A extends Annotation> A findByCoveredText(JCas jCas, Class<A> annoClass, final String coveredText) {
+        Optional<A> findRes = Iterables.tryFind(jCas.getAnnotationIndex(annoClass), new Predicate<A>() {
+            @Override
+            public boolean apply(A input) {
+                return Objects.equals(input.getCoveredText(), coveredText);
+            }
+        });
+        return findRes.or((A) null);
     }
 }

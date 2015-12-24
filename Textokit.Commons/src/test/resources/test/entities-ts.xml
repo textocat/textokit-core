@@ -3,6 +3,16 @@
     <description>TS for testing</description>
     <types>
         <typeDescription>
+            <name>test.Word</name>
+            <description/>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>test.PersonName</name>
+            <description/>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+        </typeDescription>
+        <typeDescription>
             <name>test.Person</name>
             <description/>
             <supertypeName>uima.tcas.Annotation</supertypeName>
@@ -10,6 +20,15 @@
                 <featureDescription>
                     <name>mentionType</name>
                     <rangeTypeName>uima.cas.String</rangeTypeName>
+                </featureDescription>
+                <featureDescription>
+                    <name>name</name>
+                    <rangeTypeName>test.PersonName</rangeTypeName>
+                </featureDescription>
+                <featureDescription>
+                    <name>words</name>
+                    <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+                    <elementType>test.Word</elementType>
                 </featureDescription>
             </features>
         </typeDescription>

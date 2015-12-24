@@ -41,7 +41,7 @@ class AXMLContentHandler extends DefaultHandler {
     private static final String E_META = "meta";
     private static final String E_ALIASES = "aliases";
     private static final String E_ALIAS = "alias";
-    private static final String E_FEATURE_ALIAS = "featurealias";
+    private static final String E_FEATURE_ALIAS = "featureAlias";
     private static final String E_BODY = "body";
     private static final String A_KEY = "key";
     private static final String A_TYPE = "type";
@@ -317,6 +317,6 @@ class AXMLContentHandler extends DefaultHandler {
         if (elemName.isEmpty()) {
             throw new SAXParseException("Could not determine element name", locator);
         }
-        return elemName.toLowerCase();
+        return elemName;
     }
 }
