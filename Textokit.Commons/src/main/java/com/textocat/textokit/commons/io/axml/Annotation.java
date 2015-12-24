@@ -20,6 +20,7 @@ package com.textocat.textokit.commons.io.axml;
 import com.google.common.collect.Maps;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,13 +29,23 @@ import java.util.Set;
  */
 class Annotation {
 
+    private String id;
     private String type;
     private int begin;
     private int end;
-    private Map<String, String> featureStringValuesMap;
+    // map feature name => String (primitive feat val), Annotation (FS val) or List<Annotation> (FSArray val)
+    private Map<String, Object> featureValuesMap;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     Annotation() {
-        featureStringValuesMap = Maps.newHashMap();
+        featureValuesMap = Maps.newHashMap();
     }
 
     public int getBegin() {
@@ -62,14 +73,47 @@ class Annotation {
     }
 
     public void setFeatureStringValue(String name, String val) {
-        featureStringValuesMap.put(name, val);
+        featureValuesMap.put(name, val);
     }
 
+    public void setFeatureFSValue(String name, Annotation val) {
+        featureValuesMap.put(name, val);
+    }
+
+    public Annotation getFeatureFSValue(String name) {
+        return getFeatureValue(name, Annotation.class);
+    }
+
+    public void setFeatureFSArrayValue(String name, List<Annotation> val) {
+        featureValuesMap.put(name, val);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Annotation> getFeatureFSArrayValue(String name) {
+        return getFeatureValue(name, List.class);
+    }
+
+    /**
+     * @return feature names which has been set a value
+     */
     public Set<String> getFeatureNames() {
-        return Collections.unmodifiableSet(featureStringValuesMap.keySet());
+        return Collections.unmodifiableSet(featureValuesMap.keySet());
     }
 
     public String getFeatureStringValue(String name) {
-        return featureStringValuesMap.get(name);
+        return getFeatureValue(name, String.class);
     }
+
+    private <V> V getFeatureValue(String name, Class<V> expectedValClass) {
+        Object res = featureValuesMap.get(name);
+        if (res == null) return null;
+        if (expectedValClass.isInstance(res)) {
+            return expectedValClass.cast(res);
+        } else {
+            throw new IllegalStateException(String.format(
+                    "Feature %s has non-%s value: %s", name, expectedValClass.getName(), res));
+        }
+    }
+
+    // note for equals impl -- already USED as a key in Tables
 }

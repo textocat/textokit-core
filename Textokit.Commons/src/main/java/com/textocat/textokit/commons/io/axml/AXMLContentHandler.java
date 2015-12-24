@@ -17,9 +17,7 @@
 
 package com.textocat.textokit.commons.io.axml;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
+import com.google.common.base.*;
 import com.google.common.collect.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.cas.TypeSystem;
@@ -30,6 +28,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,6 +56,9 @@ class AXMLContentHandler extends DefaultHandler {
     private boolean readCharacters = false;
     private boolean readingBody = false;
     private LinkedList<Annotation> openAnnotations;
+    private Map<String, Annotation> annoIdIndex;
+    // table of <anno, featName> => to single-string-id||list-of-ids
+    private Table<Annotation, String, Object> fsFeatureTable;
     private Set<Annotation> annotations;
     private boolean finished = false;
     private String text;
@@ -235,6 +237,8 @@ class AXMLContentHandler extends DefaultHandler {
         textBuilder = new StringBuilder();
         openAnnotations = Lists.newLinkedList();
         annotations = Sets.newLinkedHashSet();
+        fsFeatureTable = HashBasedTable.create();
+        annoIdIndex = Maps.newHashMap();
     }
 
     private void onBodyEnd() throws SAXParseException {
@@ -243,11 +247,44 @@ class AXMLContentHandler extends DefaultHandler {
                     locator);
         }
         openAnnotations = null;
+        // set fs references
+        for (Table.Cell<Annotation, String, Object> c : fsFeatureTable.cellSet()) {
+            Annotation anno = c.getRowKey();
+            String featName = c.getColumnKey();
+            Object valObj = c.getValue();
+            if (valObj instanceof String) {
+                anno.setFeatureFSValue(featName, getAnnotationById((String) valObj));
+            } else if (valObj instanceof List) {
+                @SuppressWarnings("unchecked") List<String> valIds = (List<String>) valObj;
+                anno.setFeatureFSArrayValue(featName, Lists.newArrayList(Lists.transform(valIds, ID2ANNO)));
+            } else {
+                // should never happen
+                throw new IllegalStateException();
+            }
+        }
+        //
+        fsFeatureTable = null;
+        annoIdIndex = null;
         text = textBuilder.toString();
         textBuilder = null;
         readingBody = false;
         readCharacters = false;
     }
+
+    private Annotation getAnnotationById(String id) {
+        Annotation valAnno = annoIdIndex.get(id);
+        if (valAnno == null) {
+            throw new IllegalStateException("Can't find FS with id=" + id);
+        }
+        return valAnno;
+    }
+
+    private final Function<String, Annotation> ID2ANNO = new Function<String, Annotation>() {
+        @Override
+        public Annotation apply(String id) {
+            return getAnnotationById(id);
+        }
+    };
 
     private void onAnnotationStart(final String aType, Attributes attrs) throws SAXParseException {
         String type = toTypeName(aType);
@@ -257,16 +294,34 @@ class AXMLContentHandler extends DefaultHandler {
         // handle features
         for (int attrIndex = 0; attrIndex < attrs.getLength(); attrIndex++) {
             final String attrName = attrs.getLocalName(attrIndex);
-            String featName = attrName;
-            if (featNameAliases.containsKey(attrName)) {
-                featName = featNameAliases.get(attrName);
+            if ("id".equals(attrName)) {
+                // handle as a special case
+                String id = attrs.getValue(attrIndex);
+                newAnno.setId(id);
+                annoIdIndex.put(id, newAnno);
+            } else {
+                // handle the attr as feature name or alias
+                String featName = attrName;
+                if (featNameAliases.containsKey(attrName)) {
+                    featName = featNameAliases.get(attrName);
+                }
+                String attrVal = attrs.getValue(attrIndex);
+                if (attrVal.startsWith("id:")) {
+                    String valId = attrVal.substring("id:".length());
+                    fsFeatureTable.put(newAnno, featName, valId);
+                } else if (attrVal.startsWith("ids:")) {
+                    List<String> valIds = ID_SPLITTER.splitToList(attrVal.substring("ids:".length()));
+                    fsFeatureTable.put(newAnno, featName, valIds);
+                } else {
+                    newAnno.setFeatureStringValue(featName, attrVal);
+                }
             }
-            String attrVal = attrs.getValue(attrIndex);
-            newAnno.setFeatureStringValue(featName, attrVal);
         }
         //
         openAnnotations.addFirst(newAnno);
     }
+
+    private static final Splitter ID_SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
 
     private String toTypeName(final String aType) throws SAXParseException {
         String type = typeAliases.get(aType);

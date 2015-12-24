@@ -299,6 +299,6 @@ public class AnnotationUtils {
                 return Objects.equals(input.getCoveredText(), coveredText);
             }
         });
-        return findRes.or((A) null);
+        return findRes.orNull();
     }
 }
