@@ -1,10 +1,12 @@
-package ru.kfu.itis.issst.uima.depparser.mst;
+package com.textocat.textokit.depparser.mst;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.textocat.textokit.morph.fs.Word;
+import com.textocat.textokit.morph.fs.Wordform;
 import mstparser.DependencyInstance;
 
 import org.apache.uima.UimaContext;
@@ -15,21 +17,19 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.opencorpora.cas.Word;
-import org.opencorpora.cas.Wordform;
 import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 
-import ru.kfu.cll.uima.segmentation.fstype.Sentence;
-import ru.kfu.cll.uima.tokenizer.fstype.Token;
-import ru.kfu.itis.cll.uima.cas.FSUtils;
-import ru.kfu.itis.cll.uima.commons.DocumentMetadata;
-import ru.kfu.itis.issst.uima.depparser.Dependency;
-import ru.kfu.itis.issst.uima.segmentation.SentenceSplitterAPI;
-import ru.kfu.itis.issst.uima.tokenizer.TokenUtils;
-import ru.kfu.itis.issst.uima.tokenizer.TokenizerAPI;
+import com.textocat.textokit.segmentation.fstype.Sentence;
+import com.textocat.textokit.tokenizer.fstype.Token;
+import com.textocat.textokit.commons.cas.FSUtils;
+import com.textocat.textokit.commons.DocumentMetadata;
+import com.textocat.textokit.depparser.Dependency;
+import com.textocat.textokit.segmentation.SentenceSplitterAPI;
+import com.textocat.textokit.tokenizer.TokenUtils;
+import com.textocat.textokit.tokenizer.TokenizerAPI;
 
 /**
  * @author Rinat Gareev
@@ -40,10 +40,10 @@ public class MSTCollectionReader extends JCasCollectionReader_ImplBase {
 	public static CollectionReaderDescription createDescription(File inputFile)
 			throws ResourceInitializationException {
 		TypeSystemDescription inputTSD = TypeSystemDescriptionFactory.createTypeSystemDescription(
-				"ru.kfu.itis.cll.uima.commons.Commons-TypeSystem",
+				"com.textocat.textokit.commons.Commons-TypeSystem",
 				TokenizerAPI.TYPESYSTEM_TOKENIZER,
 				SentenceSplitterAPI.TYPESYSTEM_SENTENCES,
-				"ru.kfu.itis.issst.uima.depparser.dependency-ts");
+				"com.textocat.textokit.depparser.dependency-ts");
 		return CollectionReaderFactory.createReaderDescription(
 				MSTCollectionReader.class, inputTSD,
 				PARAM_INPUT_FILE, inputFile.getPath());

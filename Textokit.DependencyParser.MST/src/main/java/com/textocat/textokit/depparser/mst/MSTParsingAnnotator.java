@@ -1,4 +1,4 @@
-package ru.kfu.itis.issst.uima.depparser.mst;
+package com.textocat.textokit.depparser.mst;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newArrayListWithExpectedSize;
@@ -7,7 +7,7 @@ import static org.apache.uima.fit.factory.ExternalResourceFactory.bindResource;
 import static org.apache.uima.fit.factory.ExternalResourceFactory.createDependency;
 import static org.apache.uima.fit.factory.ExternalResourceFactory.createExternalResourceDescription;
 import static org.apache.uima.fit.factory.TypeSystemDescriptionFactory.createTypeSystemDescription;
-import static ru.kfu.itis.cll.uima.cas.AnnotationUtils.coveredTextFunction;
+import static com.textocat.textokit.commons.cas.AnnotationUtils.coveredTextFunction;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
+import com.textocat.textokit.morph.fs.Word;
 import mstparser.DependencyInstance;
 import mstparser.DependencyParser;
 import mstparser.DependencyPipe;
@@ -36,15 +37,14 @@ import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.InvalidXMLException;
-import org.opencorpora.cas.Word;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.util.JCasUtil;
 
-import ru.kfu.cll.uima.segmentation.fstype.Sentence;
-import ru.kfu.itis.cll.uima.io.IoUtils;
-import ru.kfu.itis.cll.uima.util.AnnotatorUtils;
-import ru.kfu.itis.issst.uima.depparser.Dependency;
-import ru.kfu.itis.issst.uima.morph.commons.TagUtils;
+import com.textocat.textokit.segmentation.fstype.Sentence;
+import com.textocat.textokit.commons.io.IoUtils;
+import com.textocat.textokit.commons.util.AnnotatorUtils;
+import com.textocat.textokit.depparser.Dependency;
+import com.textocat.textokit.morph.commons.TagUtils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -58,7 +58,7 @@ public class MSTParsingAnnotator extends JCasAnnotator_ImplBase {
 	public static AnalysisEngineDescription createDescription(URL modelUrl)
 			throws ResourceInitializationException, InvalidXMLException {
 		TypeSystemDescription tsDesc = createTypeSystemDescription(
-				"ru.kfu.itis.issst.uima.depparser.dependency-ts");
+				"com.textocat.textokit.depparser.dependency-ts");
 		AnalysisEngineDescription resultDesc = createEngineDescription(
 				MSTParsingAnnotator.class, tsDesc);
 		createDependency(resultDesc, RESOURCE_MODEL_FILE,

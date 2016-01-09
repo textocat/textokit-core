@@ -1,4 +1,4 @@
-package ru.kfu.itis.issst.uima.depparser.mst;
+package com.textocat.textokit.depparser.mst;
 
 /**
  * @author Rinat Gareev

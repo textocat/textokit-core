@@ -1,4 +1,4 @@
-package ru.kfu.itis.issst.uima.depparser.mst;
+package com.textocat.textokit.depparser.mst;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.kfu.itis.cll.uima.io.IoUtils;
+import com.textocat.textokit.commons.io.IoUtils;
 import mstparser.DependencyInstance;
 
 import com.google.common.base.Function;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ru.kfu.itis.issst.uima.depparser.mst;
+package com.textocat.textokit.depparser.mst;
 
 import java.io.File;
 import java.io.IOException;

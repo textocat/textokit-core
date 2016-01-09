@@ -86,6 +86,13 @@
     <profiles>
         <profile>
             <id>make-jcas</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.uima</groupId>
+                    <artifactId>uimaj-tools</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>
@@ -100,6 +107,7 @@
                                 <phase>generate-sources</phase>
                                 <configuration>
                                     <executable>java</executable>
+                                    <classpathScope>test</classpathScope>
                                     <arguments>
                                         <argument>-classpath</argument>
                                         <classpath/>

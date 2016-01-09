@@ -1,4 +1,4 @@
-package ru.kfu.itis.issst.uima.depparser.mst;
+package com.textocat.textokit.depparser.mst;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,9 +11,6 @@ import org.apache.uima.collection.CollectionReaderDescription;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.pipeline.SimplePipeline;
-
-import ru.kfu.itis.issst.uima.depparser.mst.MSTCollectionReader;
-import ru.kfu.itis.issst.uima.depparser.mst.MSTWriter;
 
 public class MSTReadWriteTest {
 

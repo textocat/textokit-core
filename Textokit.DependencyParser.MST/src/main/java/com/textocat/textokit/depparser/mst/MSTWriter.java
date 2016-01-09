@@ -1,10 +1,10 @@
-package ru.kfu.itis.issst.uima.depparser.mst;
+package com.textocat.textokit.depparser.mst;
 
 import static com.google.common.collect.Lists.newArrayListWithExpectedSize;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.apache.uima.fit.factory.TypeSystemDescriptionFactory.createTypeSystemDescription;
-import static ru.kfu.itis.cll.uima.cas.AnnotationUtils.coveredTextFunction;
-import static ru.kfu.itis.issst.uima.morph.commons.TagUtils.tagFunction;
+import static com.textocat.textokit.commons.cas.AnnotationUtils.coveredTextFunction;
+import static com.textocat.textokit.morph.commons.TagUtils.tagFunction;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+import com.textocat.textokit.morph.fs.Word;
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -19,16 +20,15 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.opencorpora.cas.Word;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.descriptor.OperationalProperties;
 import org.apache.uima.fit.util.JCasUtil;
 
-import ru.kfu.cll.uima.segmentation.fstype.Sentence;
-import ru.kfu.itis.cll.uima.io.IoUtils;
-import ru.kfu.itis.issst.uima.depparser.Dependency;
-import ru.kfu.itis.issst.uima.segmentation.SentenceSplitterAPI;
+import com.textocat.textokit.segmentation.fstype.Sentence;
+import com.textocat.textokit.commons.io.IoUtils;
+import com.textocat.textokit.depparser.Dependency;
+import com.textocat.textokit.segmentation.SentenceSplitterAPI;
 
 import com.google.common.collect.Lists;
 
@@ -43,7 +43,7 @@ public class MSTWriter extends JCasAnnotator_ImplBase {
 			throws ResourceInitializationException {
 		TypeSystemDescription tsDesc = createTypeSystemDescription(
 				SentenceSplitterAPI.TYPESYSTEM_SENTENCES,
-				"ru.kfu.itis.issst.uima.depparser.dependency-ts");
+				"com.textocat.textokit.depparser.dependency-ts");
 		return createEngineDescription(MSTWriter.class, tsDesc,
 				PARAM_OUTPUT_FILE, outputFile.getPath());
 	}
