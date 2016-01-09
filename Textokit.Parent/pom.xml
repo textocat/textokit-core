@@ -190,6 +190,16 @@
             </dependency>
             <dependency>
                 <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-dep-parser-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
+                <artifactId>textokit-dep-parser-mst</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.textocat.textokit.core</groupId>
                 <artifactId>textokit-eval</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -34,6 +34,8 @@
         <module>Textokit.PhraseRecognizer.API</module>
         <module>Textokit.PhraseRecognizer.SPC</module>
         <module>Textokit.ShalTeF</module>
+        <module>Textokit.DependencyParser.API</module>
+        <module>Textokit.DependencyParser.MST</module>
         <module>Textokit.IO.Brat</module>
         <module>Textokit.Util.RutaSeeder</module>
         <module>Textokit.Evaluation</module>
