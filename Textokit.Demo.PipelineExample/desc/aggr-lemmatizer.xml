@@ -22,6 +22,9 @@
         <delegateAnalysisEngine key="np-recognizer">
             <import name="com.textocat.textokit.phrrecog.np-recognizer" />
         </delegateAnalysisEngine>
+        <delegateAnalysisEngine key="vp-recognizer">
+            <import name="com.textocat.textokit.phrrecog.vp-recognizer" />
+        </delegateAnalysisEngine>
     </delegateAnalysisEngineSpecifiers>
     <analysisEngineMetaData>
         <name>Lemmatizer Pipeline</name>
@@ -35,6 +38,7 @@
                 <node>pos-tagger</node>
                 <node>lemmatizer</node>
                 <node>np-recognizer</node>
+                <node>vp-recognizer</node>
             </fixedFlow>
         </flowConstraints>
         <operationalProperties>
