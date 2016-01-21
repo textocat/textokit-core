@@ -16,60 +16,61 @@
 
 package com.textocat.textokit.phrrecog
 
-import com.google.common.collect.ComparisonChain
-import com.textocat.textokit.morph.fs.{Word, Wordform}
+import com.textocat.textokit.morph.dictionary.MorphDictionaryAPIFactory
+import com.textocat.textokit.morph.dictionary.resource.GramModel
 import com.textocat.textokit.morph.model.{MorphConstants => M}
+import com.textocat.textokit.morph.{RichWord, RichWordFactory}
 import com.textocat.textokit.phrrecog.VPRecognizer._
 import com.textocat.textokit.phrrecog.cas.VerbPhrase
 import com.textocat.textokit.segmentation.fstype.Sentence
-import com.typesafe.scalalogging.slf4j.StrictLogging
-import org.apache.uima.cas.Type
-import org.apache.uima.cas.text.AnnotationFS
+import org.apache.uima.UimaContext
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase
-import org.apache.uima.fit.util.{CasUtil, FSCollectionFactory}
+import org.apache.uima.fit.util.JCasUtil
 import org.apache.uima.jcas.JCas
 import org.apache.uima.jcas.cas.FSArray
 import org.apache.uima.jcas.tcas.Annotation
 
-import scala.collection.JavaConversions.{asScalaBuffer, iterableAsScalaIterable}
-import scala.collection.mutable.{Buffer, HashSet, ListBuffer}
+import scala.collection.JavaConversions._
+import scala.collection.mutable
 
 /**
  * @author Rinat Gareev
  *
  */
-class VPRecognizer extends JCasAnnotator_ImplBase with StrictLogging {
+class VPRecognizer extends JCasAnnotator_ImplBase {
 
-  private var wordType: Type = _
+  private var gramModel: GramModel = _
+  private var richWordFactory: RichWordFactory = _
+
+  override def initialize(ctx: UimaContext): Unit = {
+    super.initialize(ctx)
+    gramModel = MorphDictionaryAPIFactory.getMorphDictionaryAPI.getGramModel
+    richWordFactory = new RichWordFactory(gramModel)
+  }
 
   override def process(jCas: JCas) {
-    wordType = jCas.getCasType(Word.typeIndexID)
-    jCas.getAnnotationIndex(Sentence.typeIndexID).foreach(processSpan(jCas, _))
+    JCasUtil.select(jCas, classOf[Sentence]).foreach(processSpan(jCas, _))
   }
 
   private def processSpan(jCas: JCas, spanAnno: Annotation) {
-    val words = CasUtil.selectCovered(wordType, spanAnno).asInstanceOf[java.util.List[Word]]
-    val wordforms = words.map(w =>
-      if (w.getWordforms() == null) IndexedSeq.empty
-      else FSCollectionFactory.create(w.getWordforms, classOf[Wordform]).toIndexedSeq)
-    val verbalWfs =
+    val words = richWordFactory.seqFromSpan(jCas, spanAnno)
+    val verbalWfIndices =
       for (
-        (wwfs, wIndex) <- wordforms.zipWithIndex;
-        wf <- wwfs;
-        if (VerbalPoSes.contains(wf.getPos()))
-      ) yield (wIndex, wf)
-    val attached = HashSet.empty[Wordform]
-    for ((vwIndex, vwf) <- verbalWfs.reverse; if !attached.contains(vwf)) {
-      val phrWfs = vwf.getPos match {
-        case M.VERB => handleFiniteVerb(wordforms, vwIndex, vwf)
-        case M.PRTS => handleShortPerfective(wordforms, vwIndex, vwf)
-        case M.PRTF => List(vwf) // TODO handleFullPerfective(words, wIndex, wfIndex)
-        case M.GRND => List(vwf) // TODO handleGerund(words, wIndex, wfIndex)
-        case M.INFN => handleInfinitive(wordforms, vwIndex, vwf)
+        (wf, wfIndex) <- words.zipWithIndex
+        if VerbalPoSes.contains(wf.partOfSpeech)
+      ) yield wfIndex
+    val attached = mutable.HashSet.empty[RichWord]
+    for (verbalWfIdx <- verbalWfIndices.reverse; w = words(verbalWfIdx); if !attached.contains(w)) {
+      val phrWfs = w.partOfSpeech match {
+        case M.VERB => handleFiniteVerb(words, verbalWfIdx)
+        case M.PRTS => handleShortPerfective(words, verbalWfIdx)
+        case M.PRTF => List(w) // TODO handleFullPerfective(words, wIndex, wfIndex)
+        case M.GRND => List(w) // TODO handleGerund(words, wIndex, wfIndex)
+        case M.INFN => handleInfinitive(words, verbalWfIdx)
         case unknownPos => throw new UnsupportedOperationException("Unknown verbal word pos: %s"
           .format(unknownPos))
       }
-      if (phrWfs != null && !phrWfs.isEmpty) {
+      if (phrWfs.nonEmpty) {
         attached ++= phrWfs
         createPhraseAnnotation(jCas, phrWfs)
       }
@@ -77,99 +78,54 @@ class VPRecognizer extends JCasAnnotator_ImplBase with StrictLogging {
   }
 
   // returns phrase wordforms; first wf of iter is a head of phrase
-  private def handleFiniteVerb(
-                                wordforms: Buffer[IndexedSeq[Wordform]],
-                                verbIndex: Int,
-                                verb: Wordform): Iterable[Wordform] = List(verb)
+  private def handleFiniteVerb(words: IndexedSeq[RichWord],
+                               wfIdx: Int): Iterable[RichWord] = List(words(wfIdx))
 
-  private def handleShortPerfective(
-                                     wordforms: Buffer[IndexedSeq[Wordform]],
-                                     spIndex: Int,
-                                     sp: Wordform): Iterable[Wordform] =
+  private def handleShortPerfective(words: IndexedSeq[RichWord],
+                                    spIndex: Int): Iterable[RichWord] = {
+    val sp = words(spIndex)
     if (spIndex > 0) {
       val toBeIdx = spIndex - 1
-      wordforms(toBeIdx).find(hasLemma("есть", M.VERB) _) match {
-        case Some(toBeWf) => toBeWf :: sp :: Nil
-        case None => sp :: Nil
-      }
-    } else sp :: Nil
+      val toBe = words(toBeIdx)
+      if (toBe.lemma.contains("есть"))
+        toBe :: sp :: Nil
+      else sp :: Nil
+    }
+    else sp :: Nil
+  }
 
-  private def handleInfinitive(
-                                wordforms: Buffer[IndexedSeq[Wordform]],
-                                infIndex: Int,
-                                inf: Wordform): Iterable[Wordform] = {
-    val infW = inf.getWord
-    logger.debug("Handling infinitive: (%s,%s) %s".format(infW.getBegin, infW.getEnd, infW.getCoveredText))
-    var head: Wordform = null
+  private def handleInfinitive(words: IndexedSeq[RichWord],
+                               infIndex: Int): Iterable[RichWord] = {
+    val inf = words(infIndex)
     // search to the left
     if (infIndex > 0) {
-      findWf(wordforms.view(0, infIndex).reverse, isVerb) match {
-        case Some(wf) => head = wf
-        case None =>
+      // TODO elaborate
+      words.view(0, infIndex).reverse.find(M.VERB == _.partOfSpeech) match {
+        case Some(w) => w :: inf :: Nil
+        case None => inf :: Nil
       }
-    }
-    if (head != null) head :: inf :: Nil
-    else inf :: Nil
+    } else inf :: Nil
   }
 
-  private def findWf(wordforms: Seq[IndexedSeq[Wordform]], pred: Wordform => Boolean): Option[Wordform] = {
-    var result: Option[Wordform] = None
-    wordforms.find(wfs => {
-      wfs.find(pred(_)) match {
-        case opt@Some(_) => {
-          result = opt
-          true
-        }
-        case None => false
-      }
-    })
-    result
-  }
-
-  private def isVerb(wf: Wordform): Boolean = M.VERB == wf.getPos()
-
-  private def hasLemma(lemmaString: String, pos: String)(wf: Wordform): Boolean =
-    pos == wf.getPos() && lemmaString == wf.getLemma()
-
-  private def createPhraseAnnotation(jCas: JCas, phraseWordforms: Iterable[Wordform]) {
-    val iter = phraseWordforms.iterator
+  private def createPhraseAnnotation(jCas: JCas, phraseWords: Iterable[RichWord]) {
+    val iter = phraseWords.iterator
     val head = iter.next()
-    val depsFsArray = new FSArray(jCas, phraseWordforms.size - 1)
+    val depsFsArray = new FSArray(jCas, phraseWords.size - 1)
     var depsI = 0
     while (iter.hasNext) {
-      depsFsArray.set(depsI, iter.next())
+      depsFsArray.set(depsI, iter.next().wordform)
       depsI += 1
     }
     val phrase = new VerbPhrase(jCas)
-    phrase.setBegin(head.getWord.getBegin)
-    phrase.setEnd(head.getWord.getEnd)
-    phrase.setHead(head)
+    phrase.setBegin(phraseWords.view.map(_.begin).min)
+    phrase.setEnd(phraseWords.view.map(_.end).max)
+    phrase.setHead(head.wordform)
     phrase.setDependentWords(depsFsArray)
     phrase.addToIndexes()
   }
 
-  private def getVerbalWfs(w: Word): TraversableOnce[Wordform] =
-    if (w.getWordforms() == null) {
-      List()
-    } else {
-      val resultList = ListBuffer.empty[Wordform]
-      for (wf <- FSCollectionFactory.create(w.getWordforms(), classOf[Wordform]))
-        if (VerbalPoSes.contains(wf.getPos()))
-          resultList += wf
-      resultList
-    }
 }
 
 object VPRecognizer {
   val VerbalPoSes = Set(M.VERB, M.INFN, M.PRTF, M.PRTS, M.GRND)
-}
-
-// TODO move to some utility package 
-class AnnotationOffsetOrdering[A <: AnnotationFS] extends Ordering[A] {
-  override def compare(first: A, second: A) =
-    ComparisonChain.start()
-      .compare(first.getBegin(), second.getBegin())
-      .compare(second.getEnd(), first.getEnd())
-      .compare(first.getType().getName(), second.getType().getName())
-      .result()
 }
