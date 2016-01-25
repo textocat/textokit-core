@@ -16,7 +16,6 @@
 
 package com.textocat.textokit.commons.io;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.nio.file.Paths;
@@ -30,10 +29,17 @@ public class IoUtilsTest {
 
     @Test
     public void testAddExtension() {
-        Assert.assertEquals(Paths.get("/home/user.ext"), IoUtils.addExtension(Paths.get("/home/user"), "ext"));
-        Assert.assertEquals(Paths.get("home/user.ext"), IoUtils.addExtension(Paths.get("home/user"), "ext"));
-        Assert.assertEquals(Paths.get("home/user.ext"), IoUtils.addExtension(Paths.get("home/user/"), "ext"));
-        Assert.assertEquals(Paths.get("user.ext"), IoUtils.addExtension(Paths.get("user"), "ext"));
-        Assert.assertEquals(Paths.get("user.ext"), IoUtils.addExtension(Paths.get("user/"), "ext"));
+        assertEquals(Paths.get("/home/user.ext"), IoUtils.addExtension(Paths.get("/home/user"), "ext"));
+        assertEquals(Paths.get("home/user.ext"), IoUtils.addExtension(Paths.get("home/user"), "ext"));
+        assertEquals(Paths.get("home/user.ext"), IoUtils.addExtension(Paths.get("home/user/"), "ext"));
+        assertEquals(Paths.get("user.ext"), IoUtils.addExtension(Paths.get("user"), "ext"));
+        assertEquals(Paths.get("user.ext"), IoUtils.addExtension(Paths.get("user/"), "ext"));
+    }
+
+    @Test
+    public void testExtractPathFromURI() {
+        assertEquals(Paths.get("1376"), IoUtils.extractPathFromURI("1376"));
+        assertEquals(Paths.get("folder/doc1.txt"), IoUtils.extractPathFromURI("folder/doc1.txt"));
+        assertEquals(Paths.get("/folder/doc1.txt"), IoUtils.extractPathFromURI("http://example.org/folder/doc1.txt"));
     }
 }
