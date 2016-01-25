@@ -78,6 +78,7 @@ public class SentenceSplitter extends JCasAnnotator_ImplBase {
             boolean isBoundary = nextVisToken == null;
             if (!isBoundary && boundaryCand instanceof Token) {
                 // i.e. candidate is a visible token
+                // here nextVisToken is never null
                 isBoundary = isBreakBetween(txt, boundaryCand, nextVisToken) ||
                         (distanceBetween(boundaryCand, nextVisToken) > 0
                                 && !isAbbreviation(prevVisToken)
@@ -114,11 +115,13 @@ public class SentenceSplitter extends JCasAnnotator_ImplBase {
     }
 
     private boolean isAbbreviation(Token tok) {
+        if (tok == null) return false;
         // TODO elaborate
         return tok.getTypeIndexID() == CW.type && tok.getEnd() - tok.getBegin() == 1;
     }
 
     private boolean isSW(Token tok) {
+        if (tok == null) return false;
         return tok.getTypeIndexID() == SW.type;
     }
 
@@ -174,7 +177,7 @@ public class SentenceSplitter extends JCasAnnotator_ImplBase {
         iter.moveTo(anchor);
         // now the current fs either greater (for tokens seq it means 'after') or equal to the anchor
         if (iter.isValid()) {
-            // in any case we should move backward
+            // in any case we should move backward (true for disjoint token segmentation)
             iter.moveToPrevious();
             if (iter.isValid()) {
                 return iter.get();
@@ -182,6 +185,7 @@ public class SentenceSplitter extends JCasAnnotator_ImplBase {
                 return null;
             }
         } else {
+            // check for a case when anchor is after the last visible token
             iter.moveToLast();
             if (iter.isValid()) {
                 return iter.get();
