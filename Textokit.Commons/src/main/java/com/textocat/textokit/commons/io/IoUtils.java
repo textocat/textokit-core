@@ -20,9 +20,12 @@ package com.textocat.textokit.commons.io;
 import com.google.common.base.Preconditions;
 
 import java.io.*;
+import java.net.URI;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
+import static java.lang.String.format;
 import static org.apache.commons.io.FileUtils.openInputStream;
 import static org.apache.commons.io.FileUtils.openOutputStream;
 import static org.apache.commons.io.IOUtils.closeQuietly;
@@ -124,5 +127,23 @@ public class IoUtils {
         }
         String filename = srcPath.getFileName().toString();
         return srcPath.resolveSibling(filename + "." + newExt);
+    }
+
+    public static Path extractPathFromURI(String uriStr) {
+        URI uri = URI.create(uriStr);
+        return extractPath(uri);
+    }
+
+    /**
+     * @param uri a source URI
+     * @return a Path part from the given URI, never null
+     */
+    public static Path extractPath(URI uri) {
+        if (uri.isOpaque()) {
+            throw new IllegalArgumentException(format("Opaque URIs are not supported: %s", uri));
+        }
+        String path = uri.getPath();
+        Preconditions.checkState(path != null, "URI path is null: " + uri);
+        return Paths.get(path);
     }
 }

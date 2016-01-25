@@ -17,14 +17,10 @@
 package com.textocat.textokit.commons.consumer;
 
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
 import com.textocat.textokit.commons.DocumentMetadata;
+import com.textocat.textokit.commons.io.IoUtils;
 
-import java.net.URI;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static java.lang.String.format;
 
 /**
  * Simply extracts 'path' part from a given source URI.
@@ -40,12 +36,6 @@ public class DefaultSourceURI2OutputFilePathFunction implements Function<Documen
         if (uriStr == null) {
             return null;
         }
-        URI uri = URI.create(uriStr);
-        if (uri.isOpaque()) {
-            throw new IllegalArgumentException(format("Opaque URIs are not supported: %s", uri));
-        }
-        String path = uri.getPath();
-        Preconditions.checkState(path != null, "URI path is null: " + uri);
-        return Paths.get(path);
+        return IoUtils.extractPathFromURI(uriStr);
     }
 }
