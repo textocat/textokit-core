@@ -301,4 +301,8 @@ public class AnnotationUtils {
         });
         return findRes.orNull();
     }
+
+    public static boolean isBefore(AnnotationFS first, AnnotationFS second) {
+        return first.getBegin() < second.getBegin();
+    }
 }

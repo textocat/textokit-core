@@ -16,31 +16,32 @@
 
 package com.textocat.textokit.segmentation.heur;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+import com.textocat.textokit.commons.cas.AnnotationOffsetComparator;
 import com.textocat.textokit.segmentation.SentenceSplitterAPI;
 import com.textocat.textokit.segmentation.fstype.Sentence;
 import com.textocat.textokit.tokenizer.fstype.*;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.*;
+import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.fit.component.CasAnnotator_ImplBase;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.NavigableSet;
 
-import static com.textocat.textokit.commons.util.AnnotatorUtils.annotationTypeExist;
+import static com.textocat.textokit.commons.cas.AnnotationUtils.isBefore;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
 /**
  * @author Rinat Gareev
  */
-public class SentenceSplitter extends CasAnnotator_ImplBase {
+public class SentenceSplitter extends JCasAnnotator_ImplBase {
 
     public static AnalysisEngineDescription createDescription()
             throws ResourceInitializationException {
@@ -48,102 +49,77 @@ public class SentenceSplitter extends CasAnnotator_ImplBase {
         return createEngineDescription(SentenceSplitter.class, tsDesc);
     }
 
-    private final String[] sentenceEndTokenTypeNames = new String[]{
-            PERIOD.class.getName(), EXCLAMATION.class.getName(),
-            QUESTION.class.getName()
-    };
-    // derived
-    private Set<Type> sentenceEndTokenTypes;
+    private static final Class[] sentenceEndTokenTypes = new Class[]{
+            PERIOD.class, EXCLAMATION.class, QUESTION.class, BREAK.class};
 
     @Override
-    public void typeSystemInit(TypeSystem ts) throws AnalysisEngineProcessException {
-        super.typeSystemInit(ts);
-
-        sentenceEndTokenTypes = new HashSet<Type>();
-        for (String curTypeName : sentenceEndTokenTypeNames) {
-            Type curType = ts.getType(curTypeName);
-            annotationTypeExist(curTypeName, curType);
-            sentenceEndTokenTypes.add(curType);
-        }
-        sentenceEndTokenTypes = ImmutableSet.copyOf(sentenceEndTokenTypes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void process(CAS aCAS) throws AnalysisEngineProcessException {
-        try {
-            process(aCAS.getJCas());
-        } catch (CASException e) {
-            throw new AnalysisEngineProcessException(e);
-        }
-    }
-
-    private void process(JCas cas) throws AnalysisEngineProcessException {
-        // consider only non-whitespace tokens
-        AnnotationIndex<Annotation> tokenIdx = cas.getAnnotationIndex(Token.type);
-        if (tokenIdx.size() == 0) {
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+        AnnotationIndex<Token> visibleTokenIdx = jCas.getAnnotationIndex(Token.class);
+        if (visibleTokenIdx.size() == 0) {
             return;
         }
-        String txt = cas.getDocumentText();
-        FSIterator<Annotation> tokensIter = tokenIdx.iterator();
+        NavigableSet<TokenBase> boundaryCandidates =
+                Sets.newTreeSet(AnnotationOffsetComparator.instance(TokenBase.class));
+        for (Class<? extends TokenBase> bAnnoType : sentenceEndTokenTypes) {
+            boundaryCandidates.addAll(JCasUtil.select(jCas, bAnnoType));
+        }
+        String txt = jCas.getDocumentText();
+        FSIterator<Token> visibleIter = visibleTokenIdx.iterator();
         // get first sentence start
-        tokensIter.moveToFirst();
-        Token lastSentenceStart = (Token) tokensIter.get();
-        tokensIter.moveToNext();
+        visibleIter.moveToFirst();
+        Token lastSentenceStart = visibleIter.get();
 
-        while (tokensIter.isValid()) {
-            Token token = (Token) tokensIter.get();
-            Token nextToken = (Token) lookupNext(tokensIter);
-            if (sentenceEndTokenTypes.contains(token.getType()) &&
-                    (nextToken == null
-                            ||
-                            isBreakBetween(txt, token, nextToken)
-                            ||
-                            (distanceBetween(token, nextToken) > 0
-                                    && !isAbbreviationBefore(tokensIter)
-                                    && !isSWAfter(tokensIter)))) {
-                // sanity check conditions evaluation
-                if (token != tokensIter.get()) {
-                    throw new IllegalStateException(String.format(
-                            "Failed on token %s", token));
+        for (TokenBase boundaryCand : boundaryCandidates) {
+            if (isBefore(boundaryCand, lastSentenceStart)) {
+                continue;
+            }
+            Token nextVisToken = getNext(visibleIter, boundaryCand);
+            Token prevVisToken = getPrevious(visibleIter, boundaryCand);
+            boolean isBoundary = nextVisToken == null;
+            if (!isBoundary && boundaryCand instanceof Token) {
+                // i.e. candidate is a visible token
+                isBoundary = isBreakBetween(txt, boundaryCand, nextVisToken) ||
+                        (distanceBetween(boundaryCand, nextVisToken) > 0
+                                && !isAbbreviation(prevVisToken)
+                                && !isSW(nextVisToken));
+            }
+            if (!isBoundary && boundaryCand instanceof WhiteSpace) {
+                // candidate is a break
+                isBoundary = !isSW(nextVisToken);
+            }
+            if (isBoundary) {
+                Token sentEnd;
+                if (boundaryCand instanceof Token) {
+                    sentEnd = (Token) boundaryCand;
+                } else {
+                    sentEnd = prevVisToken;
                 }
-                makeSentence(cas, lastSentenceStart, token);
-                tokensIter.moveToNext();
-                if (tokensIter.isValid()) {
-                    lastSentenceStart = (Token) tokensIter.get();
+                makeSentence(jCas, lastSentenceStart, sentEnd);
+                visibleIter.moveTo(sentEnd);
+                visibleIter.moveToNext();
+                if (visibleIter.isValid()) {
+                    lastSentenceStart = visibleIter.get();
                 } else {
                     lastSentenceStart = null;
+                    break;
                 }
-            } else {
-                tokensIter.moveToNext();
             }
         }
         if (lastSentenceStart != null) {
-            // here tokensIter is INVALID so we should call moveToLast
-            tokensIter.moveToLast();
-            Token token = (Token) tokensIter.get();
-            makeSentence(cas, lastSentenceStart, token);
+            visibleIter.moveToLast();
+            Token sentEnd = visibleIter.get();
+            makeSentence(jCas, lastSentenceStart, sentEnd);
             lastSentenceStart = null;
         }
     }
 
-    private boolean isAbbreviationBefore(FSIterator<Annotation> tokensIter) {
-        Annotation tokenBefore = lookupPrevious(tokensIter);
-        if (tokenBefore == null) {
-            return false;
-        }
-        return tokenBefore.getTypeIndexID() == CW.type &&
-                tokenBefore.getEnd() - tokenBefore.getBegin() == 1;
+    private boolean isAbbreviation(Token tok) {
+        // TODO elaborate
+        return tok.getTypeIndexID() == CW.type && tok.getEnd() - tok.getBegin() == 1;
     }
 
-    private boolean isSWAfter(FSIterator<Annotation> tokensIter) {
-        Annotation tokenAfter = lookupNext(tokensIter);
-        if (tokenAfter == null) {
-            return false;
-        }
-        return tokenAfter.getTypeIndexID() == SW.type;
+    private boolean isSW(Token tok) {
+        return tok.getTypeIndexID() == SW.type;
     }
 
     private void makeSentence(JCas cas, Token firstToken, Token lastToken) {
@@ -161,41 +137,58 @@ public class SentenceSplitter extends CasAnnotator_ImplBase {
     }
 
     /**
-     * Return next element if exists. Always save iterator position.
+     * Return next element if exists.
      *
-     * @param iter iterator
+     * @param iter   iterator
+     * @param anchor an anchor
      * @return next element if exists or null otherwise
      */
-    private static <T extends FeatureStructure> T lookupNext(FSIterator<T> iter) {
-        iter.moveToNext();
-        T result;
+    private static Token getNext(FSIterator<Token> iter, TokenBase anchor) {
+        iter.moveTo(anchor);
+        // now the current fs either greater (for tokens seq it means 'after') or equal to the anchor
         if (iter.isValid()) {
-            result = iter.get();
-            iter.moveToPrevious();
+            Token result = iter.get();
+            if (result.equals(anchor)) {
+                iter.moveToNext();
+                if (iter.isValid()) {
+                    return iter.get();
+                } else {
+                    return null;
+                }
+            } else {
+                return result;
+            }
         } else {
-            result = null;
-            iter.moveToLast();
+            return null;
         }
-        return result;
     }
 
     /**
-     * Return previous element if exists. Always save iterator position.
+     * Return previous element if exists.
      *
-     * @param iter iterator
+     * @param iter   iterator
+     * @param anchor an anchor
      * @return previous element if exists or null otherwise
      */
-    private static <T extends FeatureStructure> T lookupPrevious(FSIterator<T> iter) {
-        iter.moveToPrevious();
-        T result;
+    private static Token getPrevious(FSIterator<Token> iter, TokenBase anchor) {
+        iter.moveTo(anchor);
+        // now the current fs either greater (for tokens seq it means 'after') or equal to the anchor
         if (iter.isValid()) {
-            result = iter.get();
-            iter.moveToNext();
+            // in any case we should move backward
+            iter.moveToPrevious();
+            if (iter.isValid()) {
+                return iter.get();
+            } else {
+                return null;
+            }
         } else {
-            result = null;
-            iter.moveToFirst();
+            iter.moveToLast();
+            if (iter.isValid()) {
+                return iter.get();
+            } else {
+                return null;
+            }
         }
-        return result;
     }
 
     /**
