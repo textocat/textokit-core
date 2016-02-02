@@ -1,54 +1,54 @@
 package com.textocat.textokit.corpus.statistics.dao.units;
 
+import com.google.common.collect.Maps;
+
 import java.net.URI;
 import java.util.SortedMap;
 
-import com.google.common.collect.Maps;
-
 public class Unit {
 
-	private UnitLocation location;
-	private SortedMap<String, String> classByAnnotatorId = Maps.newTreeMap();
+    private UnitLocation location;
+    private SortedMap<String, String> classByAnnotatorId = Maps.newTreeMap();
 
-	public Unit(UnitLocation location) {
-		this.location = location;
-	}
+    public Unit(UnitLocation location) {
+        this.location = location;
+    }
 
-	public Unit(UnitLocation location, String annotatorId, String annotatorClass) {
-		this(location);
-		classByAnnotatorId.put(annotatorId, annotatorClass);
-	}
+    public Unit(UnitLocation location, String annotatorId, String annotatorClass) {
+        this(location);
+        classByAnnotatorId.put(annotatorId, annotatorClass);
+    }
 
-	public UnitLocation getLocation() {
-		return location;
-	}
+    public UnitLocation getLocation() {
+        return location;
+    }
 
-	public URI getDocumentURI() {
-		return location.getDocumentURI();
-	}
+    public URI getDocumentURI() {
+        return location.getDocumentURI();
+    }
 
-	public int getBegin() {
-		return location.getBegin();
-	}
+    public int getBegin() {
+        return location.getBegin();
+    }
 
-	public int getEnd() {
-		return location.getEnd();
-	}
+    public int getEnd() {
+        return location.getEnd();
+    }
 
-	public SortedMap<String, String> getClassesByAnnotatorId() {
-		return classByAnnotatorId;
-	}
+    public SortedMap<String, String> getClassesByAnnotatorId() {
+        return classByAnnotatorId;
+    }
 
-	public String[] getSortedClasses() {
-		return classByAnnotatorId.values().toArray(new String[0]);
-	}
+    public String[] getSortedClasses() {
+        return classByAnnotatorId.values().toArray(new String[0]);
+    }
 
-	public void putClassByAnnotatorId(String annotatorId, String annotatorClass) {
-		classByAnnotatorId.put(annotatorId, annotatorClass);
-	}
+    public void putClassByAnnotatorId(String annotatorId, String annotatorClass) {
+        classByAnnotatorId.put(annotatorId, annotatorClass);
+    }
 
-	@Override
-	public String toString() {
-		return location.toString() + " " + classByAnnotatorId;
-	}
+    @Override
+    public String toString() {
+        return location.toString() + " " + classByAnnotatorId;
+    }
 }

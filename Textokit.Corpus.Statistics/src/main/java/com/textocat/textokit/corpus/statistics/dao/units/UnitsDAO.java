@@ -8,13 +8,13 @@ import java.net.URISyntaxException;
 
 public interface UnitsDAO {
 
-	void addUnitItem(URI documentURI, int begin, int end, String annotatorId,
-			String annotatorClass);
-	
-	Iterable<Unit> getUnits();
+    void addUnitItem(URI documentURI, int begin, int end, String annotatorId,
+                     String annotatorClass);
 
-	void toTSV(Writer writer);
+    Iterable<Unit> getUnits();
 
-	void addUnitsFromTSV(Reader reader) throws IOException, URISyntaxException;
+    void toTSV(Writer writer);
+
+    void addUnitsFromTSV(Reader reader) throws IOException, URISyntaxException;
 
 }
