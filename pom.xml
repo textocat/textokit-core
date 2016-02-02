@@ -38,5 +38,6 @@
         <module>Textokit.Util.RutaSeeder</module>
         <module>Textokit.Evaluation</module>
         <module>Textokit.DictionaryMatcher.Tools</module>
+        <module>Textokit.Corpus.Statistics</module>
     </modules>
 </project>

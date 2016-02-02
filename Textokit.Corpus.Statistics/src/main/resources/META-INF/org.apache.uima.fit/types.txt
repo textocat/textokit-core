@@ -1,0 +1,1 @@
+classpath*:com/textocat/textokit/corpus/statistics/type/**/*.xml
