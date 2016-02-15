@@ -46,17 +46,15 @@
             </configurationParameter>
             <configurationParameter>
                 <name>resultAnnotationType</name>
-                <description/>
                 <type>String</type>
                 <multiValued>false</multiValued>
-                <mandatory>true</mandatory>
+                <mandatory>false</mandatory>
             </configurationParameter>
             <configurationParameter>
                 <name>tagFeature</name>
-                <description/>
                 <type>String</type>
                 <multiValued>false</multiValued>
-                <mandatory>true</mandatory>
+                <mandatory>false</mandatory>
             </configurationParameter>
         </configurationParameters>
         <configurationParameterSettings>
@@ -90,8 +88,24 @@
                     <string>com.textocat.textokit.segmentation.fstype.Sentence</string>
                 </value>
             </nameValuePair>
+            <nameValuePair>
+                <name>resultAnnotationType</name>
+                <value>
+                    <string>com.textocat.textokit.dictmatcher.fs.DictionaryMatch</string>
+                </value>
+            </nameValuePair>
+            <nameValuePair>
+                <name>tagFeature</name>
+                <value>
+                    <string>tag</string>
+                </value>
+            </nameValuePair>
         </configurationParameterSettings>
-        <typePriorities/>
+        <typeSystemDescription>
+            <imports>
+                <import name="com.textocat.textokit.dictmatcher.ts-dictmatcher"/>
+            </imports>
+        </typeSystemDescription>
         <fsIndexCollection/>
         <capabilities/>
         <operationalProperties>

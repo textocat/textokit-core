@@ -16,11 +16,13 @@
 
 package com.textocat.textokit.dictmatcher;
 
+import com.textocat.textokit.dictmatcher.fs.DictionaryMatch;
 import org.apache.commons.io.FileUtils;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.factory.ConfigurationParameterFactory;
+import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -28,6 +30,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static com.textocat.textokit.dictmatcher.DictionaryAnnotator.PARAM_CHUNK_ADAPTER_CLASS;
+import static com.textocat.textokit.dictmatcher.TaggedChunkAnnotationAdapter.PARAM_RESULT_ANNOTATION_TYPE;
+import static com.textocat.textokit.dictmatcher.TaggedChunkAnnotationAdapter.PARAM_TAG_FEATURE;
 
 /**
  * @author Rinat Gareev
@@ -35,10 +39,13 @@ import static com.textocat.textokit.dictmatcher.DictionaryAnnotator.PARAM_CHUNK_
 public class GenerateTaggedDictionaryAnnotatorDesc {
     public static void main(String[] args) throws ResourceInitializationException, IOException, SAXException {
         String relOutPath = (DictionaryAnnotator.class.getName() + "-tagged").replace('.', '/') + ".xml";
+        TypeSystemDescription tsd = TypeSystemDescriptionFactory.createTypeSystemDescription(
+                "com.textocat.textokit.dictmatcher.ts-dictmatcher");
         AnalysisEngineDescription desc = AnalysisEngineFactory.createEngineDescription(DictionaryAnnotator.class,
-                PARAM_CHUNK_ADAPTER_CLASS, TaggedChunkAnnotationAdapter.class.getName());
-        ConfigurationParameterFactory.addConfigurationParameters(desc, TaggedChunkAnnotationAdapter.class);
-        desc.getAnalysisEngineMetaData().setTypeSystem(null);
+                tsd,
+                PARAM_CHUNK_ADAPTER_CLASS, TaggedChunkAnnotationAdapter.class.getName(),
+                PARAM_RESULT_ANNOTATION_TYPE, DictionaryMatch.class.getName(),
+                PARAM_TAG_FEATURE, "tag");
         try (FileOutputStream os = FileUtils.openOutputStream(new File("src/main/resources/" + relOutPath))) {
             desc.toXML(os);
         }
