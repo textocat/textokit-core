@@ -17,6 +17,7 @@
 package com.textocat.textokit.dictmatcher;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.textocat.textokit.chunk.Chunker;
 import com.textocat.textokit.chunk.ChunkerBuilder;
 import com.textocat.textokit.resource.SpringResourceLocator;
@@ -27,6 +28,8 @@ import org.apache.uima.fit.factory.ExternalResourceFactory;
 import org.apache.uima.resource.ExternalResourceDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +60,7 @@ public class TaggedChunkerBuilderResource extends SpringResourceLocator {
     @ConfigurationParameter(name = PARAM_CHUNKER_BUILDER_CLASS)
     private Class<? extends ChunkerBuilder> chunkerBuilderClass;
     // state fields
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private Chunker<String> chunker;
 
     @Override
@@ -73,8 +77,10 @@ public class TaggedChunkerBuilderResource extends SpringResourceLocator {
         //
         try (InputStream in = resourceMeta.getInputStream()) {
             LineIterator lineIterator = IOUtils.lineIterator(in, "UTF-8");
+            int lineNum = 0;
             while (lineIterator.hasNext()) {
-                DictEntry de = parseLine(lineIterator.nextLine());
+                lineNum++;
+                DictEntry de = parseLine(lineIterator.nextLine(), lineNum);
                 if (de != null)
                     builder.addEntry(de.tokens, de.tag);
             }
@@ -85,7 +91,7 @@ public class TaggedChunkerBuilderResource extends SpringResourceLocator {
         return true;
     }
 
-    private DictEntry parseLine(String line) {
+    private DictEntry parseLine(String line, int lineNum) {
         line = line.trim();
         if (line.isEmpty()) {
             return null;
@@ -95,8 +101,12 @@ public class TaggedChunkerBuilderResource extends SpringResourceLocator {
         }
         String[] tokTagSplit = line.split(TAG_DELIMITER);
         if (tokTagSplit.length != 2) cantParseLine(line);
-        String tag = tokTagSplit[1].trim();
+        String tag = tokTagSplit[1].trim().intern();
         Iterable<String> tokens = TOKEN_SPLITTER.split(tokTagSplit[0]);
+        if (Iterables.isEmpty(tokens)) {
+            log.warn("Line {} contains empty record!", lineNum);
+            return null;
+        }
         return new DictEntry(tokens, tag);
     }
 
