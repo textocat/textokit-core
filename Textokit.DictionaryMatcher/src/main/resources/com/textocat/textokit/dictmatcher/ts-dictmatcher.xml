@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+    <name>Textokit.DictionaryMatching.TS</name>
+    <description>
+        Describe annotations that can be yielded by a dictionary matching process.
+        DictionaryAnnotator is configurable in a way that does not force users to use these types.
+        This is just convenient base to start from.
+    </description>
+    <version>1.0</version>
+    <vendor>Textocat</vendor>
+
+    <types>
+        <typeDescription>
+            <name>com.textocat.textokit.dictmatcher.fs.DictionaryMatch</name>
+            <supertypeName>uima.tcas.Annotation</supertypeName>
+            <features>
+                <featureDescription>
+                    <name>firstToken</name>
+                    <rangeTypeName>uima.tcas.Annotation</rangeTypeName>
+                </featureDescription>
+                <featureDescription>
+                    <name>tag</name>
+                    <rangeTypeName>uima.cas.String</rangeTypeName>
+                </featureDescription>
+                <featureDescription>
+                    <name>dictionaryRecordId</name>
+                    <rangeTypeName>uima.cas.String</rangeTypeName>
+                </featureDescription>
+            </features>
+        </typeDescription>
+    </types>
+
+</typeSystemDescription>
