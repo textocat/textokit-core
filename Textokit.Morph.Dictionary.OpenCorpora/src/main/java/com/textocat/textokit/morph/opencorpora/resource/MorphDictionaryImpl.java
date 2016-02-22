@@ -170,7 +170,9 @@ public class MorphDictionaryImpl implements Serializable, MorphDictionary {
         if (linkType == null) {
             noLemmaLinkType(linkTypeId);
         }
-        lemmaLinkTable.put(from, to, linkType);
+        if (lemmaLinkTable.put(from, to, linkType) != null) {
+            log.warn("More than one links exist between lemmas {} and {}", to, from);
+        }
     }
 
     /**
