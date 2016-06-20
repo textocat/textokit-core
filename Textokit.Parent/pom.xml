@@ -495,4 +495,9 @@
         <spring.version>3.2.1.RELEASE</spring.version>
         <cleartk.version>2.0.0</cleartk.version>
     </properties>
+
+    <scm>
+        <developerConnection>scm:git:git://github.com/textocat/textokit-core.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 </project>
