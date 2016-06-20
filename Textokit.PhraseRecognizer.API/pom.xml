@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.textocat.textokit.core</groupId>
         <artifactId>textokit-parent</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.1</version>
         <relativePath>../Textokit.Parent/pom.xml</relativePath>
     </parent>
     <artifactId>textokit-phrase-recognizer-api</artifactId>
@@ -135,7 +134,7 @@
                                     <classpathScope>test</classpathScope>
                                     <arguments>
                                         <argument>-classpath</argument>
-                                        <classpath/>
+                                        <classpath />
                                         <argument>org.apache.uima.tools.jcasgen.Jg</argument>
                                         <argument>-jcasgeninput</argument>
                                         <argument>
@@ -162,7 +161,7 @@
                                     <target>
                                         <delete includeemptydirs="true" verbose="true">
                                             <fileset dir="src/main/jcas">
-                                                <exclude name="com/textocat/textokit/phrrecog/**/*.java"/>
+                                                <exclude name="com/textocat/textokit/phrrecog/**/*.java" />
                                             </fileset>
                                         </delete>
                                     </target>

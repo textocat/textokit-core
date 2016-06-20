@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.textocat.textokit.core</groupId>
 		<artifactId>textokit-parent</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.1</version>
 		<relativePath>../Textokit.Parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>textokit-sentence-splitter-api</artifactId>
