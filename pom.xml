@@ -39,5 +39,6 @@
         <module>Textokit.Evaluation</module>
         <module>Textokit.DictionaryMatcher.Tools</module>
         <module>Textokit.Corpus.Statistics</module>
+        <module>Textokit.Benchmarking</module>
     </modules>
 </project>
