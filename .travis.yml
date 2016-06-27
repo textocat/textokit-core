@@ -1,3 +1,5 @@
 language: java
+jdk:
+  - oraclejdk8
 after_success:
   - mvn deploy --settings ci-tools/maven/settings.xml -Dmaven.test.skip=true
