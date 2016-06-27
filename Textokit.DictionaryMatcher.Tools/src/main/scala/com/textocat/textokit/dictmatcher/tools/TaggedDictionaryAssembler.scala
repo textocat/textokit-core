@@ -48,7 +48,7 @@ import scala.io.Source
  * <p>One dictionary entry per line.
  * </p>
  * <h2>Entry normalization</h2>
- * Each entry is normalized using a lemmatizer pipeline.
+ * Each entry is normalized using a lemmatizer pipeline with fallback to original text in lower case.
  * <h2>Dictionary metadata</h2>
  * An entry is assigned a tag (see [[com.textocat.textokit.dictmatcher.TaggedChunkAnnotationAdapter]]) given by its containing file. A tag of file
  * is defined in app arguments like <code>foo.txt=>foo_tag</code>, i.e. all entries from <code>foo.txt</code> get
@@ -107,7 +107,7 @@ object TaggedDictionaryAssembler {
               println("INFO: Not accepted:\n" + line)
             } else {
               val lemmata = tokens.map(sw => sw.getLemma match {
-                case null => sw.getCoveredText
+                case null => sw.getCoveredText.toLowerCase
                 case lemma => lemma
               })
               // OUTPUT
