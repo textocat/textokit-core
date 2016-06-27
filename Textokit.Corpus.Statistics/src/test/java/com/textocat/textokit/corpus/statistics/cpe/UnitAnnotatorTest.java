@@ -66,9 +66,7 @@ public class UnitAnnotatorTest {
                 .mergeTypeSystems(Sets.newHashSet(
                         XmiFileTreeCorpusDAO.getTypeSystem(corpusPathString),
                         TypeSystemDescriptionFactory
-                                .createTypeSystemDescription(),
-                        TokenizerAPI.getTypeSystemDescription(),
-                        SentenceSplitterAPI.getTypeSystemDescription()));
+                                .createTypeSystemDescription()));
         readerDesc = CollectionReaderFactory.createReaderDescription(
                 CorpusDAOCollectionReader.class, tsd,
                 CorpusDAOCollectionReader.CORPUS_DAO_KEY, daoDesc);
