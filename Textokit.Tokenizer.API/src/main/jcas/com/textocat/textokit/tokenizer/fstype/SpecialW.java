@@ -13,12 +13,12 @@ import org.apache.uima.jcas.cas.TOP_Type;
  * Updated by JCasGen Wed Jun 29 13:43:31 MSK 2016
  * XML source: src/main/resources/com/textocat/textokit/tokenizer/tokenizer-TypeSystem.xml
  * @generated */
-public class PERIOD extends PM {
+public class SpecialW extends W {
   /** @generated
    * @ordered 
    */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = JCasRegistry.register(PERIOD.class);
+  public final static int typeIndexID = JCasRegistry.register(SpecialW.class);
   /** @generated
    * @ordered 
    */
@@ -32,14 +32,14 @@ public class PERIOD extends PM {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected PERIOD() {/* intentionally empty block */}
+  protected SpecialW() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
    * @param addr low level Feature Structure reference
    * @param type the type of this Feature Structure 
    */
-  public PERIOD(int addr, TOP_Type type) {
+  public SpecialW(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
@@ -47,7 +47,7 @@ public class PERIOD extends PM {
   /** @generated
    * @param jcas JCas to which this Feature Structure belongs 
    */
-  public PERIOD(JCas jcas) {
+  public SpecialW(JCas jcas) {
     super(jcas);
     readObject();   
   } 
@@ -57,7 +57,7 @@ public class PERIOD extends PM {
    * @param begin offset to the begin spot in the SofA
    * @param end offset to the end spot in the SofA 
   */  
-  public PERIOD(JCas jcas, int begin, int end) {
+  public SpecialW(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);

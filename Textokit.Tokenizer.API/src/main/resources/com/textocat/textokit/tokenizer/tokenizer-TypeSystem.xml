@@ -41,6 +41,21 @@
             <supertypeName>com.textocat.textokit.tokenizer.fstype.CW</supertypeName>
         </typeDescription>
         <typeDescription>
+            <name>com.textocat.textokit.tokenizer.fstype.SpecialW</name>
+            <description/>
+            <supertypeName>com.textocat.textokit.tokenizer.fstype.W</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>com.textocat.textokit.tokenizer.fstype.URL</name>
+            <description/>
+            <supertypeName>com.textocat.textokit.tokenizer.fstype.SpecialW</supertypeName>
+        </typeDescription>
+        <typeDescription>
+            <name>com.textocat.textokit.tokenizer.fstype.Email</name>
+            <description/>
+            <supertypeName>com.textocat.textokit.tokenizer.fstype.SpecialW</supertypeName>
+        </typeDescription>
+        <typeDescription>
             <name>com.textocat.textokit.tokenizer.fstype.PM</name>
             <description/>
             <supertypeName>com.textocat.textokit.tokenizer.fstype.Token</supertypeName>
@@ -85,6 +100,7 @@
             <description/>
             <supertypeName>com.textocat.textokit.tokenizer.fstype.Token</supertypeName>
         </typeDescription>
+        <!-- WHITESPACES -->
         <typeDescription>
             <name>com.textocat.textokit.tokenizer.fstype.SPACE</name>
             <description/>

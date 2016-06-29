@@ -1,90 +1,78 @@
-/* First created by JCasGen Thu Nov 12 00:10:20 MSK 2015 */
+
+
+/* First created by JCasGen Wed Jun 29 13:43:31 MSK 2016 */
 package com.textocat.textokit.tokenizer.fstype;
 
-import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
 
-/**
- * Updated by JCasGen Thu Nov 12 00:10:20 MSK 2015
+
+/** 
+ * Updated by JCasGen Wed Jun 29 13:43:31 MSK 2016
  * XML source: src/main/resources/com/textocat/textokit/tokenizer/tokenizer-TypeSystem.xml
- *
- * @generated
- */
+ * @generated */
 public class NUM extends Token {
-    /**
-     * @generated
-     * @ordered
-     */
-    @SuppressWarnings("hiding")
-    public final static int typeIndexID = JCasRegistry.register(NUM.class);
-    /**
-     * @generated
-     * @ordered
-     */
-    @SuppressWarnings("hiding")
-    public final static int type = typeIndexID;
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static int typeIndexID = JCasRegistry.register(NUM.class);
+  /** @generated
+   * @ordered 
+   */
+  @SuppressWarnings ("hiding")
+  public final static int type = typeIndexID;
+  /** @generated
+   * @return index of the type  
+   */
+  @Override
+  public              int getTypeIndexID() {return typeIndexID;}
+ 
+  /** Never called.  Disable default constructor
+   * @generated */
+  protected NUM() {/* intentionally empty block */}
+    
+  /** Internal - constructor used by generator 
+   * @generated
+   * @param addr low level Feature Structure reference
+   * @param type the type of this Feature Structure 
+   */
+  public NUM(int addr, TOP_Type type) {
+    super(addr, type);
+    readObject();
+  }
+  
+  /** @generated
+   * @param jcas JCas to which this Feature Structure belongs 
+   */
+  public NUM(JCas jcas) {
+    super(jcas);
+    readObject();   
+  } 
 
-    /**
-     * Never called.  Disable default constructor
-     *
-     * @generated
-     */
-    protected NUM() {/* intentionally empty block */}
+  /** @generated
+   * @param jcas JCas to which this Feature Structure belongs
+   * @param begin offset to the begin spot in the SofA
+   * @param end offset to the end spot in the SofA 
+  */  
+  public NUM(JCas jcas, int begin, int end) {
+    super(jcas);
+    setBegin(begin);
+    setEnd(end);
+    readObject();
+  }   
 
-    /**
-     * Internal - constructor used by generator
-     *
-     * @param addr low level Feature Structure reference
-     * @param type the type of this Feature Structure
-     * @generated
-     */
-    public NUM(int addr, TOP_Type type) {
-        super(addr, type);
-        readObject();
-    }
-
-    /**
-     * @param jcas JCas to which this Feature Structure belongs
-     * @generated
-     */
-    public NUM(JCas jcas) {
-        super(jcas);
-        readObject();
-    }
-
-    /**
-     * @param jcas  JCas to which this Feature Structure belongs
-     * @param begin offset to the begin spot in the SofA
-     * @param end   offset to the end spot in the SofA
-     * @generated
-     */
-    public NUM(JCas jcas, int begin, int end) {
-        super(jcas);
-        setBegin(begin);
-        setEnd(end);
-        readObject();
-    }
-
-    /**
-     * @return index of the type
-     * @generated
-     */
-    @Override
-    public int getTypeIndexID() {
-        return typeIndexID;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * Write your own initialization here
-     * <!-- end-user-doc -->
-     *
-     * @generated modifiable
-     */
-    private void readObject() {/*default - does nothing empty block */}
-
+  /** 
+   * <!-- begin-user-doc -->
+   * Write your own initialization here
+   * <!-- end-user-doc -->
+   *
+   * @generated modifiable 
+   */
+  private void readObject() {/*default - does nothing empty block */}
+     
 }
 
     

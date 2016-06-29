@@ -288,6 +288,7 @@ public class InitialTokenizer extends CasAnnotator_ImplBase {
             postprocess(spanBegin, anno, begin, end);
         }
 
+        // the post-tokenizer assumes that punctuation characters are not sticky
         @Override
         public boolean contain(char ch) {
             return false;
@@ -315,6 +316,7 @@ public class InitialTokenizer extends CasAnnotator_ImplBase {
     // fallback state for uncovered characters
     // MUST BE IN THE END
     private State SPECIAL = new State() {
+        // the post-tokenizer assumes that special characters are not sticky
         @Override
         public boolean contain(char ch) {
             return false;
