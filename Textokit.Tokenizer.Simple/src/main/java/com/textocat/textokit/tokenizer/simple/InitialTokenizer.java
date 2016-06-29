@@ -153,23 +153,34 @@ public class InitialTokenizer extends CasAnnotator_ImplBase {
         @Override
         public void createAnnotation(JCas cas, int spanBegin, String str, int begin, int end) {
             checkOffsets(begin, end);
-            int capLetters = 0;
-            for (int i = begin; i < end; i++) {
-                if (Character.isUpperCase(str.charAt(i))) {
-                    capLetters++;
-                } else {
-                    break;
+            //
+            // DO NOT create W token if there are no letters, it might happen if there is only marks or modifiers
+            boolean hasLetter = false;
+            for (int i = begin; !hasLetter && i < end; i++) {
+                if (Character.isLetter(str.charAt(i))) {
+                    hasLetter = true;
                 }
             }
-            Annotation anno;
-            if (capLetters == 0) {
-                anno = new SW(cas);
-            } else if (capLetters == end - begin && capLetters > 1) {
-                anno = new CAP(cas);
-            } else {
-                anno = new CW(cas);
+            if (hasLetter) {
+                //
+                int capLetters = 0;
+                for (int i = begin; i < end; i++) {
+                    if (Character.isUpperCase(str.charAt(i))) {
+                        capLetters++;
+                    } else {
+                        break;
+                    }
+                }
+                Annotation anno;
+                if (capLetters == 0) {
+                    anno = new SW(cas);
+                } else if (capLetters == end - begin && capLetters > 1) {
+                    anno = new CAP(cas);
+                } else {
+                    anno = new CW(cas);
+                }
+                postprocess(spanBegin, anno, begin, end);
             }
-            postprocess(spanBegin, anno, begin, end);
         }
 
         @Override
