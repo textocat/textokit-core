@@ -91,8 +91,8 @@ public class UIMA2BratAnnotator extends CasAnnotator_ImplBase {
     private String[] noteMappersDefinitionsRaw;
     private List<NoteMapperDefinitionValue> noteMappersDefinitions;
     @ConfigurationParameter(name = PARAM_OUTPUT_PATH_FUNCTION, mandatory = false,
-            defaultValue = "com.textocat.textokit.consumer.DefaultSourceURI2OutputFilePathFunction")
-    private Class<? extends Function> outPathFuncClass;
+            defaultValue = "com.textocat.textokit.commons.consumer.DefaultSourceURI2OutputFilePathFunction")
+    private String outPathFuncClassName;
 
     // derived configuration fields
     private BratTypesConfiguration bratTypesConfig;
@@ -156,7 +156,7 @@ public class UIMA2BratAnnotator extends CasAnnotator_ImplBase {
         }
         //
         //noinspection unchecked
-        outPathFunc = InitializableFactory.create(ctx, outPathFuncClass);
+        outPathFunc = InitializableFactory.create(ctx, outPathFuncClassName, Function.class);
     }
 
     @Override
